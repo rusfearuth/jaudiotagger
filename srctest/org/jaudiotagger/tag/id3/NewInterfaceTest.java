@@ -4,6 +4,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.jaudiotagger.AbstractTestCase;
+import org.jaudiotagger.TestImageAssertions;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.mp3.MP3File;
@@ -15,9 +16,6 @@ import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.id3.framebody.*;
 import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -482,18 +480,19 @@ public class NewInterfaceTest extends TestCase
         assertEquals(11, af.getTag().getFieldCount());
 
         //Actually createField the image from the read data
-        BufferedImage bi = null;
+        byte[] imageRawData = null;
         TagField imageField = af.getTag().getFields(FieldKey.COVER_ART).get(0);
         if (imageField instanceof AbstractID3v2Frame)
         {
             FrameBodyAPIC imageFrameBody = (FrameBodyAPIC) ((AbstractID3v2Frame) imageField).getBody();
             if (!imageFrameBody.isImageUrl())
             {
-                byte[] imageRawData = (byte[]) imageFrameBody.getObjectValue(DataTypes.OBJ_PICTURE_DATA);
-                bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
+                imageRawData = (byte[]) imageFrameBody.getObjectValue(DataTypes.OBJ_PICTURE_DATA);
             }
         }
-        assertNotNull(bi);
+        assertNotNull(imageRawData);
+        TestImageAssertions.assertImageFormat(imageRawData, "image/png");
+        TestImageAssertions.assertDimensions(imageRawData, 200, 200);
 
         //Add a linked Image
         af.getTag().addField(tag.createLinkedArtworkField("../testdata/coverart.jpg"));

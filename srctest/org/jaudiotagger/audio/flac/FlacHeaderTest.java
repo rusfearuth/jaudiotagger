@@ -2,15 +2,16 @@ package org.jaudiotagger.audio.flac;
 
 import junit.framework.TestCase;
 import org.jaudiotagger.AbstractTestCase;
+import org.jaudiotagger.TestImageAssertions;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.flac.metadatablock.MetadataBlockDataPicture;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.flac.FlacTag;
+import org.jaudiotagger.tag.images.Artwork;
+import org.jaudiotagger.tag.images.ArtworkFactory;
 import org.jaudiotagger.tag.reference.PictureTypes;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
@@ -99,9 +100,9 @@ public class FlacHeaderTest extends TestCase
             //not where we run the program from
             File file = new File("testdatatmp", image.getImageUrl());
             assertTrue(file.exists());
-            BufferedImage bi = ImageIO.read(file);
-            assertEquals(200, bi.getWidth());
-            assertEquals(200, bi.getHeight());
+            Artwork linkedArtwork = ArtworkFactory.createArtworkFromFile(file);
+            TestImageAssertions.assertImageFormat(linkedArtwork, "image/jpeg");
+            TestImageAssertions.assertDimensions(linkedArtwork, 200, 200);
 
 
         }

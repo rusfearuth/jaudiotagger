@@ -73,12 +73,19 @@ public class AndroidArtwork implements Artwork
      */
     public boolean setImageFromData()
     {
-        throw new UnsupportedOperationException();
+        int[] dimensions = ImageSizeExtractor.extract(getBinaryData());
+        if (dimensions == null)
+        {
+            return false;
+        }
+        setWidth(dimensions[0]);
+        setHeight(dimensions[1]);
+        return true;
     }
 
     public Object getImage() throws IOException
     {
-        throw new UnsupportedOperationException();
+        return getBinaryData();
     }
 
     public boolean isLinked()
@@ -128,6 +135,7 @@ public class AndroidArtwork implements Artwork
         setMimeType(ImageFormats.getMimeTypeForBinarySignature(imagedata));
         setDescription("");
         setPictureType(PictureTypes.DEFAULT_ID);
+        setImageFromData();
     }
 
     /**

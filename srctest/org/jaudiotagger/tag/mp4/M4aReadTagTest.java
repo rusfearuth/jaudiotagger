@@ -2,6 +2,7 @@ package org.jaudiotagger.tag.mp4;
 
 import junit.framework.TestCase;
 import org.jaudiotagger.AbstractTestCase;
+import org.jaudiotagger.TestImageAssertions;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadVideoException;
@@ -17,9 +18,6 @@ import org.jaudiotagger.tag.mp4.atom.Mp4RatingValue;
 import org.jaudiotagger.tag.mp4.field.*;
 import org.jaudiotagger.tag.reference.GenreTypes;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -173,10 +171,7 @@ public class M4aReadTagTest extends TestCase
             assertEquals(0xd8, coverArtField.getData()[1] & 0xff);
             assertEquals(0xff, coverArtField.getData()[2] & 0xff);
             assertEquals(0xe0, coverArtField.getData()[3] & 0xff);
-            //Recreate the image
-            BufferedImage bi = ImageIO.read(ImageIO
-                    .createImageInputStream(new ByteArrayInputStream(coverArtField.getData())));
-            assertNotNull(bi);
+            TestImageAssertions.assertDecodable(coverArtField.getData());
 
         }
         catch (Exception e)
@@ -317,10 +312,8 @@ public class M4aReadTagTest extends TestCase
             Mp4TagCoverField coverArtField = (Mp4TagCoverField) coverart.get(0);
             //Check type png
             assertEquals(Mp4FieldType.COVERART_PNG, coverArtField.getFieldType());            
-            //Recreate the image
-            BufferedImage bi = ImageIO.read(ImageIO
-                    .createImageInputStream(new ByteArrayInputStream(coverArtField.getData())));
-            assertNotNull(bi);
+            TestImageAssertions.assertImageFormat(coverArtField.getData(), "image/png");
+            TestImageAssertions.assertDecodable(coverArtField.getData());
 
             //These fields seemed to have changed in Media Monkey 3.0.6
             assertEquals("custom1", mp4tag.getFirst(Mp4FieldKey.MM_CUSTOM_1));
@@ -547,10 +540,8 @@ public class M4aReadTagTest extends TestCase
             assertEquals(0x4E, coverArtField.getData()[2] & 0xff);
             assertEquals(0x47, coverArtField.getData()[3] & 0xff);
 
-            //Recreate the image
-            BufferedImage bi = ImageIO.read(ImageIO
-                    .createImageInputStream(new ByteArrayInputStream(coverArtField.getData())));
-            assertNotNull(bi);
+            TestImageAssertions.assertImageFormat(coverArtField.getData(), "image/png");
+            TestImageAssertions.assertDecodable(coverArtField.getData());
 
             //Check 2nd field
             coverArtField = (Mp4TagCoverField) coverart.get(1);
@@ -562,10 +553,8 @@ public class M4aReadTagTest extends TestCase
             assertEquals(0x4E, coverArtField.getData()[2] & 0xff);
             assertEquals(0x47, coverArtField.getData()[3] & 0xff);
 
-            //Recreate the image
-            bi = ImageIO.read(ImageIO
-                    .createImageInputStream(new ByteArrayInputStream(coverArtField.getData())));
-            assertNotNull(bi);
+            TestImageAssertions.assertImageFormat(coverArtField.getData(), "image/png");
+            TestImageAssertions.assertDecodable(coverArtField.getData());
 
             //Check 3rd Field
             coverArtField = (Mp4TagCoverField) coverart.get(2);
@@ -577,10 +566,8 @@ public class M4aReadTagTest extends TestCase
             assertEquals(0xd8, coverArtField.getData()[1] & 0xff);
             assertEquals(0xff, coverArtField.getData()[2] & 0xff);
             assertEquals(0xe0, coverArtField.getData()[3] & 0xff);
-            //Recreate the image
-            bi = ImageIO.read(ImageIO
-                    .createImageInputStream(new ByteArrayInputStream(coverArtField.getData())));
-            assertNotNull(bi);
+            TestImageAssertions.assertImageFormat(coverArtField.getData(), "image/jpeg");
+            TestImageAssertions.assertDecodable(coverArtField.getData());
 
         }
         catch (Exception e)
@@ -728,10 +715,7 @@ public class M4aReadTagTest extends TestCase
             assertEquals(0xd8, coverArtField.getData()[1] & 0xff);
             assertEquals(0xff, coverArtField.getData()[2] & 0xff);
             assertEquals(0xe0, coverArtField.getData()[3] & 0xff);
-            //Recreate the image
-            BufferedImage bi = ImageIO.read(ImageIO
-                    .createImageInputStream(new ByteArrayInputStream(coverArtField.getData())));
-            assertNotNull(bi);
+            TestImageAssertions.assertDecodable(coverArtField.getData());
 
         }
         catch (Exception e)

@@ -1,6 +1,7 @@
 package org.jaudiotagger.issues;
 
 import org.jaudiotagger.AbstractTestCase;
+import org.jaudiotagger.TestImageAssertions;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.audio.mp3.MPEGFrameHeader;
@@ -10,7 +11,6 @@ import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.id3.valuepair.ImageFormats;
 import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.images.ArtworkFactory;
-import org.jaudiotagger.tag.images.Images;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -71,8 +71,8 @@ public class Issue294Test extends AbstractTestCase
             assertEquals(0xE0,(int)artwork.getBinaryData()[3] & MPEGFrameHeader.SYNC_BYTE1);
             assertEquals("image/jpeg",artwork.getMimeType());
             assertNotNull(artwork.getImage());
-            assertEquals(500, Images.getImage(artwork).getHeight());
-            assertEquals(500,Images.getImage(artwork).getWidth());
+            TestImageAssertions.assertHeight(artwork, 500);
+            TestImageAssertions.assertWidth(artwork, 500);
 
             byte[]origData=artwork.getBinaryData();
 
@@ -96,8 +96,8 @@ public class Issue294Test extends AbstractTestCase
             }
             assertTrue(Arrays.equals(origData,artwork.getBinaryData()));
             assertNotNull(artwork.getImage());
-            assertEquals(500,Images.getImage(artwork).getHeight());
-            assertEquals(500,Images.getImage(artwork).getWidth());
+            TestImageAssertions.assertHeight(artwork, 500);
+            TestImageAssertions.assertWidth(artwork, 500);
 
         }
         catch (Exception e)

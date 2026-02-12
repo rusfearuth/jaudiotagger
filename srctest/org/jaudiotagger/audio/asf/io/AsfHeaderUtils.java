@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * 
@@ -105,12 +106,14 @@ public final class AsfHeaderUtils extends TestCase
      */
     public void testConversionDateConstant()
     {
-    	Calendar cal = Calendar.getInstance();
+    	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.clear();
     	cal.set(1601, 0, 1);
         Date date1 = cal.getTime();
+        cal.clear();
     	cal.set(1970, 0, 1);
         Date date2 = cal.getTime();
-        assertEquals(11644470000000l,date2.getTime() - date1.getTime());
+        assertEquals(11644473600000l,date2.getTime() - date1.getTime());
     }
 
 }

@@ -1,4 +1,10 @@
 /target/
+/build/
+/.gradle/
+**/.gradle/
+.gradle-test-kit/
+gradle-app.setting
+/local.properties
 /testdatatmp/
 .ignore*
 .classpath

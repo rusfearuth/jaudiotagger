@@ -49,7 +49,7 @@ Directory structure as follows:
 - `srctest`              : source test code directory
 - `www`                  : java doc directory
 - `testdata`             : test files for use by the junit tests, not all tests are included in the distribution because of copyright
-- `target`               : contains the `jaudiotagger***.jar` built from maven
+- `build`                : contains Gradle build outputs
 
 ### IDE files
 
@@ -62,30 +62,18 @@ Directory structure as follows:
  
 ### Local Build details
 
-Build is with [Maven](http://maven.apache.org).
+Primary build flow is Gradle (Android AAR).
 
-   `pom.xml` : Maven build file
+- `build.gradle.kts` : Android library build
+- `settings.gradle.kts` : Gradle settings
+- `gradle/wrapper/*` + `gradlew` : wrapper scripts and pinned Gradle version
 
-To compile, test, build javadocs and install into your local repository run
+To compile and run unit tests:
 
-    mvn install
+    ./gradlew test
 
+To run Android instrumentation tests (Android 9+ device/emulator connected):
 
-To generate a website for *Jaudiotagger* including code coverage reports run
+    ./gradlew connectedAndroidTest
 
-    mvn site
-
-they will be found in `target/site/index.html`.
-
-Your test coverage can be seen at `target/site/cobertura/index.html`.
-
-### Notes Maven Central Release instructions
-- modify pom to remove SNAPSHOT from version
-- commit pom.xml
-- Create version tag of the form vx.x.x
-- git push origin vx.x.x 
-- mvn clean deploy -Prelease
-- Login to https://s01.oss.sonatype.org/
-- Release the release
-- Wait for it on Maven Central
-- modify pom to increase version number and reinstate SNAPSHOT part
+Maven files are retained temporarily for migration only and are no longer the primary build path.

@@ -1,6 +1,7 @@
 package org.jaudiotagger.tag.id3;
 
 import org.jaudiotagger.AbstractTestCase;
+import org.jaudiotagger.TestImageAssertions;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.mp3.MP3File;
@@ -10,8 +11,6 @@ import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.images.ArtworkFactory;
 
-import javax.imageio.ImageIO;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 
 /**
@@ -226,8 +225,10 @@ public class UnsynchronizationTest extends AbstractTestCase
                 }
             }
             assertTrue(matches);
-            ImageIO.read(new ByteArrayInputStream(artworkNotsynced.getBinaryData()));
-            ImageIO.read(new ByteArrayInputStream(artworkUnsynced.getBinaryData()));
+            TestImageAssertions.assertImageFormat(artworkNotsynced.getBinaryData(), "image/jpeg");
+            TestImageAssertions.assertDecodable(artworkNotsynced.getBinaryData());
+            TestImageAssertions.assertImageFormat(artworkUnsynced.getBinaryData(), "image/jpeg");
+            TestImageAssertions.assertDecodable(artworkUnsynced.getBinaryData());
         }
         catch (Exception e)
         {
