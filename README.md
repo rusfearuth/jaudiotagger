@@ -1,5 +1,7 @@
 # Jaudiotagger
 
+Russian translation: [`docs/README.ru.md`](docs/README.ru.md)
+
 *Jaudiotagger* is a Java API for audio metatagging. Both a common API and format
 specific APIs are available, currently supports reading and writing metadata for:
 
@@ -66,9 +68,47 @@ Build is with [Maven](http://maven.apache.org).
 
    `pom.xml` : Maven build file
 
-To compile, test, build javadocs and install into your local repository run
+To compile, test, build javadocs and install the default JVM artifact into your local repository run
 
     mvn install
+
+### Build all library variants
+
+Use the commands below depending on which artifact variant you need:
+
+- Default JVM variant (compile):  
+  `mvn -DskipTests clean compile`
+- Default JVM variant (package JAR):  
+  `mvn -DskipTests clean package`
+- Android-compatible variant (compile):  
+  `mvn -Pandroid -DskipTests clean compile`
+- Android-compatible variant (package JAR):  
+  `mvn -Pandroid -DskipTests clean package`
+- Build both variants sequentially:  
+  `mvn -DskipTests clean package && mvn -Pandroid -DskipTests clean package`
+
+### Android Build (API 28+)
+
+To build an Android-compatible variant without `java.desktop` dependencies run:
+
+    mvn -Pandroid -DskipTests clean compile
+
+This profile compiles Android-safe overrides from `src-android` and excludes desktop-only classes.
+
+For SAF/`Uri` integration use `org.jaudiotagger.android.AndroidAudioFileIO`:
+
+- `read(context, uri)`
+- `readAs(context, uri, ext)`
+- `write(context, audioFile, uri)`
+- `delete(context, uri)`
+
+`AndroidAudioFileIO` intentionally uses reflection, so the main artifact does not require compile-time `android.*` classes.
+
+### Release build
+
+To build release artifacts (sources/javadocs/signing profile from `pom.xml`):
+
+    mvn clean deploy -Prelease
 
 
 To generate a website for *Jaudiotagger* including code coverage reports run

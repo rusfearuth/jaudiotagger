@@ -137,11 +137,61 @@
             </configuration>
          </plugin>
       </plugins>
-      <sourceDirectory>src</sourceDirectory>
+      <sourceDirectory>${main.source.dir}</sourceDirectory>
       <testSourceDirectory>srctest</testSourceDirectory>
    </build>
 
    <profiles>
+      <profile>
+         <id>android</id>
+         <properties>
+            <main.source.dir>src-android</main.source.dir>
+         </properties>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>build-helper-maven-plugin</artifactId>
+                  <version>3.6.0</version>
+                  <executions>
+                     <execution>
+                        <id>add-android-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                           <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                           <sources>
+                              <source>src</source>
+                           </sources>
+                        </configuration>
+                     </execution>
+                  </executions>
+               </plugin>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                  <version>3.2</version>
+                  <configuration>
+                     <encoding>UTF-8</encoding>
+                     <source>${java.version}</source>
+                     <target>${java.version}</target>
+                     <excludes>
+                        <exclude>org/jaudiotagger/tag/images/ImageHandler.java</exclude>
+                        <exclude>org/jaudiotagger/tag/images/AndroidImageHandler.java</exclude>
+                        <exclude>org/jaudiotagger/tag/images/StandardImageHandler.java</exclude>
+                        <exclude>org/jaudiotagger/tag/images/AndroidArtwork.java</exclude>
+                        <exclude>org/jaudiotagger/tag/images/StandardArtwork.java</exclude>
+                        <exclude>org/jaudiotagger/tag/images/Images.java</exclude>
+                        <exclude>org/jaudiotagger/tag/asf/AbstractAsfTagImageField.java</exclude>
+                        <exclude>org/jaudiotagger/test/**</exclude>
+                        <exclude>org/jaudiotagger/Test.java</exclude>
+                     </excludes>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
       <profile>
          <id>release</id>
          <build>
@@ -255,6 +305,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <java.version>1.8</java.version>
       <javadocPluginVersion>3.1.1</javadocPluginVersion>
+      <main.source.dir>src</main.source.dir>
    </properties>
    <scm>
       <connection>scm:git:https://bitbucket.org/ijabz/jaudiotagger.git</connection>
