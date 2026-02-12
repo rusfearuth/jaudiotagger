@@ -5,4 +5,4 @@ pipelines:
     - step:
         script:
           - chmod +x gradlew
-          - ./gradlew test
+          - ./gradlew :libs:test
