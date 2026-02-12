@@ -45,11 +45,13 @@ Directory structure as follows:
 
 ### Under source control
 
-- `src`                  : source code directory
-- `srctest`              : source test code directory
+- `libs/src/main/java`   : library source code
+- `libs/src/test/java`   : unit tests
+- `libs/src/androidTest` : instrumentation tests
+- `libs/src/main/AndroidManifest.xml` : Android manifest for the library module
 - `www`                  : java doc directory
 - `testdata`             : test files for use by the junit tests, not all tests are included in the distribution because of copyright
-- `build`                : contains Gradle build outputs
+- `build` / `libs/build` : Gradle build outputs
 
 ### IDE files
 
@@ -64,16 +66,15 @@ Directory structure as follows:
 
 Primary build flow is Gradle (Android AAR).
 
-- `build.gradle.kts` : Android library build
-- `settings.gradle.kts` : Gradle settings
+- `settings.gradle.kts` : Gradle settings (includes `:libs`)
+- `build.gradle.kts` : root Gradle configuration
+- `libs/build.gradle.kts` : Android library module build
 - `gradle/wrapper/*` + `gradlew` : wrapper scripts and pinned Gradle version
 
 To compile and run unit tests:
 
-    ./gradlew test
+    ./gradlew :libs:test
 
 To run Android instrumentation tests (Android 9+ device/emulator connected):
 
-    ./gradlew connectedAndroidTest
-
-Maven files are retained temporarily for migration only and are no longer the primary build path.
+    ./gradlew :libs:connectedAndroidTest

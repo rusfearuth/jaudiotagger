@@ -1,5 +1,6 @@
 /target/
 /build/
+**/build/
 /.gradle/
 **/.gradle/
 .gradle-test-kit/
