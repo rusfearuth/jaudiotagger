@@ -1,12 +1,9 @@
 package org.jaudiotagger.tag.images;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
- Image Handling to to use when running on Android
-
- TODO need to provide Android compatible implementations
+ * Image handling implementation used for Android mode.
  */
 public class AndroidImageHandler implements ImageHandler
 {
@@ -14,7 +11,7 @@ public class AndroidImageHandler implements ImageHandler
 
     public static AndroidImageHandler getInstanceOf()
     {
-        if(instance==null)
+        if (instance == null)
         {
             instance = new AndroidImageHandler();
         }
@@ -23,76 +20,56 @@ public class AndroidImageHandler implements ImageHandler
 
     private AndroidImageHandler()
     {
-
     }
 
-    /**
-     * Resize the image until the total size require to store the image is less than maxsize
-     * @param artwork
-     * @param maxSize
-     * @throws IOException
-     */
+    @Override
     public void reduceQuality(Artwork artwork, int maxSize) throws IOException
     {
-        throw new UnsupportedOperationException();
-    }
-     /**
-     * Resize image using Java 2D
-      * @param artwork
-      * @param size
-      * @throws java.io.IOException
-      */
-    public void makeSmaller(Artwork artwork,int size) throws IOException
-    {
-        throw new UnsupportedOperationException();
+        if (artwork.getBinaryData() != null && artwork.getBinaryData().length > maxSize)
+        {
+            throw new IOException("Image resize support is not available yet");
+        }
     }
 
+    @Override
+    public void makeSmaller(Artwork artwork, int size) throws IOException
+    {
+        throw new IOException("Image resize support is not available yet");
+    }
+
+    @Override
     public boolean isMimeTypeWritable(String mimeType)
     {
-        throw new UnsupportedOperationException();
+        return mimeType != null && !mimeType.isEmpty();
     }
 
-    /**
-     *  Write buffered image as required format
-     *
-     * @param bi
-     * @param mimeType
-     * @return
-     * @throws IOException
-     */
-    public byte[] writeImage(BufferedImage bi,String mimeType) throws IOException
+    @Override
+    public byte[] writeImage(byte[] imageData, String mimeType) throws IOException
     {
-        throw new UnsupportedOperationException();
+        if (imageData == null)
+        {
+            throw new IOException("Image data is null");
+        }
+        return imageData;
     }
 
-    /**
-     *
-     * @param bi
-     * @return
-     * @throws IOException
-     */
-    public byte[] writeImageAsPng(BufferedImage bi) throws IOException
+    @Override
+    public byte[] writeImageAsPng(byte[] imageData) throws IOException
     {
-        throw new UnsupportedOperationException();
+        if (imageData == null)
+        {
+            throw new IOException("Image data is null");
+        }
+        return imageData;
     }
 
-    /**
-     * Show read formats
-     *
-     * On Windows supports png/jpeg/bmp/gif
-     */
+    @Override
     public void showReadFormats()
     {
-        throw new UnsupportedOperationException();
     }
 
-    /**
-     * Show write formats
-     *
-     * On Windows supports png/jpeg/bmp
-     */
+    @Override
     public void showWriteFormats()
     {
-        throw new UnsupportedOperationException();
     }
 }

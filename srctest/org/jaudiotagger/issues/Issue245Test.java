@@ -1,6 +1,7 @@
 package org.jaudiotagger.issues;
 
 import org.jaudiotagger.AbstractTestCase;
+import org.jaudiotagger.TestImageAssertions;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.mp4.Mp4AtomTree;
@@ -14,7 +15,6 @@ import org.jaudiotagger.tag.id3.ID3v24Tag;
 import org.jaudiotagger.tag.id3.valuepair.ImageFormats;
 import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.images.ArtworkFactory;
-import org.jaudiotagger.tag.images.Images;
 
 import java.io.File;
 
@@ -57,7 +57,7 @@ public class Issue245Test extends AbstractTestCase
             Artwork artwork = tag.getFirstArtwork();
             assertEquals("image/png", artwork.getMimeType());
             assertNotNull(artwork.getImage());
-            assertEquals(200, Images.getImage(artwork).getWidth());
+            TestImageAssertions.assertWidth(artwork, 200);
             assertEquals(5,artwork.getPictureType());
             assertEquals("freddy", artwork.getDescription());
 
@@ -113,7 +113,7 @@ public class Issue245Test extends AbstractTestCase
                     Artwork artwork = tag.getFirstArtwork();
                     assertEquals("image/png", artwork.getMimeType());
                     assertNotNull(artwork.getImage());
-                    assertEquals(200, Images.getImage(artwork).getWidth());
+                    TestImageAssertions.assertWidth(artwork, 200);
                     assertEquals(11,artwork.getPictureType());
                     assertEquals("freddy", artwork.getDescription());
                     /*tag.deleteArtworkField();
@@ -167,7 +167,7 @@ public class Issue245Test extends AbstractTestCase
                     Artwork artwork = tag.getFirstArtwork();
                     assertEquals("image/png", artwork.getMimeType());
                     assertNotNull(artwork.getImage());
-                    assertEquals(200, Images.getImage(artwork).getWidth());
+                    TestImageAssertions.assertWidth(artwork, 200);
                     assertEquals(5,artwork.getPictureType());
                     assertEquals("freddy", artwork.getDescription());
 
@@ -208,7 +208,7 @@ public class Issue245Test extends AbstractTestCase
             Artwork artwork = tag.getFirstArtwork();
             assertEquals("image/png", artwork.getMimeType());
             assertNotNull(artwork.getImage());
-            assertEquals(200, Images.getImage(artwork).getWidth());
+            TestImageAssertions.assertWidth(artwork, 200);
 
             //Now replace the image
             Artwork newartwork = ArtworkFactory.createArtworkFromFile(new File("testdata", "coverart.png"));
@@ -223,7 +223,7 @@ public class Issue245Test extends AbstractTestCase
             artwork = tag.getFirstArtwork();
             assertEquals("image/png", artwork.getMimeType());
             assertNotNull(artwork.getImage());
-            assertEquals(200, Images.getImage(artwork).getWidth());
+            TestImageAssertions.assertWidth(artwork, 200);
             assertEquals("freddy", artwork.getDescription());
 
             tag.deleteArtworkField();
@@ -263,7 +263,7 @@ public class Issue245Test extends AbstractTestCase
             Artwork artwork = tag.getFirstArtwork();
             assertEquals("image/png", artwork.getMimeType());
             assertNotNull(artwork.getImage());
-            assertEquals(200, Images.getImage(artwork).getWidth());
+            TestImageAssertions.assertWidth(artwork, 200);
             assertEquals(3,artwork.getPictureType());
             //Now replace the image
             Artwork newartwork = ArtworkFactory.createArtworkFromFile(new File("testdata", "coverart.png"));
@@ -280,7 +280,7 @@ public class Issue245Test extends AbstractTestCase
             artwork = tag.getFirstArtwork();
             assertEquals("image/png", artwork.getMimeType());
             assertNotNull(artwork.getImage());
-            assertEquals(200, Images.getImage(artwork).getWidth());
+            TestImageAssertions.assertWidth(artwork, 200);
             assertEquals(7,artwork.getPictureType());
             assertEquals("freddy", artwork.getDescription());
 
@@ -322,7 +322,7 @@ public class Issue245Test extends AbstractTestCase
             Artwork artwork = tag.getFirstArtwork();
             assertEquals("image/png", artwork.getMimeType());
             assertNotNull(artwork.getImage());
-            assertEquals(200, Images.getImage(artwork).getWidth());
+            TestImageAssertions.assertWidth(artwork, 200);
             assertEquals(3,artwork.getPictureType());
             //Now replace the image
             Artwork newartwork = ArtworkFactory.createArtworkFromFile(new File("testdata", "coverart.png"));
@@ -340,7 +340,7 @@ public class Issue245Test extends AbstractTestCase
             artwork = tag.getFirstArtwork();
             assertEquals("image/png", artwork.getMimeType());
             assertNotNull(artwork.getImage());
-            assertEquals(200, Images.getImage(artwork).getWidth());
+            TestImageAssertions.assertWidth(artwork, 200);
             assertEquals(8,artwork.getPictureType());
             assertEquals("freddy", artwork.getDescription());
 
@@ -383,7 +383,7 @@ public class Issue245Test extends AbstractTestCase
             Artwork artwork = tag.getFirstArtwork();
             assertEquals("image/jpeg", artwork.getMimeType());
             assertNotNull(artwork.getImage());
-            assertEquals(159, Images.getImage(artwork).getWidth());
+            TestImageAssertions.assertWidth(artwork, 159);
 
             //Now replace the image
             Artwork newartwork = ArtworkFactory.createArtworkFromFile(new File("testdata", "coverart.png"));
@@ -401,7 +401,7 @@ public class Issue245Test extends AbstractTestCase
             artwork = tag.getFirstArtwork();
             assertEquals("image/png", artwork.getMimeType());
             assertNotNull(artwork.getImage());
-            assertEquals(200, Images.getImage(artwork).getWidth());
+            TestImageAssertions.assertWidth(artwork, 200);
             assertEquals("", artwork.getDescription()); //Because cannot store description for mp4
 
             tag.deleteArtworkField();

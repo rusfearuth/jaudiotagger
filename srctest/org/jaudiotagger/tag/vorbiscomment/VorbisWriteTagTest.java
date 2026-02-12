@@ -5,15 +5,13 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.ogg.OggFileReader;
 import org.jaudiotagger.audio.ogg.util.OggPageHeader;
+import org.jaudiotagger.TestImageAssertions;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagField;
 import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.vorbiscomment.util.Base64Coder;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.List;
@@ -213,10 +211,10 @@ public class VorbisWriteTagTest extends AbstractTestCase
             //VorbisImage base64 image, and reconstruct
             assertEquals("image/png", vorbisTag.getFirst(VorbisCommentFieldKey.COVERARTMIME));
             assertEquals(base64image, vorbisTag.getFirst(VorbisCommentFieldKey.COVERART));
-            BufferedImage bi = ImageIO.read(ImageIO
-                    .createImageInputStream(new ByteArrayInputStream(Base64Coder.
-                    decode(vorbisTag.getFirst(VorbisCommentFieldKey.COVERART).toCharArray()))));
-            assertNotNull(bi);
+            byte[] decodedCoverArt = Base64Coder.decode(vorbisTag.getFirst(VorbisCommentFieldKey.COVERART).toCharArray());
+            TestImageAssertions.assertImageFormat(decodedCoverArt, "image/png");
+            TestImageAssertions.assertDimensions(decodedCoverArt, 200, 200);
+            TestImageAssertions.assertBinarySignatureStable(imagedata, decodedCoverArt);
 
 
             OggFileReader ofr = new OggFileReader();

@@ -18,6 +18,7 @@
  */
 package org.jaudiotagger.audio;
 
+import android.os.ParcelFileDescriptor;
 import org.jaudiotagger.audio.aiff.AiffFileReader;
 import org.jaudiotagger.audio.aiff.AiffFileWriter;
 import org.jaudiotagger.audio.asf.AsfFileReader;
@@ -112,9 +113,18 @@ public class AudioFileIO
      *                              wasn't recognized, or other IO error occurred.
      * @throws org.jaudiotagger.audio.exceptions.CannotReadException
      */
+    @Deprecated
     public static void delete(AudioFile f) throws CannotReadException, CannotWriteException
     {
         getDefaultAudioFileIO().deleteTag(f);
+    }
+
+    /**
+     * Android-first delete entry point.
+     */
+    public static void delete(AudioFile audioFile, ParcelFileDescriptor pfd) throws CannotReadException, CannotWriteException
+    {
+        getDefaultAudioFileIO().deleteTag(audioFile, pfd);
     }
 
     /**
@@ -153,6 +163,15 @@ public class AudioFileIO
     }
 
     /**
+     * Android-first read entry point.
+     */
+    public static AudioFile readAs(ParcelFileDescriptor pfd, String ext)
+            throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
+    {
+        return getDefaultAudioFileIO().readFileAs(pfd, ext);
+    }
+
+    /**
     *
     * Read the tag contained in the given file.
     * 
@@ -186,11 +205,23 @@ public class AudioFileIO
    * @throws java.io.IOException
    * @throws org.jaudiotagger.audio.exceptions.InvalidAudioFrameException
    */
-  public static AudioFile read(File f)
+    @Deprecated
+    public static AudioFile read(File f)
           throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
   {
       return getDefaultAudioFileIO().readFile(f);
   }
+
+    /**
+     * Android-first read entry point. The hint can be either plain extension ("mp3")
+     * or a display name ("track01.mp3"), extension is required.
+     */
+    public static AudioFile read(ParcelFileDescriptor pfd, String displayNameOrExtHint)
+            throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
+    {
+        final String ext = extractExtensionHint(displayNameOrExtHint);
+        return readAs(pfd, ext);
+    }
 
     /**
      *
@@ -202,9 +233,18 @@ public class AudioFileIO
      * @throws CannotWriteException If the file could not be written/accessed, the extension
      *                              wasn't recognized, or other IO error occurred.
      */
+    @Deprecated
     public static void write(AudioFile f) throws CannotWriteException
     {
-        getDefaultAudioFileIO().writeFile(f,null);
+        getDefaultAudioFileIO().writeFile(f,(String) null);
+    }
+
+    /**
+     * Android-first write entry point.
+     */
+    public static void write(AudioFile audioFile, ParcelFileDescriptor pfd) throws CannotWriteException
+    {
+        getDefaultAudioFileIO().writeFile(audioFile, pfd);
     }
 
     /**
@@ -244,6 +284,30 @@ public class AudioFileIO
     {
         this.modificationHandler = new ModificationHandler();
         prepareReadersAndWriters();
+    }
+
+    private static String extractExtensionHint(String displayNameOrExtHint) throws CannotReadException
+    {
+        if (displayNameOrExtHint == null || displayNameOrExtHint.trim().isEmpty())
+        {
+            throw new CannotReadException("displayNameOrExtHint is required");
+        }
+
+        String hint = displayNameOrExtHint.trim().toLowerCase();
+        int lastDot = hint.lastIndexOf('.');
+        if (lastDot >= 0 && lastDot < hint.length() - 1)
+        {
+            hint = hint.substring(lastDot + 1);
+        }
+        if (hint.startsWith("."))
+        {
+            hint = hint.substring(1);
+        }
+        if (hint.isEmpty())
+        {
+            throw new CannotReadException("Unable to determine file extension from hint: " + displayNameOrExtHint);
+        }
+        return hint;
     }
 
     /**
@@ -358,6 +422,22 @@ public class AudioFileIO
         return tempFile;
     }
 
+    public AudioFile readFileAs(ParcelFileDescriptor pfd, String ext)
+            throws CannotReadException
+    {
+        if (pfd == null)
+        {
+            throw new CannotReadException("ParcelFileDescriptor cannot be null");
+        }
+        String normalizedExt = extractExtensionHint(ext);
+        AudioFileReader afr = readers.get(normalizedExt);
+        if (afr == null)
+        {
+            throw new CannotReadException(ErrorMessage.NO_READER_FOR_THIS_FORMAT.getMsg(normalizedExt));
+        }
+        throw new CannotReadException("ParcelFileDescriptor read is not wired into format readers yet");
+    }
+
     /**
     *
     * Read the tag contained in the given file.
@@ -421,6 +501,36 @@ public class AudioFileIO
       return tempFile;
 
   }
+
+    public void writeFile(AudioFile f, ParcelFileDescriptor pfd) throws CannotWriteException
+    {
+        if (pfd == null)
+        {
+            throw new CannotWriteException("ParcelFileDescriptor cannot be null");
+        }
+
+        AudioFileWriter afw = writers.get(f.getExt());
+        if (afw == null)
+        {
+            throw new CannotWriteException(ErrorMessage.NO_WRITER_FOR_THIS_FORMAT.getMsg(f.getExt()));
+        }
+        throw new CannotWriteException("ParcelFileDescriptor write is not wired into format writers yet");
+    }
+
+    public void deleteTag(AudioFile f, ParcelFileDescriptor pfd) throws CannotReadException, CannotWriteException
+    {
+        if (pfd == null)
+        {
+            throw new CannotWriteException("ParcelFileDescriptor cannot be null");
+        }
+
+        AudioFileWriter afw = writers.get(f.getExt());
+        if (afw == null)
+        {
+            throw new CannotWriteException(ErrorMessage.NO_DELETER_FOR_THIS_FORMAT.getMsg(f.getExt()));
+        }
+        throw new CannotWriteException("ParcelFileDescriptor delete is not wired into format writers yet");
+    }
 
     /**
      * Check does file exist
