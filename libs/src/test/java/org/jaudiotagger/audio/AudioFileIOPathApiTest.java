@@ -12,6 +12,8 @@ public class AudioFileIOPathApiTest extends AbstractTestCase
     private static final String SOURCE_MP3 = "01.mp3";
     private static final String SOURCE_OGG = "test.ogg";
     private static final String SOURCE_WMA = "test1.wma";
+    private static final String SOURCE_RA = "test01.ra";
+    private static final String SOURCE_RM = "test05.rm";
 
     public void testReadUsingPathApi() throws Exception
     {
@@ -175,6 +177,106 @@ public class AudioFileIOPathApiTest extends AbstractTestCase
     public void testFileAndPathApisReturnEquivalentExtensionsForWma() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_WMA, new File("path-api-parity.wma"));
+        AudioFile byFile = AudioFileIO.read(source);
+        AudioFile byPath = AudioFileIO.read(source.toPath());
+
+        assertEquals(byFile.getExt(), byPath.getExt());
+    }
+
+    public void testReadRaUsingPathApi() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_RA, new File("path-api-read.ra"));
+        AudioFile audioFile = AudioFileIO.read(source.toPath());
+
+        assertEquals("ra", audioFile.getExt());
+        assertEquals(source.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
+        assertNotNull(audioFile.getAudioHeader());
+    }
+
+    public void testReadAsRaUsingPathApi() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_RA, new File("path-api-read-as.ra"));
+        AudioFile audioFile = AudioFileIO.readAs(source.toPath(), "ra");
+
+        assertEquals("ra", audioFile.getExt());
+    }
+
+    public void testReadMagicRaUsingPathApiHasParityWithFileApi() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_RA, new File("path-api-read-magic.ra"));
+        try
+        {
+            AudioFile byPath = AudioFileIO.readMagic(source.toPath());
+            AudioFile byFile = AudioFileIO.readMagic(source);
+            assertEquals(byFile.getExt(), byPath.getExt());
+        }
+        catch (CannotReadException expectedByPath)
+        {
+            try
+            {
+                AudioFileIO.readMagic(source);
+                fail("Expected CannotReadException");
+            }
+            catch (CannotReadException expectedByFile)
+            {
+                // parity with existing File API behavior for RA magic detection
+            }
+        }
+    }
+
+    public void testFileAndPathApisReturnEquivalentExtensionsForRa() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_RA, new File("path-api-parity.ra"));
+        AudioFile byFile = AudioFileIO.read(source);
+        AudioFile byPath = AudioFileIO.read(source.toPath());
+
+        assertEquals(byFile.getExt(), byPath.getExt());
+    }
+
+    public void testReadRmUsingPathApi() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_RM, new File("path-api-read.rm"));
+        AudioFile audioFile = AudioFileIO.read(source.toPath());
+
+        assertEquals("rm", audioFile.getExt());
+        assertEquals(source.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
+        assertNotNull(audioFile.getAudioHeader());
+    }
+
+    public void testReadAsRmUsingPathApi() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_RM, new File("path-api-read-as.rm"));
+        AudioFile audioFile = AudioFileIO.readAs(source.toPath(), "rm");
+
+        assertEquals("rm", audioFile.getExt());
+    }
+
+    public void testReadMagicRmUsingPathApiHasParityWithFileApi() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_RM, new File("path-api-read-magic.rm"));
+        try
+        {
+            AudioFile byPath = AudioFileIO.readMagic(source.toPath());
+            AudioFile byFile = AudioFileIO.readMagic(source);
+            assertEquals(byFile.getExt(), byPath.getExt());
+        }
+        catch (CannotReadException expectedByPath)
+        {
+            try
+            {
+                AudioFileIO.readMagic(source);
+                fail("Expected CannotReadException");
+            }
+            catch (CannotReadException expectedByFile)
+            {
+                // parity with existing File API behavior for RM magic detection
+            }
+        }
+    }
+
+    public void testFileAndPathApisReturnEquivalentExtensionsForRm() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_RM, new File("path-api-parity.rm"));
         AudioFile byFile = AudioFileIO.read(source);
         AudioFile byPath = AudioFileIO.read(source.toPath());
 
