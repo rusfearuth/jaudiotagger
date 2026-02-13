@@ -1,3 +1,9 @@
+@echo off
+setlocal
+set "SCRIPT_DIR=%~dp0"
+set "REPO_ROOT=%SCRIPT_DIR%.."
+pushd "%REPO_ROOT%\testdata"
+
 rem If you have lame mp3 encoder and Mp2 Enc ( for Layer II encoding) installed you can recreate all the test files from the single test.wav
 
 rem Resample to higher sampling rate so creates a V1 mp3
@@ -52,5 +58,4 @@ lame --vbr-new -V 0 test.wav testV2vbrNew0.mp3
 Rem Creating mp2 (Layer II) files
 mp2enc -b 192 -m m test.wav testV1L2Mono.mp3
 mp2enc -b 192 -m s test.wav testV1L2Stereo.mp3
-
-
+popd

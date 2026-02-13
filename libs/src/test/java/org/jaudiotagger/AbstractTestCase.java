@@ -173,7 +173,7 @@ public abstract class AbstractTestCase extends TestCase {
      * @return
      */
     public static File copyAudioToTmp(String tagfile, String fileName) {
-        File inputTagFile = new File("testtagdata", tagfile);
+        File inputTagFile = new File("testdata", tagfile);
         File inputFile = new File("testdata", fileName);
         File outputFile = new File("testdatatmp", fileName);
         if (!outputFile.getParentFile().exists()) {
