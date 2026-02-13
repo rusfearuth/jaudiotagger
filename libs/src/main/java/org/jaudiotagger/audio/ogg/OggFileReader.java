@@ -18,16 +18,27 @@
  */
 package org.jaudiotagger.audio.ogg;
 
+import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.NoReadPermissionsException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.audio.generic.AudioFileReader;
 import org.jaudiotagger.audio.generic.GenericAudioHeader;
+import org.jaudiotagger.audio.generic.Permissions;
 import org.jaudiotagger.audio.ogg.util.OggInfoReader;
 import org.jaudiotagger.audio.ogg.util.OggPageHeader;
+import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -57,6 +68,49 @@ public class OggFileReader extends AudioFileReader
     protected Tag getTag(RandomAccessFile raf) throws CannotReadException, IOException
     {
         return vtr.read(raf);
+    }
+
+    @Override
+    public AudioFile read(Path path) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
+    {
+        File file = path.toFile();
+        if (logger.isLoggable(Level.CONFIG))
+        {
+            logger.config(ErrorMessage.GENERAL_READ.getMsg(file.getAbsolutePath()));
+        }
+
+        if (!Files.isReadable(path))
+        {
+            if (!Files.exists(path))
+            {
+                throw new FileNotFoundException(ErrorMessage.UNABLE_TO_FIND_FILE.getMsg(path));
+            }
+            logger.warning(Permissions.displayPermissions(path));
+            throw new NoReadPermissionsException(ErrorMessage.GENERAL_READ_FAILED_DO_NOT_HAVE_PERMISSION_TO_READ_FILE.getMsg(path));
+        }
+
+        if (file.length() <= MINIMUM_SIZE_FOR_VALID_AUDIO_FILE)
+        {
+            throw new CannotReadException(ErrorMessage.GENERAL_READ_FAILED_FILE_TOO_SMALL.getMsg(file.getAbsolutePath()));
+        }
+
+        try (RandomAccessFile raf = new RandomAccessFile(file, "r"))
+        {
+            raf.seek(0);
+            GenericAudioHeader info = getEncodingInfo(raf);
+            raf.seek(0);
+            Tag tag = vtr.read(raf, path);
+            return new AudioFile(file, info, tag);
+        }
+        catch (CannotReadException cre)
+        {
+            throw cre;
+        }
+        catch (Exception e)
+        {
+            logger.log(Level.SEVERE, ErrorMessage.GENERAL_READ.getMsg(file.getAbsolutePath()), e);
+            throw new CannotReadException(file.getAbsolutePath() + ":" + e.getMessage(), e);
+        }
     }
 
     /**
@@ -138,4 +192,3 @@ public class OggFileReader extends AudioFileReader
         raf.close();
     }
 }
-
