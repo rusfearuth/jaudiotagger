@@ -55,8 +55,7 @@ Directory structure as follows:
 
 ### IDE files
 
-- `jaudiotagger.iml`     : JetBrains Intellij Module
-- `jaudiotagger.ipr`     : JetBrains Intellij Project
+- IDE metadata files (`*.iml`, `*.ipr`, `*.iws`) are local and ignored by Git
 
 ### License
 
@@ -78,3 +77,16 @@ To compile and run unit tests:
 To run Android instrumentation tests (Android 9+ device/emulator connected):
 
     ./gradlew :libs:connectedAndroidTest
+
+## Utility scripts
+
+- Windows helper scripts are located under `scripts/`
+- `gradlew` and `gradlew.bat` stay at repo root for Gradle wrapper usage
+
+Examples (Windows, run from repo root):
+
+    scripts\ReadTest.bat <audio-file>
+    scripts\ExtractTag.bat <input> <output>
+    scripts\MergeID3AndMP3.bat <id3> <mp3> <output>
+    scripts\Fix202.bat <audio-file>
+    scripts\CreateTestData.bat

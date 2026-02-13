@@ -127,6 +127,10 @@ test108.mp3
 testdata/test113.mp3
 test114.mp3
 jaudiotagger.iws
+*.iml
+*.ipr
+*.iws
+intellij_settings.jar
 .settings/
 test139.mp3
 test140.mp3
