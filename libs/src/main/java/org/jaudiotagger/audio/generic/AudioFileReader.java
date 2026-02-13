@@ -32,6 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -143,5 +144,13 @@ public abstract class AudioFileReader
                 logger.log(Level.WARNING, ErrorMessage.GENERAL_READ_FAILED_UNABLE_TO_CLOSE_RANDOM_ACCESS_FILE.getMsg(f.getAbsolutePath()));
             }
         }
+    }
+
+    /**
+     * Reads audio metadata from a {@link Path}. Default bridge delegates to {@link #read(File)}.
+     */
+    public AudioFile read(Path path) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
+    {
+        return read(path.toFile());
     }
 }

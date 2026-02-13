@@ -12,6 +12,7 @@ import org.jaudiotagger.tag.TagException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.Path;
 
 /**
  * Read Mp3 Info (retrofitted to entagged ,done differently to entagged which is why some methods throw RuntimeException)
@@ -37,6 +38,13 @@ public class MP3FileReader extends AudioFileReader
     public AudioFile read(File f) throws IOException, TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException
     {
         MP3File mp3File = new MP3File(f, MP3File.LOAD_IDV1TAG | MP3File.LOAD_IDV2TAG, true);
+        return mp3File;
+    }
+
+    @Override
+    public AudioFile read(Path path) throws IOException, TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException
+    {
+        MP3File mp3File = new MP3File(path.toFile(), MP3File.LOAD_IDV1TAG | MP3File.LOAD_IDV2TAG, true);
         return mp3File;
     }
 

@@ -26,6 +26,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,6 +67,25 @@ public class Utils
     }
 
     /**
+     * Returns the extension of the given path.
+     */
+    public static String getExtension(final Path path)
+    {
+        final Path fileName = path.getFileName();
+        if (fileName == null)
+        {
+            return "";
+        }
+        final String name = fileName.toString().toLowerCase();
+        final int i = name.lastIndexOf(".");
+        if (i == -1)
+        {
+            return "";
+        }
+        return name.substring(i + 1);
+    }
+
+    /**
      * Returns the extension of the given file based on the file signature.
      * The extension is empty if the file signature is not recognized.
      *
@@ -76,6 +96,14 @@ public class Utils
 		final String fileType = FileTypeUtil.getMagicFileType(f);
 		return FileTypeUtil.getMagicExt(fileType);
 	}
+
+    /**
+     * Returns extension based on file signature for the provided path.
+     */
+    public static String getMagicExtension(final Path path) throws IOException
+    {
+        return getMagicExtension(path.toFile());
+    }
 
     /**
      * Computes a number whereby the 1st byte is the least signifcant and the last
