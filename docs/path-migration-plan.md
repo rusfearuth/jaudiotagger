@@ -6,7 +6,7 @@ Migrate file operations toward `java.nio.file.Path` with full backward compatibi
 ## Scope of current iteration
 - Add `Path` overload API alongside current `File`/`String` API.
 - Keep old methods operational and mark as `@Deprecated`.
-- Migrate exactly one legacy format in this iteration: `Ogg`.
+- Migrate exactly one legacy format in this iteration: `Asf/WMA` (reader-first).
 - Run full regression before and after changes: `./gradlew :libs:test`.
 
 ## Locked decisions
@@ -57,6 +57,11 @@ Migrate file operations toward `java.nio.file.Path` with full backward compatibi
 - [x] Keep legacy `File` read behavior unchanged and backward compatible.
 - [x] Keep Ogg writer internals unchanged in this iteration (reader-first scope).
 
+### Epic H - Legacy format migration (iteration 3: Asf/WMA)
+- [x] Add Asf/WMA-specific `Path` entry in reader flow (`AsfFileReader`).
+- [x] Keep legacy `File` read behavior unchanged and backward compatible.
+- [x] Keep Asf/WMA writer internals unchanged in this iteration (reader-first scope).
+
 ### Epic E - Tests for new API
 - [x] Add `AudioFileIOPathApiTest`:
   - [x] `read(Path)`
@@ -67,6 +72,8 @@ Migrate file operations toward `java.nio.file.Path` with full backward compatibi
 - [x] Add Ogg `Path` API coverage (`read/readAs/readMagic parity/writeAs`).
 - [x] Add Ogg `File` API regression coverage (`read/readAs/readMagic parity/writeAs`).
 - [x] Add corrupt Ogg parity check for `read(Path)` exception behavior.
+- [x] Add Asf/WMA `Path` API coverage (`read/readAs/readMagic parity/writeAs`).
+- [x] Add Asf/WMA `File` API regression coverage (`read/readAs/readMagic parity/writeAs`).
 
 ### Epic F - Post-change validation
 - [x] Run post-change full regression: `./gradlew :libs:test`.
@@ -79,11 +86,11 @@ Migrate file operations toward `java.nio.file.Path` with full backward compatibi
 - `Path` overload API is present and covered by tests.
 - Deprecated `File` wrappers still behave correctly.
 - Ogg path entry has no behavior regressions.
+- Asf/WMA path entry has no behavior regressions.
 
 ## Planned next iterations
-1. Asf/WMA
-2. Real
-3. Deprecation removal decision after release window
+1. Real
+2. Deprecation removal decision after release window
 
 ## Regression command
 ```bash
@@ -95,3 +102,4 @@ Migrate file operations toward `java.nio.file.Path` with full backward compatibi
 - Unexpected write-path regressions around `writeAs`.
 - Legacy format edge cases hidden behind old reader/writer internals.
 - Ogg parse diagnostics may diverge if `Path` context is not propagated through tag readers.
+- Asf parse diagnostics may diverge if `Path` context is not propagated through header parsing.

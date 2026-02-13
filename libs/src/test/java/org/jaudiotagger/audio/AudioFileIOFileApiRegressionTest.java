@@ -10,6 +10,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
 {
     private static final String SOURCE_MP3 = "01.mp3";
     private static final String SOURCE_OGG = "test.ogg";
+    private static final String SOURCE_WMA = "test1.wma";
 
     public void testReadUsingFileApi() throws Exception
     {
@@ -97,5 +98,70 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
         File destinationWithExt = new File(destinationWithoutExt.getPath() + ".ogg");
         assertEquals(destinationWithExt.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
         assertTrue(destinationWithExt.isFile());
+    }
+
+    public void testReadWmaUsingFileApi() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_WMA, new File("file-api-read.wma"));
+        AudioFile audioFile = AudioFileIO.read(source);
+
+        assertEquals("wma", audioFile.getExt());
+        assertEquals(source.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
+        assertNotNull(audioFile.getAudioHeader());
+    }
+
+    public void testReadAsWmaUsingFileApi() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_WMA, new File("file-api-read-as.wma"));
+        AudioFile audioFile = AudioFileIO.readAs(source, "wma");
+
+        assertEquals("wma", audioFile.getExt());
+        assertNotNull(audioFile.getAudioHeader());
+    }
+
+    public void testReadMagicWmaUsingFileApiHasParityWithPathApi() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_WMA, new File("file-api-read-magic.wma"));
+        try
+        {
+            AudioFile byFile = AudioFileIO.readMagic(source);
+            AudioFile byPath = AudioFileIO.readMagic(source.toPath());
+            assertEquals(byPath.getExt(), byFile.getExt());
+        }
+        catch (CannotReadException expectedByFile)
+        {
+            try
+            {
+                AudioFileIO.readMagic(source.toPath());
+                fail("Expected CannotReadException");
+            }
+            catch (CannotReadException expectedByPath)
+            {
+                // parity with existing Path API behavior for WMA magic detection
+            }
+        }
+    }
+
+    public void testWriteAsWmaUsingStringApi() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_WMA, new File("file-api-write-as-source.wma"));
+        AudioFile audioFile = AudioFileIO.read(source);
+        audioFile.getTagOrCreateAndSetDefault().setField(FieldKey.TITLE, "FileApiRegressionWma");
+
+        File destinationWithoutExt = new File(source.getParentFile(), "file-api-write-as-dest-wma");
+        AudioFileIO.writeAs(audioFile, destinationWithoutExt.getPath());
+
+        File destinationWithExt = new File(destinationWithoutExt.getPath() + ".wma");
+        assertEquals(destinationWithExt.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
+        assertTrue(destinationWithExt.isFile());
+    }
+
+    public void testFileAndPathApisReturnEquivalentExtensionsForWma() throws Exception
+    {
+        File source = copyAudioToTmp(SOURCE_WMA, new File("file-api-parity.wma"));
+        AudioFile byFile = AudioFileIO.read(source);
+        AudioFile byPath = AudioFileIO.read(source.toPath());
+
+        assertEquals(byPath.getExt(), byFile.getExt());
     }
 }

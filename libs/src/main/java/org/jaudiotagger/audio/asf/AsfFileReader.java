@@ -37,9 +37,10 @@ import org.jaudiotagger.tag.TagException;
 import org.jaudiotagger.tag.asf.AsfTag;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * This reader can read ASF files containing any content (stream type). <br>
@@ -48,11 +49,6 @@ import java.util.logging.Logger;
  */
 public class AsfFileReader extends AudioFileReader
 {
-
-    /**
-     * Logger instance
-     */
-    private final static Logger LOGGER = Logger.getLogger("org.jaudiotagger.audio.asf");
 
     /**
      * This reader will be configured to read tag and audio header information.<br>
@@ -226,9 +222,16 @@ public class AsfFileReader extends AudioFileReader
     @Override
     public AudioFile read(final File f) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
-        if (!f.canRead())
+        return read(f.toPath());
+    }
+
+    @Override
+    public AudioFile read(final Path path) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
+    {
+        final File f = path.toFile();
+        if (!Files.isReadable(path))
         {
-            if (!f.exists())
+            if (!Files.exists(path))
             {
                 logger.severe("Unable to find:" + f.getPath());
                 throw new FileNotFoundException(ErrorMessage.UNABLE_TO_FIND_FILE.getMsg(f.getPath()));
@@ -238,10 +241,9 @@ public class AsfFileReader extends AudioFileReader
                 throw new CannotReadException(ErrorMessage.GENERAL_READ_FAILED_DO_NOT_HAVE_PERMISSION_TO_READ_FILE.getMsg(f.getAbsolutePath()));
             }
         }
-        InputStream stream = null;
-        try
+
+        try (InputStream stream = new FullRequestInputStream(new BufferedInputStream(Files.newInputStream(path))))
         {
-            stream = new FullRequestInputStream(new BufferedInputStream(new FileInputStream(f)));
             final AsfHeader header = HEADER_READER.read(Utils.readGUID(stream), stream, 0);
             if (header == null)
             {
@@ -268,20 +270,6 @@ public class AsfFileReader extends AudioFileReader
         catch (final Exception e)
         {
             throw new CannotReadException("\"" + f + "\" :" + e, e);
-        }
-        finally
-        {
-            try
-            {
-                if (stream != null)
-                {
-                    stream.close();
-                }
-            }
-            catch (final Exception ex)
-            {
-                LOGGER.severe("\"" + f + "\" :" + ex);
-            }
         }
     }
 
