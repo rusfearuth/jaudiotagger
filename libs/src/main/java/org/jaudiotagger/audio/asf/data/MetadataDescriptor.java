@@ -338,7 +338,7 @@ public class MetadataDescriptor implements Comparable<MetadataDescriptor>, Clone
      * an "Extended Content Description"-chunk. <br>
      *
      * @return byte[] with the data, that occurs in ASF files.
-     * @deprecated {@link #writeInto(OutputStream, ContainerType)} is used
+     * @deprecated Use {@link #writeInto(OutputStream, ContainerType)} instead.
      */
     @Deprecated
     public byte[] getBytes()

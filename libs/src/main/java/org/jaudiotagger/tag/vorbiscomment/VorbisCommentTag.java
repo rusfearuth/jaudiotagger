@@ -698,6 +698,7 @@ public class VorbisCommentTag extends AbstractTag
      * @param mimeType mimeType of data
      *
      * @return
+     * @deprecated Use {@link #setField(Artwork)} or {@link #addField(Artwork)} instead.
      */
     @Deprecated
     public void setArtworkField(byte[] data, String mimeType)
@@ -954,4 +955,3 @@ public class VorbisCommentTag extends AbstractTag
         }
     }
 }
-

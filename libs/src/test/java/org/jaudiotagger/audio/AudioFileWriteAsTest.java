@@ -44,7 +44,7 @@ public class AudioFileWriteAsTest extends AbstractTestCase {
     public void testWriteAsWithNull() throws Exception
     {
         try {
-            AudioFileIO.writeAs(af, null);
+            AudioFileIO.writeAs(af, (String) null);
         } catch (CannotWriteException e) {
             // expected
             return;

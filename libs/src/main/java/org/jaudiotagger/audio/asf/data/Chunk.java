@@ -99,7 +99,7 @@ public class Chunk
      * header object.
      *
      * @return Position after current chunk.
-     * @deprecated typo, use {@link #getChunkEnd()} instead.
+     * @deprecated Use {@link #getChunkEnd()} instead.
      */
     @Deprecated
     public long getChunckEnd()
