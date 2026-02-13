@@ -73,6 +73,28 @@ public class VorbisReadTagTest extends AbstractTestCase
         assertTrue(exceptionCaught instanceof CannotReadException);
     }
 
+    public void testReadCorruptOggUsingPathApi()
+    {
+        File orig = new File("testdata", "test6.ogg");
+        if (!orig.isFile())
+        {
+            return;
+        }
+
+        Exception exceptionCaught = null;
+        try
+        {
+            File testFile = AbstractTestCase.copyAudioToTmp("test6.ogg");
+            AudioFileIO.read(testFile.toPath());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            exceptionCaught = e;
+        }
+        assertTrue(exceptionCaught instanceof CannotReadException);
+    }
+
     /**
      * Create Value with empty value and then read back, then try and create another field
      * Was expecting to fail but works ok

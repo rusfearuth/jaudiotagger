@@ -6,7 +6,7 @@ Migrate file operations toward `java.nio.file.Path` with full backward compatibi
 ## Scope of current iteration
 - Add `Path` overload API alongside current `File`/`String` API.
 - Keep old methods operational and mark as `@Deprecated`.
-- Migrate exactly one legacy format in this iteration: `MP3`.
+- Migrate exactly one legacy format in this iteration: `Ogg`.
 - Run full regression before and after changes: `./gradlew :libs:test`.
 
 ## Locked decisions
@@ -52,6 +52,11 @@ Migrate file operations toward `java.nio.file.Path` with full backward compatibi
 - [x] Keep `commit()/save()` semantics unchanged.
 - [x] Keep `Ogg/Asf/Real` for later iterations.
 
+### Epic G - Legacy format migration (iteration 2: Ogg)
+- [x] Add Ogg-specific `Path` entry in reader flow (`OggFileReader`/`OggVorbisTagReader`).
+- [x] Keep legacy `File` read behavior unchanged and backward compatible.
+- [x] Keep Ogg writer internals unchanged in this iteration (reader-first scope).
+
 ### Epic E - Tests for new API
 - [x] Add `AudioFileIOPathApiTest`:
   - [x] `read(Path)`
@@ -59,6 +64,9 @@ Migrate file operations toward `java.nio.file.Path` with full backward compatibi
   - [x] `readMagic(Path)`
   - [x] `writeAs(AudioFile, Path)`
 - [x] Add basic parity check for `File` vs `Path`.
+- [x] Add Ogg `Path` API coverage (`read/readAs/readMagic parity/writeAs`).
+- [x] Add Ogg `File` API regression coverage (`read/readAs/readMagic parity/writeAs`).
+- [x] Add corrupt Ogg parity check for `read(Path)` exception behavior.
 
 ### Epic F - Post-change validation
 - [x] Run post-change full regression: `./gradlew :libs:test`.
@@ -70,13 +78,12 @@ Migrate file operations toward `java.nio.file.Path` with full backward compatibi
 - Post-change `:libs:test` passes.
 - `Path` overload API is present and covered by tests.
 - Deprecated `File` wrappers still behave correctly.
-- MP3 path entry has no behavior regressions.
+- Ogg path entry has no behavior regressions.
 
 ## Planned next iterations
-1. Ogg
-2. Asf/WMA
-3. Real
-4. Deprecation removal decision after release window
+1. Asf/WMA
+2. Real
+3. Deprecation removal decision after release window
 
 ## Regression command
 ```bash
@@ -87,3 +94,4 @@ Migrate file operations toward `java.nio.file.Path` with full backward compatibi
 - Extension detection mismatches between `File` and `Path`.
 - Unexpected write-path regressions around `writeAs`.
 - Legacy format edge cases hidden behind old reader/writer internals.
+- Ogg parse diagnostics may diverge if `Path` context is not propagated through tag readers.

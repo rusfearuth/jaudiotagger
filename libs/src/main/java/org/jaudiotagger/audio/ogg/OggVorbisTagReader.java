@@ -31,6 +31,7 @@ import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.Path;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,11 +68,22 @@ public class OggVorbisTagReader
      */
     public Tag read(RandomAccessFile raf) throws CannotReadException, IOException
     {
+        return read(raf, null);
+    }
+
+    /**
+     * Read the Logical VorbisComment Tag from the file.
+     *
+     * @param raf source stream
+     * @param path path used for contextual diagnostics in nested readers
+     */
+    public Tag read(RandomAccessFile raf, Path path) throws CannotReadException, IOException
+    {
         logger.config("Starting to read ogg vorbis tag from file:");
         byte[] rawVorbisCommentData = readRawPacketData(raf);
 
         //Begin tag reading
-        VorbisCommentTag tag = vorbisCommentReader.read(rawVorbisCommentData, true, null);
+        VorbisCommentTag tag = vorbisCommentReader.read(rawVorbisCommentData, true, path);
         logger.fine("CompletedReadCommentTag");
         return tag;
     }
@@ -656,4 +668,3 @@ public class OggVorbisTagReader
         }
     }
 }
-
