@@ -1,8 +1,7 @@
 package org.jaudiotagger.audio.exceptions;
 
 /**
- * Use this exception instead of the more general CannotWriteException if unable to write file because of a permissions
- * problem
+ * Specific {@link CannotWriteException} indicating write failure caused by missing file permissions.
  */
 public class NoWritePermissionsException extends CannotWriteException
 {

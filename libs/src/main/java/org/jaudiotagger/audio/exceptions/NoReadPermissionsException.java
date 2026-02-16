@@ -19,8 +19,7 @@
 package org.jaudiotagger.audio.exceptions;
 
 /**
- * Use this exception insstead of the more general CannotReadException if unable to read file because of a permissions
- * problem
+ * Specific {@link CannotReadException} indicating read failure caused by missing file permissions.
  */
 public class NoReadPermissionsException extends CannotReadException
 {

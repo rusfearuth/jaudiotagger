@@ -19,9 +19,11 @@
 package org.jaudiotagger.audio.exceptions;
 
 /**
- * This exception is thrown if the writing process of an audio file failed.
+ * Thrown when metadata cannot be persisted to an audio file.
  *
- * @author Rapha�l Slinckx
+ * <p>Typical causes include unsupported output format, permission problems, and I/O failures.</p>
+ *
+ * @author Raphaël Slinckx
  */
 public class CannotWriteException extends Exception
 {
@@ -30,10 +32,8 @@ public class CannotWriteException extends Exception
 	 */
 	private static final long serialVersionUID = -4477951875399481164L;
 
-	/**
-     * (overridden)
-     *
-     * @see Exception#Exception()
+    /**
+     * Creates an instance.
      */
     public CannotWriteException()
     {
@@ -41,10 +41,9 @@ public class CannotWriteException extends Exception
     }
 
     /**
-     * (overridden)
+     * Creates an instance with details.
      *
-     * @param message
-     * @see Exception#Exception(java.lang.String)
+     * @param message error details.
      */
     public CannotWriteException(String message)
     {
@@ -52,11 +51,10 @@ public class CannotWriteException extends Exception
     }
 
     /**
-     * (overridden)
+     * Creates an instance with details and root cause.
      *
-     * @param message
-     * @param cause
-     * @see Exception#Exception(java.lang.String,java.lang.Throwable)
+     * @param message error details.
+     * @param cause root cause.
      */
     public CannotWriteException(String message, Throwable cause)
     {
@@ -64,10 +62,9 @@ public class CannotWriteException extends Exception
     }
 
     /**
-     * (overridden)
+     * Creates an instance with root cause.
      *
-     * @param cause
-     * @see Exception#Exception(java.lang.Throwable)
+     * @param cause root cause.
      */
     public CannotWriteException(Throwable cause)
     {

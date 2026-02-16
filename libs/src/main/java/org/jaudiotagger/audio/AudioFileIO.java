@@ -52,37 +52,23 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
+ * Main entry point for reading and writing metadata tags in supported audio formats.
  *
- * The main entry point for the Tag Reading/Writing operations, this class will
- * select the appropriate reader/writer for the given file.
+ * <p>Reader and writer implementations are selected by normalized extension. File-system operations use
+ * {@link Path}; Android content operations use {@link Context} + {@link Uri}.</p>
  *
- *
- * It selects the appropriate reader/writer based on the file extension (case
- * ignored).
- *
- *
- * Here is an simple example of use:
- *
- *
- * <code>
- * AudioFile audioFile = AudioFileIO.read(Paths.get("audiofile.mp3")); //Reads the given file.
- * int bitrate = audioFile.getBitrate(); //Retreives the bitrate of the file.
- * String artist = audioFile.getTag().getFirst(TagFieldKey.ARTIST); //Retreive the artist name.
- * audioFile.getTag().setGenre("Progressive Rock"); //Sets the genre to Prog. Rock, note the file on disk is still unmodified.
- * audioFile.commit(); //Write the modifications in the file on disk.
- * </code>
- *
- *
- * You can also use the <code>commit()</code> method defined for
- * <code>AudioFile</code>s to achieve the same goal.
- *
- *
- * <code>
+ * <p>Typical file-based flow:</p>
+ * <pre>
  * AudioFile audioFile = AudioFileIO.read(Paths.get("audiofile.mp3"));
- * audioFile.getTag().setGenre("Progressive Rock");
- * audioFile.commit(); //Write the modifications in the file on disk.
- * </code>
+ * audioFile.getTagOrCreateAndSetDefault().setField(FieldKey.GENRE, "Progressive Rock");
+ * audioFile.commit();
+ * </pre>
  *
+ * <p>Typical Android Uri flow:</p>
+ * <pre>
+ * AudioFile audioFile = AudioFileIO.readAs(context, uri, "mp3");
+ * AudioFileIO.write(context, audioFile, uri);
+ * </pre>
  *
  * @author Raphael Slinckx
  * @version $Id$
@@ -105,7 +91,13 @@ public class AudioFileIO
     private static AudioFileIO defaultInstance;
 
     /**
-     * Android-first delete entry point.
+     * Deletes tags through an Android {@link Uri} entry point.
+     *
+     * @param context Android context used to resolve the {@link Uri}.
+     * @param audioFile mutable audio file model to delete tags from.
+     * @param uri source and destination content Uri.
+     * @throws CannotReadException if a required read operation fails.
+     * @throws CannotWriteException if delete cannot be applied or persisted.
      */
     public static void delete(Context context, AudioFile audioFile, Uri uri) throws CannotReadException, CannotWriteException
     {
@@ -127,7 +119,11 @@ public class AudioFileIO
     }
 
     /**
-     * Read the tag contained in the given path.
+     * Reads metadata from a path while forcing a specific format extension.
+     *
+     * @param path audio file path.
+     * @param ext extension hint such as {@code "mp3"} or {@code ".flac"}.
+     * @return parsed audio file model.
      */
     public static AudioFile readAs(Path path, String ext)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
@@ -136,7 +132,12 @@ public class AudioFileIO
     }
 
     /**
-     * Android-first read entry point.
+     * Reads metadata from Android content using an explicit extension hint.
+     *
+     * @param context Android context used to resolve the {@link Uri}.
+     * @param uri source content Uri.
+     * @param ext extension hint such as {@code "mp3"} or {@code ".flac"}.
+     * @return parsed audio file model.
      */
     public static AudioFile readAs(Context context, Uri uri, String ext)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
@@ -145,7 +146,10 @@ public class AudioFileIO
     }
 
     /**
-     * Read the tag using content-based type detection from a path.
+     * Reads metadata from a path using content-based type detection.
+     *
+     * @param path audio file path.
+     * @return parsed audio file model.
      */
     public static AudioFile readMagic(Path path)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
@@ -154,7 +158,10 @@ public class AudioFileIO
     }
 
     /**
-     * Read the tag contained in the given path.
+     * Reads metadata from a path, choosing parser by file extension.
+     *
+     * @param path audio file path.
+     * @return parsed audio file model.
      */
     public static AudioFile read(Path path)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
@@ -163,8 +170,15 @@ public class AudioFileIO
     }
 
     /**
-     * Android-first read entry point. The hint can be either plain extension ("mp3")
-     * or a display name ("track01.mp3"), extension is required.
+     * Android read entry point that accepts either an extension or a display name.
+     *
+     * <p>The hint can be plain extension ({@code "mp3"}) or display name ({@code "track01.mp3"}).</p>
+     *
+     * @param context Android context used to resolve the {@link Uri}.
+     * @param uri source content Uri.
+     * @param displayNameOrExtHint extension-like hint used for parser selection.
+     * @return parsed audio file model.
+     * @throws CannotReadException when no extension can be extracted from the hint.
      */
     public static AudioFile read(Context context, Uri uri, String displayNameOrExtHint)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
@@ -174,7 +188,12 @@ public class AudioFileIO
     }
 
     /**
-     * Android-first write entry point.
+     * Persists tag updates through an Android {@link Uri} entry point.
+     *
+     * @param context Android context used to resolve the {@link Uri}.
+     * @param audioFile mutable audio file model to write.
+     * @param uri source and destination content Uri.
+     * @throws CannotWriteException if write cannot be applied or persisted.
      */
     public static void write(Context context, AudioFile audioFile, Uri uri) throws CannotWriteException
     {
@@ -182,7 +201,14 @@ public class AudioFileIO
     }
 
     /**
-     * Write audio metadata to the provided target path without extension.
+     * Writes tags to a copy at {@code targetPath + "." + ext}.
+     *
+     * <p>The target path must not contain an extension; the source file extension from {@link AudioFile#getExt()}
+     * (or inferred from source file name) is appended automatically.</p>
+     *
+     * @param f audio file model to write.
+     * @param targetPath target path prefix without extension.
+     * @throws CannotWriteException if target path is invalid or write fails.
      */
     public static void writeAs(AudioFile f, Path targetPath) throws CannotWriteException
     {
@@ -194,7 +220,7 @@ public class AudioFileIO
     }
 
     /**
-     * This member is used to broadcast modification events to registered
+     * Broadcasts modification events to registered listeners.
      */
     private final ModificationHandler modificationHandler;
 
@@ -262,9 +288,9 @@ public class AudioFileIO
     }
 
     /**
-     * Adds an listener for all file formats.
+     * Adds a listener for file modification events across all formats.
      *
-     * @param listener listener
+     * @param listener listener instance.
      */
     public void addAudioFileModificationListener(
             AudioFileModificationListener listener)
@@ -273,14 +299,11 @@ public class AudioFileIO
     }
 
     /**
+     * Deletes tags from a file-based audio model.
      *
-     * Delete the tag, if any, contained in the given file.
-     *
-     *
-     * @param f The file where the tag will be deleted
-     * @throws org.jaudiotagger.audio.exceptions.CannotWriteException If the file could not be written/accessed, the extension
-     *                              wasn't recognized, or other IO error occurred.
-     * @throws org.jaudiotagger.audio.exceptions.CannotReadException
+     * @param f audio file to delete tags from.
+     * @throws CannotWriteException if no writer/deleter exists for the extension or write fails.
+     * @throws CannotReadException if a read prerequisite fails during deletion.
      */
     public void deleteTag(AudioFile f) throws CannotReadException, CannotWriteException
     {
@@ -343,6 +366,12 @@ public class AudioFileIO
         }
     }
 
+    /**
+     * Reads metadata using extension from the path.
+     *
+     * @param path audio file path.
+     * @return parsed audio file.
+     */
     public AudioFile readFile(Path path)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
@@ -358,6 +387,14 @@ public class AudioFileIO
         return tempFile;
     }
 
+    /**
+     * Reads metadata from Android content Uri using explicit extension hint.
+     *
+     * @param context Android context used to resolve the {@link Uri}.
+     * @param uri source content Uri.
+     * @param ext extension hint.
+     * @return parsed audio file.
+     */
     public AudioFile readFileAs(Context context, Uri uri, String ext)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
@@ -374,6 +411,12 @@ public class AudioFileIO
         return readFileAs(tempPath, normalizedExt);
     }
 
+    /**
+     * Reads metadata using content-based extension detection.
+     *
+     * @param path audio file path.
+     * @return parsed audio file.
+     */
     public AudioFile readFileMagic(Path path)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
@@ -391,6 +434,13 @@ public class AudioFileIO
 
     }
 
+    /**
+     * Reads metadata while forcing a specific extension.
+     *
+     * @param path audio file path.
+     * @param ext extension hint.
+     * @return parsed audio file.
+     */
     public AudioFile readFileAs(Path path, String ext)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
@@ -407,6 +457,14 @@ public class AudioFileIO
         return tempFile;
     }
 
+    /**
+     * Writes tag updates via Android Uri by editing a temporary local copy and syncing back.
+     *
+     * @param context Android context used to resolve the {@link Uri}.
+     * @param f mutable audio file model to persist.
+     * @param uri source and destination content Uri.
+     * @throws CannotWriteException if read/write to Uri or tag persistence fails.
+     */
     public void writeFile(Context context, AudioFile f, Uri uri) throws CannotWriteException
     {
         if (f == null)
@@ -464,6 +522,15 @@ public class AudioFileIO
         }
     }
 
+    /**
+     * Deletes tags via Android Uri by editing a temporary local copy and syncing back.
+     *
+     * @param context Android context used to resolve the {@link Uri}.
+     * @param f mutable audio file model to delete tags from.
+     * @param uri source and destination content Uri.
+     * @throws CannotReadException if a required read operation fails.
+     * @throws CannotWriteException if delete cannot be applied or persisted.
+     */
     public void deleteTag(Context context, AudioFile f, Uri uri) throws CannotReadException, CannotWriteException
     {
         if (f == null)
@@ -520,9 +587,9 @@ public class AudioFileIO
     }
 
     /**
-     * Removes a listener for all file formats.
+     * Removes a previously registered file modification listener.
      *
-     * @param listener listener
+     * @param listener listener instance.
      */
     public void removeAudioFileModificationListener(
             AudioFileModificationListener listener)
@@ -530,6 +597,16 @@ public class AudioFileIO
         this.modificationHandler.removeAudioFileModificationListener(listener);
     }
 
+    /**
+     * Writes tags either in-place or to a copied target path prefix.
+     *
+     * <p>If {@code targetPath} is non-null, this method first copies source file to
+     * {@code targetPath + "." + ext} and writes there.</p>
+     *
+     * @param f audio file model to persist.
+     * @param targetPath target path prefix without extension, or {@code null} for in-place write.
+     * @throws CannotWriteException if extension cannot be resolved, no writer exists, or write fails.
+     */
     public void writeFile(AudioFile f, Path targetPath) throws CannotWriteException
     {
         if (f.getFile() == null)

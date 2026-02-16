@@ -1,7 +1,7 @@
 package org.jaudiotagger.audio;
 
 /**
- * Files formats currently supported by Library.
+ * File formats currently supported by the library.
  * Each enum value is associated with a file suffix (extension).
  */
 public enum SupportedFileFormat
@@ -25,16 +25,17 @@ public enum SupportedFileFormat
     DFF("dff", "Dff");
 
     /**
-     * File Suffix
+     * File suffix without leading dot.
      */
     private String filesuffix;
 
     /**
-     * User Friendly Name
+     * User-friendly display name.
      */
     private String displayName;
 
-    /** Constructor for internal use by this enum.
+    /**
+     * Constructor for internal use by this enum.
      */
     SupportedFileFormat(String filesuffix, String displayName)
     {
@@ -43,14 +44,20 @@ public enum SupportedFileFormat
     }
 
     /**
-     *  Returns the file suffix (lower case without initial .) associated with the format.
+     * Returns the file suffix associated with the format.
+     *
+     * @return lower-case extension without leading dot.
      */
     public String getFilesuffix()
     {
         return filesuffix;
     }
 
-
+    /**
+     * Returns a human-readable format name.
+     *
+     * @return display name.
+     */
     public String getDisplayName()
     {
         return displayName;
