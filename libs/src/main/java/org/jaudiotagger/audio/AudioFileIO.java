@@ -65,7 +65,7 @@ import java.util.logging.Logger;
  * 
  *
  * <code>
- * AudioFile audioFile = AudioFileIO.read(new File("audiofile.mp3")); //Reads the given file.
+ * AudioFile audioFile = AudioFileIO.read(Paths.get("audiofile.mp3")); //Reads the given file.
  * int bitrate = audioFile.getBitrate(); //Retreives the bitrate of the file.
  * String artist = audioFile.getTag().getFirst(TagFieldKey.ARTIST); //Retreive the artist name.
  * audioFile.getTag().setGenre("Progressive Rock"); //Sets the genre to Prog. Rock, note the file on disk is still unmodified.
@@ -75,11 +75,11 @@ import java.util.logging.Logger;
  *
  * You can also use the <code>commit()</code> method defined for
  * <code>AudioFile</code>s to achieve the same goal as
- * <code>AudioFileIO.write(File)</code>, like this:
+ * <code>AudioFileIO.write(AudioFile)</code>, like this:
  * 
  *
  * <code>
- * AudioFile audioFile = AudioFileIO.read(new File("audiofile.mp3"));
+ * AudioFile audioFile = AudioFileIO.read(Paths.get("audiofile.mp3"));
  * audioFile.getTag().setGenre("Progressive Rock");
  * audioFile.commit(); //Write the modifications in the file on disk.
  * </code>
@@ -114,7 +114,8 @@ public class AudioFileIO
      * @throws org.jaudiotagger.audio.exceptions.CannotWriteException If the file could not be written/accessed, the extension
      *                              wasn't recognized, or other IO error occurred.
      * @throws org.jaudiotagger.audio.exceptions.CannotReadException
-     * @deprecated Use {@link #delete(AudioFile, ParcelFileDescriptor)} instead.
+     * @deprecated Use {@link #delete(AudioFile, ParcelFileDescriptor)} instead. This legacy bridge stays for
+     * the current 2-release compatibility window and will be reviewed for removal no earlier than R+2.
      */
     @Deprecated
     public static void delete(AudioFile f) throws CannotReadException, CannotWriteException
@@ -158,7 +159,8 @@ public class AudioFileIO
      * @throws org.jaudiotagger.audio.exceptions.ReadOnlyFileException
      * @throws java.io.IOException
      * @throws org.jaudiotagger.audio.exceptions.InvalidAudioFrameException
-     * @deprecated Use {@link #readAs(Path, String)} instead.
+     * @deprecated Use {@link #readAs(Path, String)} instead. Legacy File wrappers are temporary compatibility
+     * bridges and are planned for removal no earlier than R+2.
      */
     @Deprecated
     public static AudioFile readAs(File f,String ext)
@@ -198,7 +200,8 @@ public class AudioFileIO
     * @throws org.jaudiotagger.audio.exceptions.ReadOnlyFileException
     * @throws java.io.IOException
     * @throws org.jaudiotagger.audio.exceptions.InvalidAudioFrameException
-    * @deprecated Use {@link #readMagic(Path)} instead.
+    * @deprecated Use {@link #readMagic(Path)} instead. Legacy File wrappers are temporary compatibility
+    * bridges and are planned for removal no earlier than R+2.
     */
     @Deprecated
    public static AudioFile readMagic(File f)
@@ -229,7 +232,8 @@ public class AudioFileIO
    * @throws org.jaudiotagger.audio.exceptions.ReadOnlyFileException
    * @throws java.io.IOException
    * @throws org.jaudiotagger.audio.exceptions.InvalidAudioFrameException
-   * @deprecated Use {@link #read(Path)} instead.
+   * @deprecated Use {@link #read(Path)} instead. Legacy File wrappers are temporary compatibility bridges
+   * and are planned for removal no earlier than R+2.
    */
     @Deprecated
     public static AudioFile read(File f)
@@ -267,7 +271,8 @@ public class AudioFileIO
      * @throws NoWritePermissionsException if the file could not be written to due to file permissions
      * @throws CannotWriteException If the file could not be written/accessed, the extension
      *                              wasn't recognized, or other IO error occurred.
-     * @deprecated Use {@link #write(AudioFile, ParcelFileDescriptor)} instead.
+     * @deprecated Use {@link #write(AudioFile, ParcelFileDescriptor)} instead. This legacy bridge stays for
+     * the current 2-release compatibility window and will be reviewed for removal no earlier than R+2.
      */
     @Deprecated
     public static void write(AudioFile f) throws CannotWriteException
@@ -293,7 +298,8 @@ public class AudioFileIO
     * @throws NoWritePermissionsException if the file could not be written to due to file permissions
     * @throws CannotWriteException If the file could not be written/accessed, the extension
     *                              wasn't recognized, or other IO error occurred.
-    * @deprecated Use {@link #writeAs(AudioFile, Path)} instead.
+    * @deprecated Use {@link #writeAs(AudioFile, Path)} instead. Legacy String-path wrappers are temporary
+    * compatibility bridges and are planned for removal no earlier than R+2.
     */
     @Deprecated
    public static void writeAs(AudioFile f, String targetPath) throws CannotWriteException
@@ -455,7 +461,8 @@ public class AudioFileIO
      * @throws org.jaudiotagger.audio.exceptions.ReadOnlyFileException
      * @throws java.io.IOException
      * @throws org.jaudiotagger.audio.exceptions.InvalidAudioFrameException
-     * @deprecated Use {@link #readFile(Path)} instead.
+     * @deprecated Use {@link #readFile(Path)} instead. Legacy File wrappers are temporary compatibility
+     * bridges and are planned for removal no earlier than R+2.
      */
     @Deprecated
     public AudioFile readFile(File f)
@@ -509,7 +516,8 @@ public class AudioFileIO
     * @throws org.jaudiotagger.audio.exceptions.ReadOnlyFileException
     * @throws java.io.IOException
     * @throws org.jaudiotagger.audio.exceptions.InvalidAudioFrameException
-    * @deprecated Use {@link #readFileMagic(Path)} instead.
+    * @deprecated Use {@link #readFileMagic(Path)} instead. Legacy File wrappers are temporary compatibility
+    * bridges and are planned for removal no earlier than R+2.
     */
     @Deprecated
    public AudioFile readFileMagic(File f)
@@ -550,7 +558,8 @@ public class AudioFileIO
    * @throws org.jaudiotagger.audio.exceptions.ReadOnlyFileException
    * @throws java.io.IOException
    * @throws org.jaudiotagger.audio.exceptions.InvalidAudioFrameException
-   * @deprecated Use {@link #readFileAs(Path, String)} instead.
+   * @deprecated Use {@link #readFileAs(Path, String)} instead. Legacy File wrappers are temporary compatibility
+   * bridges and are planned for removal no earlier than R+2.
    */
     @Deprecated
   public AudioFile readFileAs(File f,String ext)
@@ -641,7 +650,8 @@ public class AudioFileIO
      * @throws NoWritePermissionsException if the file could not be written to due to file permissions
      * @throws CannotWriteException If the file could not be written/accessed, the extension
      *                              wasn't recognized, or other IO error occurred.
-     * @deprecated Use {@link #writeFile(AudioFile, Path)} instead.
+     * @deprecated Use {@link #writeFile(AudioFile, Path)} instead. Legacy String-path wrappers are temporary
+     * compatibility bridges and are planned for removal no earlier than R+2.
      */
     @Deprecated
     public void writeFile(AudioFile f, String targetPath) throws CannotWriteException
