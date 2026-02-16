@@ -25,7 +25,7 @@ public class FlacReadTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test2.flac", new File("test2read.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             assertEquals("192", f.getAudioHeader().getBitRate());
             assertEquals("FLAC 16 bits", f.getAudioHeader().getEncodingType());
@@ -50,7 +50,7 @@ public class FlacReadTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test3.flac", new File("test3read.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             assertEquals("FLAC 8 bits", f.getAudioHeader().getEncodingType());
             assertEquals("1", f.getAudioHeader().getChannels());
@@ -76,7 +76,7 @@ public class FlacReadTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testV1noFlac.flac"));
-            AudioFileIO.read(testFile);
+            AudioFileIO.read(testFile.toPath());
         }
         catch (Exception e)
         {
@@ -95,7 +95,7 @@ public class FlacReadTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test3.flac");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             FlacInfoReader infoReader = new FlacInfoReader();
             assertEquals(5, infoReader.countMetaBlocks(f.getFile()));
         }
@@ -123,7 +123,7 @@ public class FlacReadTest extends TestCase
                 return;
             }
             File testFile = AbstractTestCase.copyAudioToTmp("test22.flac", new File("testreadFlacWithId3.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             FlacInfoReader infoReader = new FlacInfoReader();
             assertEquals(4, infoReader.countMetaBlocks(f.getFile()));
         }
@@ -151,7 +151,7 @@ public class FlacReadTest extends TestCase
                 return;
             }
             File testFile = AbstractTestCase.copyAudioToTmp("test102.flac", new File("test102.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             FlacInfoReader infoReader = new FlacInfoReader();
             assertEquals(2, infoReader.countMetaBlocks(f.getFile()));
         }
@@ -178,7 +178,7 @@ public class FlacReadTest extends TestCase
                 return;
             }
             File testFile = AbstractTestCase.copyAudioToTmp("test154.flac", new File("test154.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             MetadataBlockDataPicture mbdp = (((FlacTag) f.getTag()).getImages().get(0));
             System.out.println(mbdp);
         }
@@ -207,7 +207,7 @@ public class FlacReadTest extends TestCase
                 return;
             }
             File testFile = AbstractTestCase.copyAudioToTmp("test600.flac", new File("test600.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f);
         }
         catch (Exception e)
@@ -226,7 +226,7 @@ public class FlacReadTest extends TestCase
                 return;
             }
             File testFile = AbstractTestCase.copyAudioToTmp("test601.flac", new File("test601.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f);
         }
         catch (Exception e)
@@ -249,11 +249,11 @@ public class FlacReadTest extends TestCase
                 return;
             }
             File testFile = AbstractTestCase.copyAudioToTmp("test600.flac", new File("test600.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f);
             f.getTag().setField(FieldKey.ARTIST, "alongertitle");
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             System.out.println(f);
         }
         catch (Exception e)
@@ -276,11 +276,11 @@ public class FlacReadTest extends TestCase
                 return;
             }
             File testFile = AbstractTestCase.copyAudioToTmp("test614.flac", new File("test614.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             assertEquals("",f.getTag().getFirst(FieldKey.YEAR));
             f.getTag().setField(FieldKey.YEAR, "1901");
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertEquals("1901",f.getTag().getFirst(FieldKey.YEAR));
             System.out.println(f);
         }

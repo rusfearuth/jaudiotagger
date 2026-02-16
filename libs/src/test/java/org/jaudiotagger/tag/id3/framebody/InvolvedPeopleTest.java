@@ -19,7 +19,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteInvolvedPeopleIDv24() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWritePerformersv24.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v24Tag());
@@ -30,7 +30,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals("violinist\0Nigel Kennedy", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,0));
         assertEquals("harpist\0Gloria Divosky", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,1));
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1, f.getTag().getFieldCount());
@@ -39,7 +39,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteInvolvedPeopleAndDeleteIDv24() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWritePerformersAndDeletev24.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v24Tag());
@@ -47,7 +47,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         f.getTag().addField(FieldKey.PERFORMER,"harpist","Gloria Divosky");
         assertEquals(1,f.getTag().getFieldCount());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.PERFORMER).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1, f.getTag().getFieldCount());
@@ -55,7 +55,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         f.getTag().deleteField(FieldKey.PERFORMER);
         assertEquals(0,f.getTag().getFieldCount());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(0,f.getTag().getFields(FieldKey.PERFORMER).size());
         assertEquals(0,f.getTag().getFieldCount());
         assertEquals(0, f.getTag().getFieldCount());
@@ -65,7 +65,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteInvolvedPeopleIDv23() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWritePerformersv23.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v23Tag());
@@ -76,7 +76,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals("violinist\0Nigel Kennedy", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,0));
         assertEquals("harpist\0Gloria Divosky", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,1));
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1, f.getTag().getFieldCount());
@@ -85,7 +85,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteInvolvedPeopleIDv22() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWritePerformersv22.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v22Tag());
@@ -96,7 +96,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals("violinist\0Nigel Kennedy", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,0));
         assertEquals("harpist\0Gloria Divosky", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,1));
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1, f.getTag().getFieldCount());
@@ -109,7 +109,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteInvolvedPeopleIDv24v2() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWritePerformersv24.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v24Tag());
@@ -120,7 +120,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals("harpist\0Gloria Divosky", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,1));
         assertEquals("violinist\0Nigel Kennedy", f.getTag().getFirst(FieldKey.INVOLVEDPEOPLE));
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1, f.getTag().getFieldCount());
@@ -133,7 +133,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteInvolvedPeopleIDv24v3() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWritePerformersv24.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v24Tag());
@@ -144,7 +144,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals("violinist\0Nigel Kennedy", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,0));
         assertEquals("harpist\0Gloria Divosky", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,1));
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1, f.getTag().getFieldCount());
@@ -153,7 +153,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteInvolvedPeopleIDv23v2() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWritePerformersv23.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v23Tag());
@@ -164,7 +164,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals("violinist\0Nigel Kennedy", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,0));
         assertEquals("harpist\0Gloria Divosky", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,1));
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1, f.getTag().getFieldCount());
@@ -173,7 +173,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteInvolvedPeopleIDv23v3() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWritePerformersv23.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v23Tag());
@@ -184,7 +184,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals("violinist\0Nigel Kennedy", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,0));
         assertEquals("harpist\0Gloria Divosky", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,1));
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1, f.getTag().getFieldCount());
@@ -193,7 +193,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteInvolvedPeopleIDv22v2() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWriteInvolvedPeoplev22.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v22Tag());
@@ -204,7 +204,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals("violinist\0Nigel Kennedy", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,0));
         assertEquals("harpist\0Gloria Divosky", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,1));
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1, f.getTag().getFieldCount());
@@ -213,7 +213,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteInvolvedPeopleIDv22v3() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWritePerformersv22.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v22Tag());
@@ -224,7 +224,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals("violinist\0Nigel Kennedy", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,0));
         assertEquals("harpist\0Gloria Divosky", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,1));
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1, f.getTag().getFieldCount());
@@ -234,7 +234,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteMultiplePeopleIDv24() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWriteMultiplePeoplev24.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v24Tag());
@@ -245,7 +245,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals("harpist\0Gloria Divosky", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,1));
 
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
 
@@ -255,7 +255,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals(0, f.getTag().getFieldCount());
 
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(0,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(0,f.getTag().getFieldCount());
         assertEquals(0, f.getTag().getFieldCount());
@@ -264,7 +264,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteMultiplePeopleIDv23() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWriteMultiplePeoplev23.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v23Tag());
@@ -275,7 +275,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals("harpist\0Gloria Divosky", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,1));
 
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
 
@@ -285,7 +285,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals(0, f.getTag().getFieldCount());
 
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(0,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(0,f.getTag().getFieldCount());
         assertEquals(0, f.getTag().getFieldCount());
@@ -294,7 +294,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
     public void testWriteMultiplePeopleIDv22() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWriteMultiplePeoplev22.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v22Tag());
@@ -305,7 +305,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals("harpist\0Gloria Divosky", f.getTag().getValue(FieldKey.INVOLVEDPEOPLE,1));
 
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
 
@@ -315,7 +315,7 @@ public class InvolvedPeopleTest extends AbstractTestCase
         assertEquals(0, f.getTag().getFieldCount());
 
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(0,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(0,f.getTag().getFieldCount());
         assertEquals(0, f.getTag().getFieldCount());

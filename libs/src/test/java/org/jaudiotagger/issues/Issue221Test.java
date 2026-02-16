@@ -215,7 +215,7 @@ public class Issue221Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             tag.getFields(FieldKey.ITUNES_GROUPING);
         }
@@ -233,7 +233,7 @@ public class Issue221Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test1.wma");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             tag.getFields(FieldKey.ITUNES_GROUPING);
         }
@@ -251,7 +251,7 @@ public class Issue221Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             tag.getFields(FieldKey.ITUNES_GROUPING);
         }
@@ -269,7 +269,7 @@ public class Issue221Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.flac");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             tag.getFields(FieldKey.ITUNES_GROUPING);
         }
@@ -287,7 +287,7 @@ public class Issue221Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test23.mp3");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             tag.getFields(FieldKey.ITUNES_GROUPING);
         }

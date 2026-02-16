@@ -26,13 +26,13 @@ public class Issue406Test extends AbstractTestCase
             }
 
             File testFile = AbstractTestCase.copyAudioToTmp("test103.m4a");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals(af.getTag().getFirst(FieldKey.TITLE),"London Calling");
             assertEquals(af.getTag().getFirst(FieldKey.ARTIST),"The Clash");
             assertEquals(af.getTag().getFirst(FieldKey.YEAR),"1979");
             af.getTag().setField(FieldKey.TITLE,"Bridport Calling");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals(af.getTag().getFirst(FieldKey.TITLE),"Bridport Calling");
         }
         catch(Exception e)

@@ -23,7 +23,7 @@ public class Issue421Test extends AbstractTestCase
         }
 
         File testFile = AbstractTestCase.copyAudioToTmp("Arizona.m4a");
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         Tag tag = f.getTag();
         assertEquals("13",tag.getFirst(FieldKey.TRACK));
         assertEquals("14",tag.getFirst(FieldKey.TRACK_TOTAL));

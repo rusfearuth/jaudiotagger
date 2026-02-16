@@ -63,7 +63,7 @@ public class VorbisReadTagTest extends AbstractTestCase
         {
 //Can summarize file
             File testFile = AbstractTestCase.copyAudioToTmp("test6.ogg");
-            AudioFileIO.read(testFile);
+            AudioFileIO.read(testFile.toPath());
         }
         catch (Exception e)
         {
@@ -105,15 +105,15 @@ public class VorbisReadTagTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testWithEmptyField.ogg"));
-            AudioFile file = AudioFileIO.read(testFile);
+            AudioFile file = AudioFileIO.read(testFile.toPath());
             file.getTag().setField(FieldKey.YEAR,"");
             file.commit();
 
-            file = AudioFileIO.read(testFile);
+            file = AudioFileIO.read(testFile.toPath());
             file.getTag().setField(FieldKey.TITLE,"testtitle");
             file.commit();
 
-            file = AudioFileIO.read(testFile);
+            file = AudioFileIO.read(testFile.toPath());
         }
         catch (Exception e)
         {

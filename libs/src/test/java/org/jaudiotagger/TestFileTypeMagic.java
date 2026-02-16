@@ -24,11 +24,11 @@ public class TestFileTypeMagic {
         }
 
         testFileLoc = AbstractTestCase.copyAudioToTmp("test.m4a");
-        AudioFile f =  AudioFileIO.readMagic(testFileLoc);
+        AudioFile f =  AudioFileIO.readMagic(testFileLoc.toPath());
         Tag audioTag = f.getTag();
         System.err.println("audiotag:"+ audioTag.toString());
         audioTag.setField(FieldKey.ALBUM, "TestAsPass");
-        AudioFileIO.write(f);
+        f.commit();
 
 	}
 }

@@ -22,7 +22,7 @@ public class Issue322Test extends AbstractTestCase
     public void testNumberFieldHandling() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         Tag tag = f.getTag();
         Exception expected=null;
         try

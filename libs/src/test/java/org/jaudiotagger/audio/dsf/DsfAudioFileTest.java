@@ -31,7 +31,7 @@ public class DsfAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test122.dsf",new File("test122read.dsf"));
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             assertEquals("DSF", ah.getEncodingType());
             assertEquals("5644800", ah.getBitRate());
@@ -72,14 +72,14 @@ public class DsfAudioFileTest extends TestCase {
         File testFile = AbstractTestCase.copyAudioToTmp("test122.dsf",new File("test122write.dsf"));
         try
         {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             f.getTag().addField(FieldKey.ARTIST, "fred");
             Tag tag = f.getTag();
             System.out.println(tag);
             tag.setField(FieldKey.ARTIST, "fred");
             f.commit();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
             System.out.println(tag);
             assertEquals("fred",tag.getFirst(FieldKey.ARTIST));
@@ -114,13 +114,13 @@ public class DsfAudioFileTest extends TestCase {
         File testFile = AbstractTestCase.copyAudioToTmp("test122.dsf",new File("test122delete.dsf"));
         try
         {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             f.getTag().addField(FieldKey.ARTIST, "fred");
             Tag tag = f.getTag();
             System.out.println(tag);
             f.delete();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
             System.out.println(tag);
 
@@ -147,7 +147,7 @@ public class DsfAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test156.dsf",new File("test156read.dsf"));
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             System.out.println(ah);
             assertEquals("5644800", ah.getBitRate());
@@ -181,7 +181,7 @@ public class DsfAudioFileTest extends TestCase {
         File testFile = AbstractTestCase.copyAudioToTmp("test156.dsf",new File("test156write.dsf"));
         try
         {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             assertNull(f.getTag());
             f.getTagOrCreateAndSetDefault().addField(FieldKey.ARTIST, "fred");
             Tag tag = f.getTag();
@@ -189,7 +189,7 @@ public class DsfAudioFileTest extends TestCase {
             tag.setField(FieldKey.ARTIST, "fred");
             f.commit();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
             System.out.println(tag);
             assertEquals("fred",tag.getFirst(FieldKey.ARTIST));
@@ -218,14 +218,14 @@ public class DsfAudioFileTest extends TestCase {
         File testFile = AbstractTestCase.copyAudioToTmp("test156.dsf",new File("test156delete.dsf"));
         try
         {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             assertNull(f.getTag());
             f.getTagOrCreateAndSetDefault().addField(FieldKey.ARTIST, "fred");
             Tag tag = f.getTag();
             System.out.println(tag);
             f.delete();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
             System.out.println(tag);
 
@@ -249,19 +249,19 @@ public class DsfAudioFileTest extends TestCase {
         {
             TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V24);
             File testFile = AbstractTestCase.copyAudioToTmp("test122.dsf", new File("test122read.dsf"));
-            assertTrue(AudioFileIO.read(testFile).createDefaultTag() instanceof ID3v24Tag);
+            assertTrue(AudioFileIO.read(testFile.toPath()).createDefaultTag() instanceof ID3v24Tag);
         }
 
         {
             TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V23);
             File testFile = AbstractTestCase.copyAudioToTmp("test122.dsf", new File("test122read.dsf"));
-            assertTrue(AudioFileIO.read(testFile).createDefaultTag() instanceof ID3v23Tag);
+            assertTrue(AudioFileIO.read(testFile.toPath()).createDefaultTag() instanceof ID3v23Tag);
         }
 
         {
             TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V22);
             File testFile = AbstractTestCase.copyAudioToTmp("test122.dsf", new File("test122read.dsf"));
-            assertTrue(AudioFileIO.read(testFile).createDefaultTag() instanceof ID3v22Tag);
+            assertTrue(AudioFileIO.read(testFile.toPath()).createDefaultTag() instanceof ID3v22Tag);
         }
 
         TagOptionSingleton.getInstance().setToDefault();
@@ -273,7 +273,7 @@ public class DsfAudioFileTest extends TestCase {
         File dir = new File("C:\\Users\\Paul\\Music\\1983 - David Bowie - Let's Dance [SACD DSF][2003]");
         for(File file:dir.listFiles())
         {
-            AudioFile af = AudioFileIO.read(file);
+            AudioFile af = AudioFileIO.read(file.toPath());
             af.delete();
         }
     }

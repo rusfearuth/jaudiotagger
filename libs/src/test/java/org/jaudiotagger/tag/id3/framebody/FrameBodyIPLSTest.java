@@ -104,7 +104,7 @@ public class FrameBodyIPLSTest extends AbstractTestCase
     public void testWriteInvolvedPeopleAndDeleteIDv24() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWriteInvolvedPeopleAndDeletev24.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v24Tag());
@@ -112,7 +112,7 @@ public class FrameBodyIPLSTest extends AbstractTestCase
         f.getTag().addField(FieldKey.INVOLVEDPEOPLE,"harpist","Gloria Divosky");
         assertEquals(1,f.getTag().getFieldCount());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
 
@@ -127,7 +127,7 @@ public class FrameBodyIPLSTest extends AbstractTestCase
         f.getTag().deleteField(FieldKey.INVOLVEDPEOPLE);
         assertEquals(0,f.getTag().getFieldCount());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(0,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(0,f.getTag().getFieldCount());
         assertEquals(0, f.getTag().getFieldCount());
@@ -137,7 +137,7 @@ public class FrameBodyIPLSTest extends AbstractTestCase
     public void testWriteInvolvedPeopleAndDeleteIDv24WithProducer() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWriteInvolvedPeopleAndDeletev241.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v24Tag());
@@ -145,7 +145,7 @@ public class FrameBodyIPLSTest extends AbstractTestCase
         f.getTag().addField(FieldKey.INVOLVEDPEOPLE,"harpist","Gloria Divosky");
         assertEquals(1,f.getTag().getFieldCount());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1, f.getTag().getFieldCount());
@@ -161,7 +161,7 @@ public class FrameBodyIPLSTest extends AbstractTestCase
         f.getTag().deleteField(FieldKey.INVOLVEDPEOPLE);
         assertEquals(0,f.getTag().getFieldCount());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(0,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(0,f.getTag().getFieldCount());
         assertEquals(0, f.getTag().getFieldCount());
@@ -170,7 +170,7 @@ public class FrameBodyIPLSTest extends AbstractTestCase
     public void testWriteInvolvedPeopleAndDeleteIDv24WithProducer2() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWriteInvolvedPeopleAndDeletev242.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
 
         f.setTag(new ID3v24Tag());
@@ -181,7 +181,7 @@ public class FrameBodyIPLSTest extends AbstractTestCase
         f.getTag().addField(FieldKey.INVOLVEDPEOPLE,"harpist","Gloria Divosky");
         assertEquals(1,f.getTag().getFieldCount());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1, f.getTag().getFieldCount());
@@ -205,7 +205,7 @@ public class FrameBodyIPLSTest extends AbstractTestCase
         f.getTag().deleteField(FieldKey.INVOLVEDPEOPLE);
         assertEquals(0,f.getTag().getFieldCount());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(0,f.getTag().getFields(FieldKey.INVOLVEDPEOPLE).size());
         assertEquals(0,f.getTag().getFieldCount());
         assertEquals(0, f.getTag().getFieldCount());

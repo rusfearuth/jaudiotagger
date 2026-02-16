@@ -60,7 +60,7 @@ public class Mp4StemWriteTagTest extends TestCase {
         System.out.println("Available free space: " + freeSpace);
 
         // fill up free space
-        final AudioFile audioFile = AudioFileIO.read(testFile);
+        final AudioFile audioFile = AudioFileIO.read(testFile.toPath());
         final char[] chars = new char[freeSpace * 2]; // twice the size of the total available free space
         Arrays.fill(chars, 'C');
         audioFile.getTag().setField(FieldKey.TITLE, new String(chars));
@@ -101,7 +101,7 @@ public class Mp4StemWriteTagTest extends TestCase {
             //Starting filesize
             assertEquals(TEST_FILE1_SIZE, testFile.length());
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Mp4Tag tag = (Mp4Tag) f.getTag();
 
             //Add new image
@@ -112,7 +112,7 @@ public class Mp4StemWriteTagTest extends TestCase {
 
             //Save changes and reread from disk
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
 
             //Total FileSize must be larger, as the free atom in meta is only 844 big

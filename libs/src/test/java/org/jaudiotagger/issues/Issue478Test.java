@@ -27,7 +27,7 @@ public class Issue478Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test115.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             MP3File mp3File = (MP3File) af;
             ID3v23Tag tag   = (ID3v23Tag)mp3File.getID3v2Tag();
@@ -37,7 +37,7 @@ public class Issue478Test extends AbstractTestCase
             assertNotNull(tag.getFrame("TGID"));
             mp3File.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File = (MP3File) af;
             tag   = (ID3v23Tag)mp3File.getID3v2Tag();
 
@@ -63,7 +63,7 @@ public class Issue478Test extends AbstractTestCase
 
             //Save v23 tag constructed from v24 tag
             mp3File.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File = (MP3File) af;
             tag   = (ID3v23Tag)mp3File.getID3v2Tag();
             //and check still has values

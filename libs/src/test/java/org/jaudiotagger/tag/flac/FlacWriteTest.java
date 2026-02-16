@@ -41,7 +41,7 @@ public class FlacWriteTest extends TestCase
             //Put artifically low just to test it out
             TagOptionSingleton.getInstance().setWriteChunkSize(40000);
             File testFile = AbstractTestCase.copyAudioToTmp("test2.flac", new File("test2write.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             System.out.println("startFileSize:"+f.getFile().length());
 
@@ -93,7 +93,7 @@ public class FlacWriteTest extends TestCase
 
 
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertEquals(5, infoReader.countMetaBlocks(f.getFile()));
             assertTrue(f.getTag() instanceof FlacTag);
 
@@ -160,7 +160,7 @@ public class FlacWriteTest extends TestCase
             //Put artifically low just to test it out
             TagOptionSingleton.getInstance().setWriteChunkSize(1000);
             File testFile = AbstractTestCase.copyAudioToTmp("test2.flac", new File("test2write.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             System.out.println("startFileSize:"+f.getFile().length());
 
@@ -212,7 +212,7 @@ public class FlacWriteTest extends TestCase
 
 
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertEquals(5, infoReader.countMetaBlocks(f.getFile()));
             assertTrue(f.getTag() instanceof FlacTag);
 
@@ -284,7 +284,7 @@ public class FlacWriteTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.flac", new File("testdeletetag.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             assertEquals("192", f.getAudioHeader().getBitRate());
             assertEquals("FLAC 16 bits", f.getAudioHeader().getEncodingType());
@@ -294,8 +294,8 @@ public class FlacWriteTest extends TestCase
             assertTrue(f.getTag() instanceof FlacTag);
             assertFalse(f.getTag().isEmpty());
 
-            AudioFileIO.delete(f);
-            f = AudioFileIO.read(testFile);
+            f.delete();
+            f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag().isEmpty());
         }
         catch (Exception e)
@@ -316,12 +316,12 @@ public class FlacWriteTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test3.flac", new File("testWriteWithCueSheet.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             FlacInfoReader infoReader = new FlacInfoReader();
             assertEquals(5, infoReader.countMetaBlocks(f.getFile()));
             f.getTag().setField(FieldKey.ALBUM,"BLOCK");
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             infoReader = new FlacInfoReader();
             assertEquals("BLOCK", f.getTag().getFirst(FieldKey.ALBUM));
 
@@ -349,12 +349,12 @@ public class FlacWriteTest extends TestCase
                 return;
             }
             File testFile = AbstractTestCase.copyAudioToTmp("test22.flac", new File("testWriteFlacWithId3.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             FlacInfoReader infoReader = new FlacInfoReader();
             assertEquals(4, infoReader.countMetaBlocks(f.getFile()));
             f.getTag().setField(FieldKey.ALBUM,"BLOCK");
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             infoReader = new FlacInfoReader();
             assertEquals(4, infoReader.countMetaBlocks(f.getFile()));
             assertEquals("BLOCK", f.getTag().getFirst(FieldKey.ALBUM));
@@ -384,7 +384,7 @@ public class FlacWriteTest extends TestCase
             }
 
             File testFile = AbstractTestCase.copyAudioToTmp("test22.flac", new File("testWriteFlacWithId3Shifted.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             assertEquals("825", f.getAudioHeader().getBitRate());
             assertEquals("FLAC 16 bits", f.getAudioHeader().getEncodingType());
@@ -415,7 +415,7 @@ public class FlacWriteTest extends TestCase
             imageFile.read(imagedata);
             tag.setField(tag.createArtworkField(imagedata, PictureTypes.DEFAULT_ID, ImageFormats.MIME_TYPE_PNG, "test", 200, 200, 24, 0));
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertEquals(5, infoReader.countMetaBlocks(f.getFile()));
             assertTrue(f.getTag() instanceof FlacTag);
             assertEquals("reference libFLAC 1.1.4 20070213", tag.getFirst(FieldKey.ENCODER));
@@ -436,17 +436,17 @@ public class FlacWriteTest extends TestCase
     public void testDeleteTag() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("test2.flac", new File("testDelete.flac"));
-        AudioFile f = AudioFileIO.read(testFile);
-        AudioFileIO.delete(f);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
+        f.delete();
 
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertTrue(f.getTag().isEmpty());
     }
 
     public void testWriteMultipleFields() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("test.flac", new File("testWriteMultiple.flac"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
@@ -454,7 +454,7 @@ public class FlacWriteTest extends TestCase
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(2,tagFields.size());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(2,tagFields.size());
     }
@@ -463,7 +463,7 @@ public class FlacWriteTest extends TestCase
     {
         //Delete using generic key
         File testFile = AbstractTestCase.copyAudioToTmp("test.flac", new File("testWriteMultiple.flac"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
@@ -474,7 +474,7 @@ public class FlacWriteTest extends TestCase
         f.commit();
 
         //Delete using flac id
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
@@ -486,7 +486,7 @@ public class FlacWriteTest extends TestCase
         assertEquals(0,tagFields.size());
         f.commit();
 
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
 
@@ -507,13 +507,13 @@ public class FlacWriteTest extends TestCase
                 return;
             }
             File testFile = AbstractTestCase.copyAudioToTmp("test102.flac", new File("test102.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             FlacInfoReader infoReader = new FlacInfoReader();
             assertEquals(2, infoReader.countMetaBlocks(f.getFile()));
             f.getTag().setField(FieldKey.ARTIST,"fred");
             f.commit();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
 
             infoReader = new FlacInfoReader();
             assertEquals(3, infoReader.countMetaBlocks(f.getFile()));
@@ -552,13 +552,13 @@ public class FlacWriteTest extends TestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.flac", new File("testwrite1.flac"));
 
-            AudioFile f = AudioFileIO.read(testFile);
-            AudioFileIO.delete(f);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
+            f.delete();
 
             // Tests multiple iterations on same file
             for (int i = 0; i < 2; i++)
             {
-                f = AudioFileIO.read(testFile);
+                f = AudioFileIO.read(testFile.toPath());
                 Tag tag = f.getTag();
                 for (FieldKey key : FieldKey.values())
                 {
@@ -569,7 +569,7 @@ public class FlacWriteTest extends TestCase
                     }
                 }
                 f.commit();
-                f = AudioFileIO.read(testFile);
+                f = AudioFileIO.read(testFile.toPath());
                 tag = f.getTag();
                 for (FieldKey key : FieldKey.values())
                 {

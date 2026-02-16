@@ -180,7 +180,7 @@ public class ID3v1TagTest extends TestCase
     public void testSaveID3v1TagToFileUsingTagInterface() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
-        AudioFile file = AudioFileIO.read(testFile);
+        AudioFile file = AudioFileIO.read(testFile.toPath());
 
         //Create v1 Tag
         Tag tag = file.getTag();
@@ -201,7 +201,7 @@ public class ID3v1TagTest extends TestCase
         file.commit();
 
         //Reload
-        file = AudioFileIO.read(testFile);
+        file = AudioFileIO.read(testFile.toPath());
         tag = file.getTag();
         assertEquals(ID3v1TagTest.ARTIST, tag.getFirst(FieldKey.ARTIST));
         assertEquals(ID3v1TagTest.ALBUM, tag.getFirst(FieldKey.ALBUM));

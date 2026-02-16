@@ -33,7 +33,7 @@ public class Issue119Test extends AbstractTestCase
         try
         {
             System.out.println("1");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println("2");
             AudioHeader ah = f.getAudioHeader();
             System.out.println("3");
@@ -43,7 +43,7 @@ public class Issue119Test extends AbstractTestCase
             System.out.println(tag);
             f.getTag().setField(FieldKey.ARTIST,"fred");
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
             System.out.println(tag);
             assertEquals("fred",tag.getFirst(FieldKey.ARTIST));
@@ -73,13 +73,13 @@ public class Issue119Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test153.wav",  new File("test153_odd_data_length_info.wav"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             System.out.println(f.getTag());
 
             f.getTag().setField(FieldKey.ARTIST,"freddy");
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             System.out.println(tag);
             assertEquals("freddy",tag.getFirst(FieldKey.ARTIST));
@@ -108,13 +108,13 @@ public class Issue119Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test153.wav",  new File("test153_odd_data_length_id3.wav"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             System.out.println(f.getTag());
 
             f.getTag().setField(FieldKey.ARTIST,"freddy");
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             System.out.println(tag);
             assertEquals("freddy",tag.getFirst(FieldKey.ARTIST));
@@ -143,13 +143,13 @@ public class Issue119Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test153.wav",  new File("test153_odd_data_length_id3_and_info.wav"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             System.out.println(f.getTag());
 
             f.getTag().setField(FieldKey.ARTIST,"freddy");
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             System.out.println(tag);
             assertEquals("freddy",tag.getFirst(FieldKey.ARTIST));

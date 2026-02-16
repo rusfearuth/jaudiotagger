@@ -37,14 +37,14 @@ public class Issue271Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test46.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag().toString());
             assertEquals("00000", af.getTag().getFirst(FieldKey.BPM));
             assertEquals("*thievery corporation - Om Lounge*", "*"+af.getTag().getFirst(FieldKey.ARTIST)+"*");
 
             af.getTag().setField(FieldKey.ALBUM,"FRED");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag().toString());
             assertEquals("FRED", af.getTag().getFirst(FieldKey.ALBUM));
 
@@ -78,7 +78,7 @@ public class Issue271Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test47.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag().toString());
             assertEquals("tonight (instrumental)", af.getTag().getFirst(FieldKey.TITLE));
             assertEquals("Young Gunz", af.getTag().getFirst(FieldKey.ARTIST));
@@ -89,7 +89,7 @@ public class Issue271Test extends AbstractTestCase
 
             af.getTag().setField(FieldKey.ALBUM,"FRED");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag().toString());
             assertEquals("FRED", af.getTag().getFirst(FieldKey.ALBUM));
 
@@ -125,7 +125,7 @@ public class Issue271Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test48.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag().toString());
             assertEquals("Don't Leave Me", af.getTag().getFirst(FieldKey.TITLE));
             assertEquals("All-American Rejects", af.getTag().getFirst(FieldKey.ARTIST));
@@ -138,7 +138,7 @@ public class Issue271Test extends AbstractTestCase
 
             af.getTag().setField(FieldKey.ALBUM,"FRED");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag().toString());
             assertEquals("FRED", af.getTag().getFirst(FieldKey.ALBUM));
 
@@ -172,7 +172,7 @@ public class Issue271Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test51.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             MP3File mp3File = (MP3File) af;
             System.out.println(mp3File.displayStructureAsXML());
 
@@ -185,7 +185,7 @@ public class Issue271Test extends AbstractTestCase
             assertEquals("A new start", v22tag.getFirst(FieldKey.TITLE));
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             v22tag = (ID3v22Tag) af.getTag();
             assertFalse(v22tag.isCompression());
             assertFalse(v22tag.isUnsynchronization());
@@ -193,7 +193,7 @@ public class Issue271Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setUnsyncTags(true);
             v22tag.setField(FieldKey.TITLE,"B new start");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             v22tag = (ID3v22Tag) af.getTag();
             assertFalse(v22tag.isCompression());
             assertTrue(v22tag.isUnsynchronization());
@@ -230,7 +230,7 @@ public class Issue271Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test52.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             MP3File mp3File = (MP3File) af;
             System.out.println(mp3File.displayStructureAsXML());
 
@@ -243,7 +243,7 @@ public class Issue271Test extends AbstractTestCase
             v22tag.setField(FieldKey.TITLE,"A new start");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             v22tag = (ID3v22Tag) af.getTag();
             assertFalse(v22tag.isCompression());
             assertFalse(v22tag.isUnsynchronization());
@@ -252,7 +252,7 @@ public class Issue271Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setUnsyncTags(true);
             v22tag.setField(FieldKey.TITLE,"B new start");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             v22tag = (ID3v22Tag) af.getTag();
             assertFalse(v22tag.isCompression());
             assertTrue(v22tag.isUnsynchronization());
@@ -289,7 +289,7 @@ public class Issue271Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test53.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             MP3File mp3File = (MP3File) af;
             System.out.println(mp3File.displayStructureAsXML());
 
@@ -302,7 +302,7 @@ public class Issue271Test extends AbstractTestCase
             v22tag.setField(FieldKey.TITLE,"A new start");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             v22tag = (ID3v22Tag) af.getTag();
             assertFalse(v22tag.isCompression());
             assertFalse(v22tag.isUnsynchronization());
@@ -311,7 +311,7 @@ public class Issue271Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setUnsyncTags(true);
             v22tag.setField(FieldKey.TITLE,"B new start");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             v22tag = (ID3v22Tag) af.getTag();
             assertFalse(v22tag.isCompression());
             assertTrue(v22tag.isUnsynchronization());

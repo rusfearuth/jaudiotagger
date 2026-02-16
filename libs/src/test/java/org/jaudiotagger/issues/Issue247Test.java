@@ -30,11 +30,11 @@ public class Issue247Test extends AbstractTestCase
 
             new Mp4AtomTree(testFile).printAtomTree();
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.getTag().setField(FieldKey.ALBUM,"012345678901");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             new Mp4AtomTree(testFile).printAtomTree();
 
         }

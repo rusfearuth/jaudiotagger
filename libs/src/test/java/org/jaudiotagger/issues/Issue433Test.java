@@ -27,14 +27,14 @@ public class Issue433Test extends AbstractTestCase
         Mp4AtomTree atomTree = new Mp4AtomTree(testFile);
         atomTree.printAtomTree();
 
-        AudioFile af = AudioFileIO.read(testFile);
+        AudioFile af = AudioFileIO.read(testFile.toPath());
 
         af.getTag().setField(FieldKey.ALBUM,"fredwwwwwwwwwwwwwwwwwwwwwwww");
         af.commit();
 
         atomTree = new Mp4AtomTree(testFile);
         atomTree.printAtomTree();
-        af = AudioFileIO.read(testFile);
+        af = AudioFileIO.read(testFile.toPath());
         assertEquals("fredwwwwwwwwwwwwwwwwwwwwwwww",af.getTag().getFirst(FieldKey.ALBUM));
     }
 
@@ -52,14 +52,14 @@ public class Issue433Test extends AbstractTestCase
         Mp4AtomTree atomTree = new Mp4AtomTree(testFile);
         atomTree.printAtomTree();
 
-        AudioFile af = AudioFileIO.read(testFile);
+        AudioFile af = AudioFileIO.read(testFile.toPath());
 
         af.getTag().setField(FieldKey.ALBUM,"fred");
         af.commit();
 
         atomTree = new Mp4AtomTree(testFile);
         atomTree.printAtomTree();
-        af = AudioFileIO.read(testFile);
+        af = AudioFileIO.read(testFile.toPath());
         assertEquals("fred",af.getTag().getFirst(FieldKey.ALBUM));
     }
 
@@ -77,14 +77,14 @@ public class Issue433Test extends AbstractTestCase
         Mp4AtomTree atomTree = new Mp4AtomTree(testFile);
         atomTree.printAtomTree();
 
-        AudioFile af = AudioFileIO.read(testFile);
+        AudioFile af = AudioFileIO.read(testFile.toPath());
 
         af.getTag().setField(FieldKey.ALBUM,"fredwwwwwwwwwwwwwwwwwwwwwwww");
         af.commit();
 
         atomTree = new Mp4AtomTree(testFile);
         atomTree.printAtomTree();
-        af = AudioFileIO.read(testFile);
+        af = AudioFileIO.read(testFile.toPath());
         assertEquals("fredwwwwwwwwwwwwwwwwwwwwwwww",af.getTag().getFirst(FieldKey.ALBUM));
     }
 
@@ -102,14 +102,14 @@ public class Issue433Test extends AbstractTestCase
         Mp4AtomTree atomTree = new Mp4AtomTree(testFile);
         atomTree.printAtomTree();
 
-        AudioFile af = AudioFileIO.read(testFile);
+        AudioFile af = AudioFileIO.read(testFile.toPath());
 
         af.getTag().setField(FieldKey.ALBUM,"fred");
         af.commit();
 
         atomTree = new Mp4AtomTree(testFile);
         atomTree.printAtomTree();
-        af = AudioFileIO.read(testFile);
+        af = AudioFileIO.read(testFile.toPath());
         assertEquals("fred",af.getTag().getFirst(FieldKey.ALBUM));
     }
 }

@@ -25,14 +25,14 @@ public class Issue435Test extends AbstractTestCase
             frame.setBody(fb);
             
             File testFile = AbstractTestCase.copyAudioToTmp("testV25.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             TagOptionSingleton.getInstance().setToDefault();
             TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V23);
             af.getTagOrCreateAndSetDefault();
             ((ID3v23Tag)af.getTag()).setFrame(frame);
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             TagOptionSingleton.getInstance().setToDefault();
             TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V24);
             af.getTagAndConvertOrCreateAndSetDefault();

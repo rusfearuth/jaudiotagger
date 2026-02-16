@@ -24,7 +24,7 @@ public class AiffAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test119.aif");
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             assertTrue(ah instanceof AiffAudioHeader);
             System.out.println(ah);
@@ -67,7 +67,7 @@ public class AiffAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test120.aif");
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             assertTrue(ah instanceof AiffAudioHeader);
             AiffAudioHeader aah = (AiffAudioHeader)ah;
@@ -111,7 +111,7 @@ public class AiffAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test121.aif");
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             assertTrue(ah instanceof AiffAudioHeader);
             AiffAudioHeader aah = (AiffAudioHeader)ah;
@@ -155,7 +155,7 @@ public class AiffAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test132.aif");
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             assertTrue(ah instanceof AiffAudioHeader);
             System.out.println(ah);
@@ -198,7 +198,7 @@ public class AiffAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test133.aif");
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             assertTrue(ah instanceof AiffAudioHeader);
             System.out.println(ah);
@@ -241,7 +241,7 @@ public class AiffAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test134.aif");
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             assertTrue(ah instanceof AiffAudioHeader);
             System.out.println(ah);
@@ -282,7 +282,7 @@ public class AiffAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test135.aif");
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             assertTrue(ah instanceof AiffAudioHeader);
             System.out.println(ah);
@@ -325,7 +325,7 @@ public class AiffAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test136.aif");
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             assertTrue(ah instanceof AiffAudioHeader);
             System.out.println(ah);
@@ -368,7 +368,7 @@ public class AiffAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test137.aif");
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             assertTrue(ah instanceof AiffAudioHeader);
             System.out.println(ah);
@@ -411,7 +411,7 @@ public class AiffAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test138.aiff");
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             assertTrue(ah instanceof AiffAudioHeader);
             System.out.println(ah);

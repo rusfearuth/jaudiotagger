@@ -37,7 +37,7 @@ public class Issue374Test extends AbstractTestCase
                 File testFile = AbstractTestCase.copyAudioToTmp(next.getName(), new File(next.getName().substring(0, next.getName().length() -4)+count+".mp3"));
 
 
-                AudioFile af = AudioFileIO.read(testFile);
+                AudioFile af = AudioFileIO.read(testFile.toPath());
                 String s1 = af.getAudioHeader().getBitRate();
                 String s2 = String.valueOf(af.getAudioHeader().getTrackLength());
                 String s3 = String.valueOf(af.getAudioHeader().isVariableBitRate());
@@ -51,7 +51,7 @@ public class Issue374Test extends AbstractTestCase
                 tag.addField(ArtworkFactory.createArtworkFromFile(new File("testdata", "coverart_large.jpg")));
                 af.commit();
                 System.out.println("Checking:"+testFile);
-                af = AudioFileIO.read(testFile);
+                af = AudioFileIO.read(testFile.toPath());
                 String s11 = af.getAudioHeader().getBitRate();
                 String s22 = String.valueOf(af.getAudioHeader().getTrackLength());
                 String s33 = String.valueOf(af.getAudioHeader().isVariableBitRate());

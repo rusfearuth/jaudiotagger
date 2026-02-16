@@ -25,7 +25,7 @@ public class ReadMp4MovementTagsTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test161.m4a");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             assertEquals("I. Preludium (Pastorale). Allegro moderato",af.getTag().getFirst(FieldKey.MOVEMENT));
             assertEquals("2",af.getTag().getFirst(FieldKey.MOVEMENT_NO));
@@ -39,7 +39,7 @@ public class ReadMp4MovementTagsTest extends AbstractTestCase
             assertEquals("1",af.getTag().getFirst(FieldKey.MOVEMENT_NO));
             assertEquals("7",af.getTag().getFirst(FieldKey.MOVEMENT_TOTAL));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("fred",af.getTag().getFirst(FieldKey.MOVEMENT));
             assertEquals("1",af.getTag().getFirst(FieldKey.MOVEMENT_NO));
             assertEquals("7",af.getTag().getFirst(FieldKey.MOVEMENT_TOTAL));

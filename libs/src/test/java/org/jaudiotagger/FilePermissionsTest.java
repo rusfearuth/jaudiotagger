@@ -77,7 +77,7 @@ public class FilePermissionsTest {
 			CannotWriteException {
 		TagOptionSingleton.getInstance().setCheckIsWritable(performPreCheck);
 		try {
-			AudioFile aFile = AudioFileIO.read(testFile);
+			AudioFile aFile = AudioFileIO.read(testFile.toPath());
 			Tag tag = aFile.getTag();
 			tag.setField(FieldKey.ALBUM, "album");
 			aFile.commit();

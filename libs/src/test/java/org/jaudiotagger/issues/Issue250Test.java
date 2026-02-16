@@ -25,7 +25,7 @@ public class Issue250Test extends AbstractTestCase
         }
         File testFile = AbstractTestCase.copyAudioToTmp("test78.mp3");
 
-        MP3File f = (MP3File)AudioFileIO.read(testFile);
+        MP3File f = (MP3File)AudioFileIO.read(testFile.toPath());
         Tag tag = f.getTag();
         assertTrue(f.getTag() instanceof ID3v23Tag);
         ID3v23Tag id3v23tag = (ID3v23Tag)tag;
@@ -34,7 +34,7 @@ public class Issue250Test extends AbstractTestCase
         assertEquals(3,id3v23tag.getFields("PRIV").size());
         assertEquals(1,id3v23tag.getInvalidFrames()); //PRIV frame
         f.commit();
-        f = (MP3File)AudioFileIO.read(testFile);
+        f = (MP3File)AudioFileIO.read(testFile.toPath());
         tag = f.getTag();
         id3v23tag = (ID3v23Tag)tag;
         assertEquals(13,id3v23tag.getFieldCount());

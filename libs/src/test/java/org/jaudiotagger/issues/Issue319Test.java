@@ -30,7 +30,7 @@ public class Issue319Test extends AbstractTestCase
         File file1 = new File("testdata", "test26.mp3");
 
 
-        MP3File audioFile = (MP3File)AudioFileIO.read(file1);
+        MP3File audioFile = (MP3File)AudioFileIO.read(file1.toPath());
         Tag tag = audioFile.getTag();
 
         FieldKey key = FieldKey.DISC_NO;

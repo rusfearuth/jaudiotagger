@@ -30,14 +30,14 @@ public class Issue320Testa extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test541.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
 
             af.getTagOrCreateAndSetDefault().setField(FieldKey.ARTIST,"newartistname");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             assertEquals("newartistname", af.getTag().getFirst(FieldKey.ARTIST));
             System.out.println(af.getTag());

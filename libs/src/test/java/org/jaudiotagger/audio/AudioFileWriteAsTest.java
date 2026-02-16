@@ -4,6 +4,7 @@ import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.exceptions.CannotWriteException;
 import org.jaudiotagger.tag.FieldKey;
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Able to write language ensures writes it as iso code for mp3s
@@ -22,7 +23,7 @@ public class AudioFileWriteAsTest extends AbstractTestCase {
         File orig = new File("testdata", "01.mp3");
         try {
             sourceFile = AbstractTestCase.copyAudioToTmp(orig.getName());
-            af = AudioFileIO.read(sourceFile);
+            af = AudioFileIO.read(sourceFile.toPath());
         } catch (Throwable e) {
             throw new RuntimeException("Can't setUp test.", e);
         }
@@ -35,7 +36,7 @@ public class AudioFileWriteAsTest extends AbstractTestCase {
 
         final String parent = sourceFile.getParent();
         File destinationNoExtension = new File(parent, DESTINATION_FILE_NAME);
-        AudioFileIO.writeAs(af, destinationNoExtension.getPath());
+        AudioFileIO.writeAs(af, destinationNoExtension.toPath());
 
         assertEquals(destinationNoExtension + EXPECTED_EXTENSION, af.getFile().getPath());
         assertEquals(LANGUAGE, af.getTag().getFirst(FieldKey.LANGUAGE));
@@ -44,7 +45,7 @@ public class AudioFileWriteAsTest extends AbstractTestCase {
     public void testWriteAsWithNull() throws Exception
     {
         try {
-            AudioFileIO.writeAs(af, (String) null);
+            AudioFileIO.writeAs(af, (Path) null);
         } catch (CannotWriteException e) {
             // expected
             return;

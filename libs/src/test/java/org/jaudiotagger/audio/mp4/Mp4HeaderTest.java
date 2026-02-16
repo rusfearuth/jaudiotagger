@@ -26,7 +26,7 @@ public class Mp4HeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
 
 
@@ -59,7 +59,7 @@ public class Mp4HeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test100.mp4");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
 
 

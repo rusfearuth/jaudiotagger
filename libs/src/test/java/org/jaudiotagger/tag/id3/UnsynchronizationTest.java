@@ -167,7 +167,7 @@ public class UnsynchronizationTest extends AbstractTestCase
 
             //Save Unsynced
             TagOptionSingleton.getInstance().setUnsyncTags(true);
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.setTag(new ID3v23Tag());
             ID3v23Tag v23TagUnsynced = (ID3v23Tag)af.getTag();
             assertFalse(v23TagUnsynced.isUnsynchronization());
@@ -178,7 +178,7 @@ public class UnsynchronizationTest extends AbstractTestCase
 
             //Save Notsynced
             TagOptionSingleton.getInstance().setUnsyncTags(false);
-            af = AudioFileIO.read(testFile2);
+            af = AudioFileIO.read(testFile2.toPath());
             af.setTag(new ID3v23Tag());
             ID3v23Tag  v23TagNotsynced = (ID3v23Tag)af.getTag();
             assertFalse(v23TagNotsynced.isUnsynchronization());
@@ -189,7 +189,7 @@ public class UnsynchronizationTest extends AbstractTestCase
 
             //Now read back ok
             long start = System.nanoTime();
-            af = AudioFileIO.read(testFile2);
+            af = AudioFileIO.read(testFile2.toPath());
             long time = System.nanoTime() - start;
             System.out.printf("NOTSYNCED Took %6.3f ms \n", time/1e6);
 
@@ -200,7 +200,7 @@ public class UnsynchronizationTest extends AbstractTestCase
             
             //Now read back ok
             start = System.nanoTime();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             time = System.nanoTime() - start;
             System.out.printf("UNSYCNCED Took %6.3f ms \n", time/1e6);
 

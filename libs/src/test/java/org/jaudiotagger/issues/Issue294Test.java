@@ -42,7 +42,7 @@ public class Issue294Test extends AbstractTestCase
         {
             TagOptionSingleton.getInstance().setUnsyncTags(false);
             //Read and save changes
-            MP3File af = (MP3File)AudioFileIO.read(testFile);
+            MP3File af = (MP3File)AudioFileIO.read(testFile.toPath());
 
             //File is corrupt
             assertEquals(1,af.getTag().getArtworkList().size());
@@ -76,7 +76,7 @@ public class Issue294Test extends AbstractTestCase
 
             byte[]origData=artwork.getBinaryData();
 
-            af = (MP3File)AudioFileIO.read(testFile);
+            af = (MP3File)AudioFileIO.read(testFile.toPath());
             assertEquals(1,af.getTag().getArtworkList().size());
             artwork = af.getTag().getArtworkList().get(0);
             assertEquals(118145,artwork.getBinaryData().length);

@@ -26,7 +26,7 @@ public class FlacHeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.flac");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
 
             assertEquals("192", f.getAudioHeader().getBitRate());
@@ -88,7 +88,7 @@ public class FlacHeaderTest extends TestCase
             //Create Image Link
             tag.getImages().add((MetadataBlockDataPicture) tag.createLinkedArtworkField("../testdata/coverart.jpg"));
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             image = tag.getImages().get(2);
             assertEquals(3, (int) image.getPictureType());
             assertEquals("-->", image.getMimeType());
@@ -123,7 +123,7 @@ public class FlacHeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test2.flac");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
 
 
@@ -161,7 +161,7 @@ public class FlacHeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test102.flac");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
 
 
@@ -199,7 +199,7 @@ public class FlacHeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test158.flac");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
 
 
@@ -237,14 +237,14 @@ public class FlacHeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test158.flac", new File("test158write.flac"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f);
 
             FlacTag tag = (FlacTag) f.getTag();
             tag.setField(FieldKey.ARTIST,"artist");
             f.commit();
             System.out.println("Writing audio data");
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             System.out.println(f);
 
         }
@@ -269,7 +269,7 @@ public class FlacHeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test537.flac");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
 
 
@@ -294,7 +294,7 @@ public class FlacHeaderTest extends TestCase
             tag.setField(FieldKey.ALBUM, "albums");
             System.out.println(tag);
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             System.out.println(f.getTag());
             assertEquals(4, infoReader.countMetaBlocks(f.getFile()));

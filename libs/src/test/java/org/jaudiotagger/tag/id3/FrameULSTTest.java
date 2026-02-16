@@ -29,7 +29,7 @@ public class FrameULSTTest extends AbstractTestCase
         assertEquals("   ", lyricsBody.getLanguage());
 
         //New Method should be same length
-        AudioFile file = AudioFileIO.read(testFile);
+        AudioFile file = AudioFileIO.read(testFile.toPath());
         assertEquals(589, file.getTag().getFirst(FieldKey.LYRICS).length());
     }
 

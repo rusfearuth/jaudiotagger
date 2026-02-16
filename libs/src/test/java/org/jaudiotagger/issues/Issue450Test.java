@@ -26,7 +26,7 @@ public class Issue450Test extends AbstractTestCase
             return;
         }
         File testFile = AbstractTestCase.copyAudioToTmp("test108.mp3");
-        MP3File mp3file = (MP3File) AudioFileIO.read(testFile);
+        MP3File mp3file = (MP3File) AudioFileIO.read(testFile.toPath());
 
         List<TagField> frames = mp3file.getID3v2TagAsv24().getFrame(ID3v24Frames.FRAME_ID_URL_ARTIST_WEB);
         AbstractID3v2Frame frame = (AbstractID3v2Frame)frames.get(0);

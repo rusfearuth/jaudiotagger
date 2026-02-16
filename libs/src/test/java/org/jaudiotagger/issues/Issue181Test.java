@@ -24,7 +24,7 @@ public class Issue181Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test162.wav");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             System.out.println(f.getTag());
             assertFalse(f.getTag().toString().contains("\0"));

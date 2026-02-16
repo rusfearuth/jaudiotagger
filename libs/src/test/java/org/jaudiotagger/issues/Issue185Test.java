@@ -20,7 +20,7 @@ public class Issue185Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
 
             //No Tag
             assertNull(af.getTag());
@@ -39,7 +39,7 @@ public class Issue185Test extends AbstractTestCase
             //Save changes
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertTrue(af.getTag() instanceof ID3v23Tag);
 
         }
@@ -57,7 +57,7 @@ public class Issue185Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
 
             //No Tag
             assertNull(af.getTag());
@@ -70,7 +70,7 @@ public class Issue185Test extends AbstractTestCase
             //Save changes
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertTrue(af.getTag() instanceof ID3v23Tag);
 
         }

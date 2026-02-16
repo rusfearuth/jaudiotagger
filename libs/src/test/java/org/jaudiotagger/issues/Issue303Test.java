@@ -28,11 +28,11 @@ public class Issue303Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test303.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.getTag().setField(ALBUM,"012345678901");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "012345678901");
         }
         catch (Exception e)

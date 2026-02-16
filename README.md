@@ -78,6 +78,37 @@ To run Android instrumentation tests (Android 9+ device/emulator connected):
 
     ./gradlew :libs:connectedAndroidTest
 
+## API Usage (Path + ParcelFileDescriptor)
+
+The file-based API is now centered on `java.nio.file.Path`.
+
+Read:
+
+    AudioFile audioFile = AudioFileIO.read(Paths.get("song.mp3"));
+    AudioFile byExt = AudioFileIO.readAs(Paths.get("song.bin"), "mp3");
+    AudioFile byMagic = AudioFileIO.readMagic(Paths.get("song.dat"));
+
+Write and delete:
+
+    audioFile.commit();
+    audioFile.delete();
+    AudioFileIO.writeAs(audioFile, Paths.get("export/song_copy"));
+
+Android `ParcelFileDescriptor` entry points are also supported:
+
+    AudioFile fromPfd = AudioFileIO.readAs(pfd, "mp3");
+    AudioFileIO.write(audioFile, pfd);
+    AudioFileIO.delete(audioFile, pfd);
+
+### Migration from removed legacy API
+
+- `AudioFileIO.read(File)` -> `AudioFileIO.read(Path)`
+- `AudioFileIO.readAs(File, String)` -> `AudioFileIO.readAs(Path, String)`
+- `AudioFileIO.readMagic(File)` -> `AudioFileIO.readMagic(Path)`
+- `AudioFileIO.writeAs(AudioFile, String)` -> `AudioFileIO.writeAs(AudioFile, Path)`
+- `AudioFileIO.write(AudioFile)` -> `audioFile.commit()`
+- `AudioFileIO.delete(AudioFile)` -> `audioFile.delete()`
+
 ## Utility scripts
 
 - Windows helper scripts are located under `scripts/`

@@ -28,7 +28,7 @@ public class Issue301Test extends AbstractTestCase
             final int AUDIO_LENGTH = 113265;
 
             File testFile = AbstractTestCase.copyAudioToTmp("test47.mp3",new File("testStripPadding.mp3"));
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals(161,((MP3AudioHeader)af.getAudioHeader()).getMp3StartByte());
@@ -38,7 +38,7 @@ public class Issue301Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setId3v2PaddingWillShorten(false);
             af.getTag().setField(FieldKey.ALBUM,"Shorter");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals(161,((MP3AudioHeader)af.getAudioHeader()).getMp3StartByte());
@@ -48,7 +48,7 @@ public class Issue301Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setId3v2PaddingWillShorten(true);
             af.getTag().setField(FieldKey.ALBUM,"Shorter");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals(127,((MP3AudioHeader)af.getAudioHeader()).getMp3StartByte());
@@ -57,7 +57,7 @@ public class Issue301Test extends AbstractTestCase
             //Now a bit longer because more data needed but request to shorten so no spare padding added
             af.getTag().setField(FieldKey.ALBUM,"SlightlyLonger");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals(134,((MP3AudioHeader)af.getAudioHeader()).getMp3StartByte());
@@ -67,7 +67,7 @@ public class Issue301Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setId3v2PaddingWillShorten(false);
             af.getTag().setField(FieldKey.ALBUM,"SoSlightlyLonger");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals(236,((MP3AudioHeader)af.getAudioHeader()).getMp3StartByte());
@@ -77,7 +77,7 @@ public class Issue301Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setId3v2PaddingWillShorten(true);
             af.getTag().setField(FieldKey.ALBUM,"SlightlyLonger");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals(134,((MP3AudioHeader)af.getAudioHeader()).getMp3StartByte());
@@ -105,7 +105,7 @@ public class Issue301Test extends AbstractTestCase
         {
             final int AUDIO_LENGTH = 5048112;
             File testFile = AbstractTestCase.copyAudioToTmp("test308.mp3",new File("test308.mp3"));
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             assertEquals(1856886,((MP3AudioHeader)af.getAudioHeader()).getMp3StartByte());
             assertEquals(1856886 + AUDIO_LENGTH, testFile.length());
@@ -114,7 +114,7 @@ public class Issue301Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setId3v2PaddingWillShorten(true);
             af.getTag().deleteArtworkField();
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals(446,((MP3AudioHeader)af.getAudioHeader()).getMp3StartByte());

@@ -30,7 +30,7 @@ public class Issue225NewTest extends AbstractTestCase
         try
         {
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getAudioHeader());
             System.out.println("IDTAGSIZE:"+((AbstractID3v2Tag)af.getTag()).getSize());
             System.out.println(af.getAudioHeader());
@@ -72,12 +72,12 @@ public class Issue225NewTest extends AbstractTestCase
         try
         {
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println("BEFORE IDTAGSIZE:"+((AbstractID3v2Tag)af.getTag()).getSize());
             af.getTag().deleteArtworkField();
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println("AFTER IDTAGSIZE:"+((AbstractID3v2Tag)af.getTag()).getSize());
         }
@@ -119,12 +119,12 @@ public class Issue225NewTest extends AbstractTestCase
         try
         {
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             af.getTag().addField(FieldKey.BPM,"1231111111111111111111111111111111111111");
             System.out.println("BEFORE IDTAGSIZE:"+((AbstractID3v2Tag)af.getTag()).getSize());
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println("AFTER IDTAGSIZE:"+((AbstractID3v2Tag)af.getTag()).getSize());
 
@@ -166,12 +166,12 @@ public class Issue225NewTest extends AbstractTestCase
         try
         {
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             af.getTag().addField(FieldKey.BPM,"123111111111111111111111111111111111111");
             System.out.println("BEFORE IDTAGSIZE:"+((AbstractID3v2Tag)af.getTag()).getSize());
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println("AFTER IDTAGSIZE:"+((AbstractID3v2Tag)af.getTag()).getSize());
 

@@ -30,7 +30,7 @@ public class Issue315Test extends AbstractTestCase
         try
         {
             final File testFile = AbstractTestCase.copyAudioToTmp("test54.flac");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
 
 
             //Modify File
@@ -38,7 +38,7 @@ public class Issue315Test extends AbstractTestCase
             af.commit();
 
             //Reread File
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
 
         }
         catch(Exception ex)

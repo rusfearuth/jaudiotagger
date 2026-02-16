@@ -26,7 +26,7 @@ public class DsfAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test122.dsf",new File("test122readmetadata.dsf"));
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getTag());
             assertTrue(f.getTag() instanceof ID3v24Tag);
             assertEquals("test3", f.getTag().getFirst(FieldKey.TITLE));

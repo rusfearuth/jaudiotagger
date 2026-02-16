@@ -16,7 +16,7 @@ public class Issue163Test extends AbstractTestCase
         try
         {
             File orig = new File("testdata", "test188863.mp3");
-            MP3File f = (MP3File)AudioFileIO.read(orig);
+            MP3File f = (MP3File)AudioFileIO.read(orig.toPath());
             System.out.println(f.displayStructureAsPlainText());
         }
         catch(Exception ex)

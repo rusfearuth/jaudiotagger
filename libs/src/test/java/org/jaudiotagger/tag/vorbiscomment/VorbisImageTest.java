@@ -27,7 +27,7 @@ public class VorbisImageTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("testsmallimage.ogg");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             String mimeType = ((VorbisCommentTag) f.getTag()).getFirst(VorbisCommentFieldKey.COVERARTMIME);
             assertEquals("image/jpeg", mimeType);
             if (mimeType != null & mimeType.length() > 0)
@@ -54,7 +54,7 @@ public class VorbisImageTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("testlargeimage.ogg");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             String mimeType = ((VorbisCommentTag) f.getTag()).getFirst(VorbisCommentFieldKey.COVERARTMIME);
             assertEquals("image/jpeg", mimeType);
             if (mimeType != null & mimeType.length() > 0)
@@ -79,7 +79,7 @@ public class VorbisImageTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testWriteImage1.ogg"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
             //Add new image, requires two fields in oggVorbis with data in  base64 encoded form
@@ -92,7 +92,7 @@ public class VorbisImageTest extends AbstractTestCase
             tag.setField(tag.createField(VorbisCommentFieldKey.COVERARTMIME, "image/png"));
             f.commit();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (VorbisCommentTag) f.getTag();
 
             //VorbisImage base64 image, and reconstruct
@@ -118,7 +118,7 @@ public class VorbisImageTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testWriteImage2.ogg"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
             //Add new image using purpose built method
@@ -129,7 +129,7 @@ public class VorbisImageTest extends AbstractTestCase
             tag.setArtworkField(imagedata, "image/png");
             f.commit();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (VorbisCommentTag) f.getTag();
 
             //VorbisImage base64 image, and reconstruct
@@ -156,7 +156,7 @@ public class VorbisImageTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testWriteImage3.ogg"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
             //Add new image, requires two fields in oggVorbis with data in  base64 encoded form
@@ -169,7 +169,7 @@ public class VorbisImageTest extends AbstractTestCase
             tag.setField(tag.createField(VorbisCommentFieldKey.COVERARTMIME, "image/png"));
             f.commit();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (VorbisCommentTag) f.getTag();
 
             //VorbisImage base64 image, and reconstruct
@@ -201,7 +201,7 @@ public class VorbisImageTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("testnewlineimage.small.ogg");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             List<Artwork> artwork = ((VorbisCommentTag) f.getTag()).getArtworkList();
             assertEquals(1, artwork.size());
             final Artwork next = artwork.iterator().next();

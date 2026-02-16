@@ -33,7 +33,7 @@ public class Issue345Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3",new File("testWriteFieldsToMp3ID3v24.mp3"));
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.setTag(new ID3v24Tag());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.RATING,"50"));
@@ -60,7 +60,7 @@ public class Issue345Test extends AbstractTestCase
                 assertTrue(((ID3v24Frame)tagField).getBody() instanceof FrameBodyPOPM);
             }
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = af.getTag();
             assertEquals("50",af.getTag().getFirst(FieldKey.RATING));
             assertEquals("mixer",af.getTag().getFirst(FieldKey.MIXER));
@@ -92,7 +92,7 @@ public class Issue345Test extends AbstractTestCase
 
 
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = af.getTag();
             assertEquals("",af.getTag().getFirst(FieldKey.ENGINEER));
             assertEquals("djmixervalue",af.getTag().getFirst(FieldKey.DJMIXER));
@@ -103,7 +103,7 @@ public class Issue345Test extends AbstractTestCase
             tag.deleteField(FieldKey.ARRANGER);
 
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = af.getTag();
             assertEquals("",af.getTag().getFirst(FieldKey.ENGINEER));
             assertEquals("",af.getTag().getFirst(FieldKey.DJMIXER));
@@ -131,7 +131,7 @@ public class Issue345Test extends AbstractTestCase
         {
             testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3",new File("testWriteFieldsToMp3ID3v23.mp3"));
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.setTag(new ID3v23Tag());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.RATING,"50"));
@@ -152,7 +152,7 @@ public class Issue345Test extends AbstractTestCase
             assertEquals("producervalue",af.getTag().getFirst(FieldKey.PRODUCER));
             assertEquals("arrangervalue",af.getTag().getFirst(FieldKey.ARRANGER));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = af.getTag();
             assertEquals("50",tag.getFirst(FieldKey.RATING));
             assertEquals("mixer",tag.getFirst(FieldKey.MIXER));
@@ -179,7 +179,7 @@ public class Issue345Test extends AbstractTestCase
 
 
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = af.getTag();
             assertEquals("",af.getTag().getFirst(FieldKey.ARRANGER));
             assertEquals("djmixervalue",af.getTag().getFirst(FieldKey.DJMIXER));
@@ -191,7 +191,7 @@ public class Issue345Test extends AbstractTestCase
             tag.deleteField(FieldKey.ARRANGER);
 
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = af.getTag();
             assertEquals("",af.getTag().getFirst(FieldKey.ENGINEER));
             assertEquals("",af.getTag().getFirst(FieldKey.DJMIXER));
@@ -217,7 +217,7 @@ public class Issue345Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3",new File("testWriteFieldsToMp3ID3v22.mp3"));
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.setTag(new ID3v22Tag());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.RATING,"50"));
@@ -238,7 +238,7 @@ public class Issue345Test extends AbstractTestCase
             assertEquals("producervalue",af.getTag().getFirst(FieldKey.PRODUCER));
             assertEquals("arrangervalue",af.getTag().getFirst(FieldKey.ARRANGER));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag=af.getTag();
             assertEquals("50",tag.getFirst(FieldKey.RATING));
             assertEquals("mixer",tag.getFirst(FieldKey.MIXER));
@@ -271,7 +271,7 @@ public class Issue345Test extends AbstractTestCase
 
 
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = af.getTag();
             assertEquals("",tag.getFirst(FieldKey.ENGINEER));
             assertEquals("djmixervalue",af.getTag().getFirst(FieldKey.DJMIXER));
@@ -282,7 +282,7 @@ public class Issue345Test extends AbstractTestCase
             tag.deleteField(FieldKey.ARRANGER);
 
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = af.getTag();
             assertEquals("",tag.getFirst(FieldKey.ENGINEER));
             assertEquals("",tag.getFirst(FieldKey.DJMIXER));
@@ -308,7 +308,7 @@ public class Issue345Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test.ogg");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.RATING,"50"));
             tag.setField(tag.createField(FieldKey.MIXER,"mixer"));
@@ -328,7 +328,7 @@ public class Issue345Test extends AbstractTestCase
             assertEquals("producervalue",af.getTag().getFirst(FieldKey.PRODUCER));
             assertEquals("arrangervalue",af.getTag().getFirst(FieldKey.ARRANGER));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("50",af.getTag().getFirst(FieldKey.RATING));
             assertEquals("mixer",af.getTag().getFirst(FieldKey.MIXER));
             assertEquals("engineervalue",af.getTag().getFirst(FieldKey.ENGINEER));
@@ -357,7 +357,7 @@ public class Issue345Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test.flac");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.RATING,"50"));
             tag.setField(tag.createField(FieldKey.MIXER,"mixer"));
@@ -373,7 +373,7 @@ public class Issue345Test extends AbstractTestCase
             assertEquals("producervalue",af.getTag().getFirst(FieldKey.PRODUCER));
             assertEquals("arrangervalue",af.getTag().getFirst(FieldKey.ARRANGER));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("50",af.getTag().getFirst(FieldKey.RATING));
             assertEquals("mixer",af.getTag().getFirst(FieldKey.MIXER));
             assertEquals("engineervalue",af.getTag().getFirst(FieldKey.ENGINEER));
@@ -404,7 +404,7 @@ public class Issue345Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test1.wma");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.RATING,"50"));
             tag.setField(tag.createField(FieldKey.MIXER,"mixer"));
@@ -424,7 +424,7 @@ public class Issue345Test extends AbstractTestCase
             assertEquals("producervalue",af.getTag().getFirst(FieldKey.PRODUCER));
             assertEquals("arrangervalue",af.getTag().getFirst(FieldKey.ARRANGER));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("50",af.getTag().getFirst(FieldKey.RATING));
             assertEquals("mixer",af.getTag().getFirst(FieldKey.MIXER));
             assertEquals("engineervalue",af.getTag().getFirst(FieldKey.ENGINEER));
@@ -453,7 +453,7 @@ public class Issue345Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.RATING,"50"));
             tag.setField(tag.createField(FieldKey.MIXER,"mixer"));
@@ -473,7 +473,7 @@ public class Issue345Test extends AbstractTestCase
             assertEquals("producervalue",af.getTag().getFirst(FieldKey.PRODUCER));
             assertEquals("arrangervalue",af.getTag().getFirst(FieldKey.ARRANGER));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("50",af.getTag().getFirst(FieldKey.RATING));
             assertEquals("mixer",af.getTag().getFirst(FieldKey.MIXER));
             assertEquals("engineervalue",af.getTag().getFirst(FieldKey.ENGINEER));

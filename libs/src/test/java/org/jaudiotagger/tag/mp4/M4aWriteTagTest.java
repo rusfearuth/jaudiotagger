@@ -39,7 +39,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.m4a", new File("testWriteFileSameSize.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change values to different value (but same no of characters, this is the easiest mod to make
@@ -55,7 +55,7 @@ public class M4aWriteTagTest extends TestCase
             tag.setField(tag.createField(FieldKey.BPM, "300"));
             //Save changes and reread from disk
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             //Total FileSize should not have changed
@@ -180,15 +180,15 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.m4a", new File("testWriteFileSmallerSize.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change album to different value (but same no of characters, this is the easiest mod to make)
             tag.setField(FieldKey.ARTIST,"AR");
             tag.setField(FieldKey.ALBUM,"AL");
             //Save changes and reread from disk
-            AudioFileIO.write(f);
-            f = AudioFileIO.read(testFile);
+            f.commit();
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             //Total FileSize should not have changed
@@ -316,7 +316,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.m4a", new File("testWriteFileLargerSize.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change album to different value (but same no of characters, this is the easiest mod to make
@@ -324,7 +324,7 @@ public class M4aWriteTagTest extends TestCase
             tag.setField(FieldKey.ALBUM,"VERYLONGALBUMTNAME");
             //Save changes and re-read from disk
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             //Total FileSize should not have changed
@@ -457,7 +457,7 @@ public class M4aWriteTagTest extends TestCase
             //Starting filesize
             assertEquals(TEST_FILE1_SIZE, testFile.length());
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Mp4Tag tag = (Mp4Tag) f.getTag();
 
             //Add new image
@@ -468,7 +468,7 @@ public class M4aWriteTagTest extends TestCase
 
             //Save changes and reread from disk
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
 
             //Total FileSize should not be be any larger because we used the free atoms
@@ -607,7 +607,7 @@ public class M4aWriteTagTest extends TestCase
 
             new Mp4AtomTree(testFile).printAtomTree();
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Mp4Tag tag = (Mp4Tag) f.getTag();
 
             //Add new image
@@ -618,7 +618,7 @@ public class M4aWriteTagTest extends TestCase
 
             //Save changes and reread from disk
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
 
             //Total FileSize should now be larger
@@ -753,11 +753,11 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.m4a", new File("testDeleteMeta.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
-            AudioFileIO.delete(f);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
+            f.delete();
 
             //Check all Tags Deleted
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getTag());
             assertEquals(0, f.getTag().getFieldCount());
         }
@@ -778,11 +778,11 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test3.m4a", new File("testDeleteMeta2.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
-            AudioFileIO.delete(f);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
+            f.delete();
 
             //Check all Tags Deleted
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getTag());
             assertEquals(0, f.getTag().getFieldCount());
         }
@@ -803,7 +803,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test3.m4a", new File("testWriteFileSameSizeNoMetaFree.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change values to different value (but same no of characters, this is the easiest mod to make)
@@ -815,7 +815,7 @@ public class M4aWriteTagTest extends TestCase
             tag.setField(tag.createField(FieldKey.BPM, "300"));
             //Save changes and reread from disk
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             //Total FileSize should not have changed
@@ -939,7 +939,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test3.m4a", new File("testWriteFileSmallerSizeNoMetaFreeMoreThanEight.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change album to different value (but same no of characters, this is the easiest mod to make)
@@ -949,8 +949,8 @@ public class M4aWriteTagTest extends TestCase
             tag.setField(FieldKey.TITLE,"t");
 
             //Save changes and reread from disk
-            AudioFileIO.write(f);
-            f = AudioFileIO.read(testFile);
+            f.commit();
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             //Total FileSize should not have changed
@@ -1076,7 +1076,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test3.m4a", new File("testWriteFileLessThanEight2.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change values to slightly smaller than values (but less than 8 chras diff in total)
@@ -1084,8 +1084,8 @@ public class M4aWriteTagTest extends TestCase
             tag.setField(FieldKey.ALBUM,"AL");
 
             //Save changes and reread from disk
-            AudioFileIO.write(f);
-            f = AudioFileIO.read(testFile);
+            f.commit();
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             //Total FileSize should not have changed
@@ -1211,7 +1211,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test8.m4a", new File("testWriteFileLessThanEight3.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change values to slightly smaller than values (but less than 8 chars diff in total)
@@ -1219,8 +1219,8 @@ public class M4aWriteTagTest extends TestCase
             tag.setField(FieldKey.ALBUM,"AL");
 
             //Save changes and reread from disk
-            AudioFileIO.write(f);
-            f = AudioFileIO.read(testFile);
+            f.commit();
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             //Total FileSize should not have changed
@@ -1346,7 +1346,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test8.m4a", new File("testWriteFileNoFreeAtom2.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change values to slightly smaller than values (but less than 8 chars diff in total)
@@ -1355,8 +1355,8 @@ public class M4aWriteTagTest extends TestCase
             tag.setField(FieldKey.COMMENT,"C");
 
             //Save changes and reread from disk
-            AudioFileIO.write(f);
-            f = AudioFileIO.read(testFile);
+            f.commit();
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             //Total FileSize should not have changed
@@ -1473,7 +1473,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test3.m4a", new File("testWriteFileLargerSizeNoMetaFree.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change album to different value (but same no of characters, this is the easiest mod to make
@@ -1481,7 +1481,7 @@ public class M4aWriteTagTest extends TestCase
             tag.setField(FieldKey.ALBUM,"VERYLONGALBUMTNAME");
             //Save changes and reread from disk
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             //Total FileSize should not have changed
@@ -1610,7 +1610,7 @@ public class M4aWriteTagTest extends TestCase
             Mp4AtomTree atomTree = new Mp4AtomTree(testFile);
             atomTree.printAtomTree();
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change album to different value (but same no of characters, this is the easiest mod to make
@@ -1630,8 +1630,8 @@ public class M4aWriteTagTest extends TestCase
             tag.addField(((Mp4Tag) tag).createArtworkField(imagedata));
 
             //Save changes and reread from disk
-            AudioFileIO.write(f);
-            f = AudioFileIO.read(testFile);
+            f.commit();
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             //AudioInfo
@@ -1688,7 +1688,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test6.m4a", new File("testWriteNoTopFree.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change album to different value (but same no of characters, this is the easiest mod to make
@@ -1697,7 +1697,7 @@ public class M4aWriteTagTest extends TestCase
             tag.setField(tag.createField(FieldKey.MUSICBRAINZ_ARTISTID, "989a13f6-b58c-4559-b09e-76ae0adb94ed"));
             //Save changes and reread from disk
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             //Total FileSize should not have changed
@@ -1731,7 +1731,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test3.m4a", new File("testWriteFileEqualToFreeSpace.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Frig adding pretend image which will require exactly the same size as space available in top level atom , (there is
@@ -1745,8 +1745,8 @@ public class M4aWriteTagTest extends TestCase
             tag.addField(((Mp4Tag) tag).createArtworkField(imagedata));
 
             //Save changes and reread from disk
-            AudioFileIO.write(f);
-            f = AudioFileIO.read(testFile);
+            f.commit();
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             //AudioInfo
@@ -1860,7 +1860,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test5.m4a", new File("testWriteAllFields.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             assertEquals(TEST_FILE5_SIZE, testFile.length());
@@ -1924,7 +1924,7 @@ public class M4aWriteTagTest extends TestCase
 
             //Save changes and reread from disk
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
             System.out.println(f.getAudioHeader());
             System.out.println(tag);
@@ -1994,7 +1994,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test5.m4a", new File("testWriteGenres.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Mp4Tag tag = (Mp4Tag) f.getTag();
 
             assertEquals(TEST_FILE5_SIZE, testFile.length());
@@ -2002,7 +2002,7 @@ public class M4aWriteTagTest extends TestCase
             //Change value using key
             tag.setField(tag.createField(FieldKey.GENRE, "1")); //key for classic rock
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
             assertEquals("Classic Rock", tag.getFirst(FieldKey.GENRE));
             assertEquals("Classic Rock", tag.getFirst(Mp4FieldKey.GENRE));
@@ -2011,7 +2011,7 @@ public class M4aWriteTagTest extends TestCase
             //Change value using string
             tag.setField(tag.createField(FieldKey.GENRE, "Tango")); //key for classic rock
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
             assertEquals("Tango", tag.getFirst(FieldKey.GENRE));
             assertEquals("Tango", tag.getFirst(Mp4FieldKey.GENRE));
@@ -2021,7 +2021,7 @@ public class M4aWriteTagTest extends TestCase
             //so has to use custom
             tag.setField(tag.createField(FieldKey.GENRE, "SynthPop"));
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
 
             //TODO really want this value to didsappear automtically but unfortunately have to manully do it
@@ -2039,7 +2039,7 @@ public class M4aWriteTagTest extends TestCase
             assertEquals("", tag.getFirst(Mp4FieldKey.GENRE));
             assertEquals("SynthPop", tag.getFirst(Mp4FieldKey.GENRE_CUSTOM));
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
 
             //Delete fields and let lib decide what to do (can use list)
@@ -2051,7 +2051,7 @@ public class M4aWriteTagTest extends TestCase
             assertEquals("Tango", tag.getFirst(Mp4FieldKey.GENRE));
             assertEquals("", tag.getFirst(Mp4FieldKey.GENRE_CUSTOM));
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
         }
         catch (Exception e)
@@ -2068,7 +2068,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test5.m4a", new File("testWriteGenres.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Mp4Tag tag = (Mp4Tag) f.getTag();
 
             assertEquals(TEST_FILE5_SIZE, testFile.length());
@@ -2076,7 +2076,7 @@ public class M4aWriteTagTest extends TestCase
             //Change value using string to value that can only be saved using custom
             tag.setField(tag.createField(FieldKey.GENRE, "Tangoey"));
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
             assertEquals("Tangoey", tag.getFirst(FieldKey.GENRE));
             assertEquals("", tag.getFirst(Mp4FieldKey.GENRE));
@@ -2085,7 +2085,7 @@ public class M4aWriteTagTest extends TestCase
             tag.deleteField(FieldKey.GENRE);
             tag.addField(tag.createField(FieldKey.GENRE, "Slimey"));
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
             assertEquals("Slimey", tag.getFirst(FieldKey.GENRE));
             assertEquals("", tag.getFirst(Mp4FieldKey.GENRE));
@@ -2113,7 +2113,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test5.m4a", new File("testWriteGenres.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Mp4Tag tag = (Mp4Tag) f.getTag();
 
             assertEquals(TEST_FILE5_SIZE, testFile.length());
@@ -2122,7 +2122,7 @@ public class M4aWriteTagTest extends TestCase
             tag.setField(FieldKey.GENRE, "Tangoey");
             tag.setField(FieldKey.GENRE, "Rock");
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
             assertEquals("Rock", tag.getFirst(FieldKey.GENRE));
             assertEquals("Rock", tag.getFirst(Mp4FieldKey.GENRE));
@@ -2149,7 +2149,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test5.m4a", new File("testWriteGenres.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Mp4Tag tag = (Mp4Tag) f.getTag();
 
             assertEquals(TEST_FILE5_SIZE, testFile.length());
@@ -2159,7 +2159,7 @@ public class M4aWriteTagTest extends TestCase
             tag.setField(FieldKey.GENRE, "Tangoey");
 
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
             assertEquals("Tangoey", tag.getFirst(FieldKey.GENRE));
             assertEquals("", tag.getFirst(Mp4FieldKey.GENRE));
@@ -2182,7 +2182,7 @@ public class M4aWriteTagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test5.m4a", new File("testWriteCustomGenres.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Mp4Tag tag = (Mp4Tag) f.getTag();
 
             assertEquals(TEST_FILE5_SIZE, testFile.length());
@@ -2191,7 +2191,7 @@ public class M4aWriteTagTest extends TestCase
             TagOptionSingleton.getInstance().setWriteMp4GenresAsText(true);
             tag.setField(tag.createField(FieldKey.GENRE, "Tango")); //key for classic rock
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
             assertEquals("Tango", tag.getFirst(FieldKey.GENRE));
             assertEquals("Tango", tag.getFirst(Mp4FieldKey.GENRE_CUSTOM));
@@ -2221,7 +2221,7 @@ public class M4aWriteTagTest extends TestCase
             File testFile = AbstractTestCase.copyAudioToTmp("unable_to_write.m4p");
 
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             tag.setField(FieldKey.TITLE,"tit2");
             f.commit();
@@ -2246,7 +2246,7 @@ public class M4aWriteTagTest extends TestCase
             }
             File testFile = AbstractTestCase.copyAudioToTmp("unable_to_write.m4p");
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             RandomAccessFile imageFile = new RandomAccessFile(new File("testdata", "coverart.png"), "r");
@@ -2275,7 +2275,7 @@ public class M4aWriteTagTest extends TestCase
             }
             File testFile = AbstractTestCase.copyAudioToTmp("unable_to_write.m4p");
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Frig adding pretend image which will require exactly the same size as space available in the two
@@ -2309,7 +2309,7 @@ public class M4aWriteTagTest extends TestCase
             }
             File testFile = AbstractTestCase.copyAudioToTmp("unable_to_write.m4p");
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Frig adding pretend image which will require exactly the same size as space available in the two
@@ -2347,7 +2347,7 @@ public class M4aWriteTagTest extends TestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test27.m4a", new File("rvdnswithoutdata.m4a"));
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Mp4Tag tag = (Mp4Tag) f.getTag();
 
 
@@ -2357,7 +2357,7 @@ public class M4aWriteTagTest extends TestCase
             f.commit();
 
             //Reread changes
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) f.getTag();
             assertEquals("Title", tag.getFirst(FieldKey.TITLE));
             assertEquals("Album", tag.getFirst(FieldKey.ALBUM));
@@ -2383,13 +2383,13 @@ public class M4aWriteTagTest extends TestCase
     public void testWriteMultipleFields() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("test.m4a", new File("testWriteMultiple.m4a"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(tagFields.size(),1);
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist2");
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(tagFields.size(),3);
     }
@@ -2399,7 +2399,7 @@ public class M4aWriteTagTest extends TestCase
         File testFile = AbstractTestCase.copyAudioToTmp("test.m4a", new File("testDeleteFields.m4a"));
 
         //Delete using generic key
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(1,tagFields.size());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
@@ -2408,7 +2408,7 @@ public class M4aWriteTagTest extends TestCase
         f.commit();
 
         //Delete using mp4key
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
@@ -2419,7 +2419,7 @@ public class M4aWriteTagTest extends TestCase
         assertEquals(0,tagFields.size());
         f.commit();
 
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
     }
@@ -2434,13 +2434,13 @@ public class M4aWriteTagTest extends TestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.m4a", new File("testwrite1.m4a"));
 
-            AudioFile f = AudioFileIO.read(testFile);
-            AudioFileIO.delete(f);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
+            f.delete();
 
             // Tests multiple iterations on same file
             for (int i = 1; i < 3; i++)
             {
-                f = AudioFileIO.read(testFile);
+                f = AudioFileIO.read(testFile.toPath());
                 Tag tag = f.getTag();
                 for (FieldKey key : FieldKey.values())
                 {
@@ -2459,7 +2459,7 @@ public class M4aWriteTagTest extends TestCase
                     }
                 }
                 f.commit();
-                f = AudioFileIO.read(testFile);
+                f = AudioFileIO.read(testFile.toPath());
                 tag = f.getTag();
                 for (FieldKey key : FieldKey.values())
                 {

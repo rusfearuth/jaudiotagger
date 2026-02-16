@@ -23,7 +23,7 @@ public class Issue183Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test508.ogg");
-            AudioFileIO.read(testFile);
+            AudioFileIO.read(testFile.toPath());
         }
         catch(Exception e)
         {

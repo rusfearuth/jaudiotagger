@@ -28,7 +28,7 @@ public class Issue263Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.setTag(new ID3v24Tag());
             Tag tag = af.getTag();
             tag.createField(FieldKey.COVER_ART, "test");
@@ -56,7 +56,7 @@ public class Issue263Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.setTag(new ID3v22Tag());
             Tag tag = af.getTag();
             tag.createField(FieldKey.COVER_ART, "test");
@@ -84,7 +84,7 @@ public class Issue263Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.setTag(new ID3v23Tag());
             Tag tag = af.getTag();
             tag.createField(FieldKey.COVER_ART, "test");
@@ -114,7 +114,7 @@ public class Issue263Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test3.ogg");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.createField(FieldKey.COVER_ART, "test");
         }
@@ -138,7 +138,7 @@ public class Issue263Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test.flac");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.createField(FieldKey.COVER_ART, "test");
         }
@@ -164,7 +164,7 @@ public class Issue263Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test5.wma");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.createField(FieldKey.COVER_ART, "test");
         }
@@ -189,7 +189,7 @@ public class Issue263Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test2.m4a");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.createField(FieldKey.COVER_ART, "test");
         }
@@ -215,7 +215,7 @@ public class Issue263Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test.wav");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.createField(FieldKey.COVER_ART, "test");
         }
@@ -240,7 +240,7 @@ public class Issue263Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test01.ra");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.createField(FieldKey.COVER_ART, "test");
         }

@@ -24,7 +24,7 @@ public class Issue367Test extends AbstractTestCase
 
             File testFile = AbstractTestCase.copyAudioToTmp("test93.mp3");
             long startTime = System.nanoTime();
-            AudioFileIO.read(testFile);
+            AudioFileIO.read(testFile.toPath());
             long endTime = System.nanoTime();
             double totalTime = (endTime - startTime) / 1000000.0;
             System.out.println("Time:"+totalTime + ":ms");

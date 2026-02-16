@@ -60,7 +60,7 @@ public abstract class WmaTestCase extends TestCase
     {
         if (this.audioFile == null)
         {
-            this.audioFile = AudioFileIO.read(this.testFile);
+            this.audioFile = AudioFileIO.read(this.testFile.toPath());
         }
         return this.audioFile;
     }

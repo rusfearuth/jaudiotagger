@@ -204,7 +204,7 @@ public class ID3v24TagTest extends TestCase
     public void testWriteMultipleTextFields() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWriteMultipleText.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
         f.setTag(new ID3v24Tag());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
@@ -242,7 +242,7 @@ public class ID3v24TagTest extends TestCase
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(1,tagFields.size());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT).size());
         assertEquals("artist1",f.getTag().getFirst(FieldKey.ALBUM_ARTIST_SORT));
         assertEquals("artist2",f.getTag().getValue(FieldKey.ALBUM_ARTIST_SORT,1));
@@ -258,7 +258,7 @@ public class ID3v24TagTest extends TestCase
     public void testWriteMultipleTextTXXXFields() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWriteMultipleTextTXXX.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
         f.setTag(new ID3v24Tag());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.BARCODE);
@@ -271,7 +271,7 @@ public class ID3v24TagTest extends TestCase
         assertEquals(1,tagFields.size());
         assertEquals(2,f.getTag().getAll(FieldKey.BARCODE).size());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.BARCODE).size());
         assertEquals(1,f.getTag().getFieldCount());
         tagFields = f.getTag().getFields(FieldKey.BARCODE);
@@ -285,7 +285,7 @@ public class ID3v24TagTest extends TestCase
     public void testWriteMultipleDifferentTextTXXXFields() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWriteMultipleTextTXXX.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
         f.setTag(new ID3v24Tag());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.BARCODE);
@@ -298,7 +298,7 @@ public class ID3v24TagTest extends TestCase
         tagFields = f.getTag().getFields(FieldKey.BARCODE);
         assertEquals(1,tagFields.size());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.BARCODE).size());
         assertEquals(1,f.getTag().getFields(FieldKey.MUSICBRAINZ_DISC_ID).size());
         assertEquals(2,f.getTag().getFieldCount());
@@ -309,7 +309,7 @@ public class ID3v24TagTest extends TestCase
      public void testWriteMultipleFields() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWriteMultiple.mp3"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         assertNull(f.getTag());
         f.setTag(new ID3v24Tag());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
@@ -322,7 +322,7 @@ public class ID3v24TagTest extends TestCase
         tagFields = f.getTag().getFields(FieldKey.URL_OFFICIAL_RELEASE_SITE);
         //assertEquals(1,tagFields.size());
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertEquals(1,f.getTag().getFields(FieldKey.URL_OFFICIAL_RELEASE_SITE).size());
         assertEquals(1,f.getTag().getFieldCount());
         assertEquals(1,((AbstractID3v2Tag)f.getTag()).getFieldCount());
@@ -339,7 +339,7 @@ public class ID3v24TagTest extends TestCase
         mp3File.save();
 
         //Delete using generic key
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
@@ -349,7 +349,7 @@ public class ID3v24TagTest extends TestCase
         f.commit();
 
         //Delete using flac id
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
@@ -360,7 +360,7 @@ public class ID3v24TagTest extends TestCase
         assertEquals(0,tagFields.size());
         f.commit();
 
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
     }
@@ -410,7 +410,7 @@ public class ID3v24TagTest extends TestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test70.mp3");
             MP3File audioFile = new MP3File(testFile);
-            AudioFileIO.write(audioFile);
+            audioFile.commit();
         }
         catch(Exception e)
         {
@@ -422,7 +422,7 @@ public class ID3v24TagTest extends TestCase
     public void testWriteMultipleGenresToID3v24TagUsingDefault() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testWriteMultipleV24.mp3"));
-        AudioFile file = AudioFileIO.read(testFile);
+        AudioFile file = AudioFileIO.read(testFile.toPath());
         assertNull(file.getTag());
         file.setTag(new ID3v24Tag());
         file.getTag().deleteField(FieldKey.GENRE);

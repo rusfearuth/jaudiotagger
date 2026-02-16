@@ -30,7 +30,7 @@ public class NetworkTest extends AbstractTestCase
                     else
                     {
                         System.out.println(new Date()+":Start File:"+file.getPath());
-                        AudioFileIO.read(file);
+                        AudioFileIO.read(file.toPath());
                         //FileChannel fc = new FileInputStream(file).getChannel();
                         //ByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY,0,500000);
                         System.out.println(new Date()+":End File:"+file.getPath());

@@ -35,7 +35,7 @@ public class Issue249Test extends AbstractTestCase
             File testFile = AbstractTestCase.copyAudioToTmp("test34.mp3");
 
             //Convert to v24Tag
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             MP3File mp3File= (MP3File)af;
             v24tag = mp3File.getID3v2TagAsv24();
             v22tag = (ID3v22Tag)mp3File.getID3v2Tag();

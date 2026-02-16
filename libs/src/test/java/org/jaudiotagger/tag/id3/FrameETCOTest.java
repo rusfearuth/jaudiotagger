@@ -43,7 +43,7 @@ public class FrameETCOTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test20.mp3");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             final ID3v23Frame frame = ((ID3v23Frame) ((ID3v23Tag) f.getTag()).getFrame(ID3v24Frames.FRAME_ID_EVENT_TIMING_CODES));
             FrameBodyETCO body = (FrameBodyETCO) frame.getBody();
             assertEquals(2, body.getTimestampFormat());

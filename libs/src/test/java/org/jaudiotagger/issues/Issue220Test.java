@@ -32,7 +32,7 @@ public class Issue220Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test41.m4a");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertTrue(af.getTag().isEmpty());
         }
         catch(Exception e)
@@ -66,7 +66,7 @@ public class Issue220Test extends AbstractTestCase
             atomTree.printAtomTree();
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertTrue(af.getTag().isEmpty());
 
             //Write file
@@ -82,7 +82,7 @@ public class Issue220Test extends AbstractTestCase
             atomTree = new Mp4AtomTree(testFile);
             atomTree.printAtomTree();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("FREDDYCOUGAR",af.getTag().getFirst(FieldKey.ARTIST));
             assertEquals("album",af.getTag().getFirst(FieldKey.ALBUM));
             assertEquals("title",af.getTag().getFirst(FieldKey.TITLE));
@@ -119,7 +119,7 @@ public class Issue220Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test42.m4a");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals("artist",af.getTag().getFirst(FieldKey.ARTIST));
             assertEquals("album",af.getTag().getFirst(FieldKey.ALBUM));
             assertEquals("test42",af.getTag().getFirst(FieldKey.TITLE));
@@ -153,7 +153,7 @@ public class Issue220Test extends AbstractTestCase
                testFile = AbstractTestCase.copyAudioToTmp("test42.m4a");
 
                //Read File okay
-               AudioFile af = AudioFileIO.read(testFile);
+               AudioFile af = AudioFileIO.read(testFile.toPath());
                af.getTag().setField(FieldKey.ALBUM,"KARENTAYLORALBUM");
                af.getTag().setField(FieldKey.TITLE,"KARENTAYLORTITLE");
                af.getTag().setField(FieldKey.GENRE,"KARENTAYLORGENRE");
@@ -161,7 +161,7 @@ public class Issue220Test extends AbstractTestCase
 
                af.commit();
                System.out.println("All is going well");
-               af = AudioFileIO.read(testFile);
+               af = AudioFileIO.read(testFile.toPath());
                assertEquals("KARENTAYLORALBUM",af.getTag().getFirst(FieldKey.ALBUM));
                assertEquals("KARENTAYLORTITLE",af.getTag().getFirst(FieldKey.TITLE));
                assertEquals("KARENTAYLORGENRE",af.getTag().getFirst(FieldKey.GENRE));
@@ -196,7 +196,7 @@ public class Issue220Test extends AbstractTestCase
                     testFile = AbstractTestCase.copyAudioToTmp("test44.m4a");
 
                     //Read File okay
-                    AudioFile af = AudioFileIO.read(testFile);
+                    AudioFile af = AudioFileIO.read(testFile.toPath());
 
 
                     //Write file
@@ -204,7 +204,7 @@ public class Issue220Test extends AbstractTestCase
                     af.commit();
 
                     //Read file again okay
-                    af = AudioFileIO.read(testFile);
+                    af = AudioFileIO.read(testFile.toPath());
                     assertEquals("ti",af.getTag().getFirst(FieldKey.TITLE));
                 }
                 catch(Exception e)
@@ -236,7 +236,7 @@ public class Issue220Test extends AbstractTestCase
                     testFile = AbstractTestCase.copyAudioToTmp("test44.m4a");
 
                     //Read File okay
-                    AudioFile af = AudioFileIO.read(testFile);
+                    AudioFile af = AudioFileIO.read(testFile.toPath());
 
 
                     //Write file
@@ -248,7 +248,7 @@ public class Issue220Test extends AbstractTestCase
                     af.commit();
 
                     //Read file again okay
-                    af = AudioFileIO.read(testFile);
+                    af = AudioFileIO.read(testFile.toPath());
                     assertEquals("FREDDYCOUGAR",af.getTag().getFirst(FieldKey.ARTIST));
                     assertEquals("album",af.getTag().getFirst(FieldKey.ALBUM));
                     assertEquals("title",af.getTag().getFirst(FieldKey.TITLE));

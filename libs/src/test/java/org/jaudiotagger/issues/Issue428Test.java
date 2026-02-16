@@ -18,7 +18,7 @@ public class Issue428Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.flac");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertTrue(af.getAudioHeader() instanceof FlacAudioHeader);
             assertEquals(32,((FlacAudioHeader)af.getAudioHeader()).getMd5().length());
             assertEquals("4d285826d15a2d38b4d02b4dc2d3f4e1",((FlacAudioHeader)af.getAudioHeader()).getMd5());
@@ -44,7 +44,7 @@ public class Issue428Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test102.flac");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertTrue(af.getAudioHeader() instanceof FlacAudioHeader);
             assertEquals(32,((FlacAudioHeader)af.getAudioHeader()).getMd5().length());
             assertEquals("3a6c3caaf7987d84c2ff65a4c9f6a0d4",((FlacAudioHeader)af.getAudioHeader()).getMd5());

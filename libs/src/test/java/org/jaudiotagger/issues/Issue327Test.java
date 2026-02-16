@@ -20,7 +20,7 @@ public class Issue327Test extends AbstractTestCase
     public void testUTF16BOMMultipleFieldSeperators() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3",new File("testUTF16BOMMultipleFieldSeperators.mp3"));
-        MP3File f = (MP3File)AudioFileIO.read(testFile);
+        MP3File f = (MP3File)AudioFileIO.read(testFile.toPath());
         f.setID3v2Tag(new ID3v23Tag());
         f.getID3v2Tag().addField(FieldKey.MOOD,"For Checking End");
         f.getID3v2Tag().addField(FieldKey.ALBUM_ARTIST,"Ϟ");
@@ -61,7 +61,7 @@ public class Issue327Test extends AbstractTestCase
         fc.close();
 
         //What does jaudiotagger read the values back as
-        f = (MP3File)AudioFileIO.read(testFile);
+        f = (MP3File)AudioFileIO.read(testFile.toPath());
         assertEquals("Ϟ",f.getTag().getFirst(FieldKey.ALBUM_ARTIST));
         assertEquals("Ϟ",f.getTag().getValue(FieldKey.ALBUM_ARTIST,0));
         assertEquals("Ϟ",f.getTag().getValue(FieldKey.ALBUM_ARTIST,1));

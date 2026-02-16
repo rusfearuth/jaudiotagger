@@ -19,11 +19,11 @@ public class Issue321Test extends AbstractTestCase {
         File testFile = createMP4WithExtraByte();
         if (testFile == null) return;
 
-        AudioFile af = AudioFileIO.read(testFile);
+        AudioFile af = AudioFileIO.read(testFile.toPath());
         assertNotNull(af.getTag());
         System.out.println(af.getTag());
 
-        AudioFileIO.write(af);
+        af.commit();
     }
 
     public void testReadingMP4WithExtraByteAndWrite() throws Exception
@@ -31,14 +31,14 @@ public class Issue321Test extends AbstractTestCase {
         File testFile = createMP4WithExtraByte();
         if (testFile == null) return;
 
-        AudioFile af = AudioFileIO.read(testFile);
+        AudioFile af = AudioFileIO.read(testFile.toPath());
         assertNotNull(af.getTag());
         final String afString = af.getTag().toString();
 
         // write
-        AudioFileIO.write(af);
+        af.commit();
 
-        AudioFile rereadAF = AudioFileIO.read(testFile);
+        AudioFile rereadAF = AudioFileIO.read(testFile.toPath());
         final String rereadAfString = rereadAF.getTag().toString();
         assertNotNull(rereadAfString);
 
@@ -52,7 +52,7 @@ public class Issue321Test extends AbstractTestCase {
         if (testFile == null) return;
 
         final long originalLength = testFile.length();
-        AudioFile af = AudioFileIO.read(testFile);
+        AudioFile af = AudioFileIO.read(testFile.toPath());
         assertNotNull(af.getTag());
         // add long fields
         af.getTag().setField(FieldKey.ALBUM, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
@@ -63,16 +63,16 @@ public class Issue321Test extends AbstractTestCase {
         af.getTag().setField(FieldKey.COMMENT, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
         // write
-        AudioFileIO.write(af);
+        af.commit();
 
-        AudioFile rereadAF = AudioFileIO.read(testFile);
+        AudioFile rereadAF = AudioFileIO.read(testFile.toPath());
         final String rereadAfString = rereadAF.getTag().toString();
         assertNotNull(rereadAfString);
 
         // ensure file length has indeed changed
         assertNotSame(originalLength, testFile.length());
         // check ability to re-read
-        AudioFileIO.read(testFile);
+        AudioFileIO.read(testFile.toPath());
     }
 
     private File createMP4WithExtraByte() throws IOException {

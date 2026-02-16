@@ -74,7 +74,7 @@ public class RealReadTagTest extends AbstractTestCase
     public void checkRealTag(String filename, String title, String artist, String comment) throws InvalidAudioFrameException, IOException, ReadOnlyFileException, TagException, CannotReadException
     {
         File testFile = AbstractTestCase.copyAudioToTmp(filename);
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         Tag tag = f.getTag();
         assertEquals(3, tag.getFieldCount()); // If this line fails we need to update our test as the RealMedia tag parser has been augmented
         assertEquals(title, tag.getFirst(FieldKey.TITLE));

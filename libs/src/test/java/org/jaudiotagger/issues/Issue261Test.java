@@ -32,13 +32,13 @@ public class Issue261Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test45.m4a");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             
             //Write file
             af.getTag().setField(FieldKey.YEAR,"2007");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("2007",af.getTag().getFirst(FieldKey.YEAR));
 
 

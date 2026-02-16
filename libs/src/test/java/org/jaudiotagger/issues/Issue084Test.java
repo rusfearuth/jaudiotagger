@@ -30,7 +30,7 @@ public class Issue084Test extends AbstractTestCase
                 TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
                 TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_EXISTING_AND_ACTIVE);
                 File testFile = AbstractTestCase.copyAudioToTmp("test123.wav", new File("test123Synced.wav"));
-                AudioFile f = AudioFileIO.read(testFile);
+                AudioFile f = AudioFileIO.read(testFile.toPath());
                 Tag tag = f.getTag();
                 assertEquals("artistName\0", ((WavTag)tag).getInfoTag().getFirst(FieldKey.ARTIST));
                 assertEquals("albumName\0", ((WavTag)tag).getInfoTag().getFirst(FieldKey.ALBUM));
@@ -40,7 +40,7 @@ public class Issue084Test extends AbstractTestCase
                 assertEquals("artistName", tag.getFirst(FieldKey.ARTIST));
                 assertEquals("albumName", tag.getFirst(FieldKey.ALBUM));
                 f.commit();
-                f = AudioFileIO.read(testFile);
+                f = AudioFileIO.read(testFile.toPath());
                 tag = f.getTag();
                 assertEquals("artistName\0", ((WavTag)tag).getInfoTag().getFirst(FieldKey.ARTIST));
                 assertTrue(((WavTag)tag).isExistingInfoTag());
@@ -67,7 +67,7 @@ public class Issue084Test extends AbstractTestCase
                 TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY);
                 TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_BOTH);
                 File testFile = AbstractTestCase.copyAudioToTmp("test126.wav", new File("test126Synced.wav"));
-                AudioFile f = AudioFileIO.read(testFile);
+                AudioFile f = AudioFileIO.read(testFile.toPath());
                 Tag tag = f.getTag();
                 assertEquals("fred", ((WavTag)tag).getID3Tag().getFirst(FieldKey.ARTIST));
                 assertEquals("", ((WavTag)tag).getInfoTag().getFirst(FieldKey.ARTIST));
@@ -76,7 +76,7 @@ public class Issue084Test extends AbstractTestCase
                 ((WavTag)tag).syncToInfoFromId3IfEmpty();
                 assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
                 f.commit();
-                f = AudioFileIO.read(testFile);
+                f = AudioFileIO.read(testFile.toPath());
                 tag = f.getTag();
                 assertEquals("fred", ((WavTag)tag).getID3Tag().getFirst(FieldKey.ARTIST));
                 assertTrue(((WavTag)tag).isExistingInfoTag());
@@ -105,7 +105,7 @@ public class Issue084Test extends AbstractTestCase
                 TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY);
                 TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_BOTH);
                 File testFile = AbstractTestCase.copyAudioToTmp("test126.wav", new File("test126SyncedAfterRead.wav"));
-                AudioFile f = AudioFileIO.read(testFile);
+                AudioFile f = AudioFileIO.read(testFile.toPath());
                 Tag tag = f.getTag();
                 assertEquals("fred", ((WavTag)tag).getID3Tag().getFirst(FieldKey.ARTIST));
                 assertEquals("", ((WavTag)tag).getInfoTag().getFirst(FieldKey.ARTIST));
@@ -142,7 +142,7 @@ public class Issue084Test extends AbstractTestCase
                 TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY_AND_SYNC);
                 TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_BOTH);
                 File testFile = AbstractTestCase.copyAudioToTmp("test126.wav", new File("test126SyncedAfterRead.wav"));
-                AudioFile f = AudioFileIO.read(testFile);
+                AudioFile f = AudioFileIO.read(testFile.toPath());
                 Tag tag = f.getTag();
                 assertEquals("fred", ((WavTag) tag).getID3Tag().getFirst(FieldKey.ARTIST));
                 assertEquals("fred\0", ((WavTag)tag).getInfoTag().getFirst(FieldKey.ARTIST));
@@ -167,7 +167,7 @@ public class Issue084Test extends AbstractTestCase
                 TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY_AND_SYNC);
                 TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_BOTH);
                 File testFile = AbstractTestCase.copyAudioToTmp("test123.wav", new File("test123AutoSyncedAfterRead.wav"));
-                AudioFile f = AudioFileIO.read(testFile);
+                AudioFile f = AudioFileIO.read(testFile.toPath());
                 Tag tag = f.getTag();
                 assertEquals("artistName", ((WavTag)tag).getID3Tag().getFirst(FieldKey.ARTIST));
                 assertEquals("artistName\0", ((WavTag)tag).getInfoTag().getFirst(FieldKey.ARTIST));
@@ -192,7 +192,7 @@ public class Issue084Test extends AbstractTestCase
                 TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY_AND_SYNC);
                 TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_BOTH_AND_SYNC);
                 File testFile = AbstractTestCase.copyAudioToTmp("test123.wav", new File("test123AutoSyncedAfterReadBeforeWrite.wav"));
-                AudioFile f = AudioFileIO.read(testFile);
+                AudioFile f = AudioFileIO.read(testFile.toPath());
                 Tag tag = f.getTag();
                 assertEquals("artistName", ((WavTag)tag).getID3Tag().getFirst(FieldKey.ARTIST));
                 assertEquals("artistName\0", ((WavTag)tag).getInfoTag().getFirst(FieldKey.ARTIST));
@@ -200,7 +200,7 @@ public class Issue084Test extends AbstractTestCase
                 tag.setField(FieldKey.ARTIST, "fred");
                 f.commit();
                 TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
-                f = AudioFileIO.read(testFile);
+                f = AudioFileIO.read(testFile.toPath());
                 tag = f.getTag();
                 assertEquals("fred", ((WavTag)tag).getID3Tag().getFirst(FieldKey.ARTIST));
                 assertEquals("fred\0", ((WavTag)tag).getInfoTag().getFirst(FieldKey.ARTIST));
@@ -226,7 +226,7 @@ public class Issue084Test extends AbstractTestCase
                 TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY_AND_SYNC);
                 TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_BOTH_AND_SYNC);
                 File testFile = AbstractTestCase.copyAudioToTmp("test126.wav", new File("test126AutoSyncedAfterReadBeforeWrite.wav"));
-                AudioFile f = AudioFileIO.read(testFile);
+                AudioFile f = AudioFileIO.read(testFile.toPath());
                 Tag tag = f.getTag();
                 assertEquals("fred", ((WavTag)tag).getID3Tag().getFirst(FieldKey.ARTIST));
                 assertEquals("fred\0", ((WavTag)tag).getInfoTag().getFirst(FieldKey.ARTIST));
@@ -234,7 +234,7 @@ public class Issue084Test extends AbstractTestCase
                 tag.setField(FieldKey.ARTIST, "tim");
                 f.commit();
                 TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
-                f = AudioFileIO.read(testFile);
+                f = AudioFileIO.read(testFile.toPath());
                 tag = f.getTag();
                 assertEquals("tim", ((WavTag)tag).getID3Tag().getFirst(FieldKey.ARTIST));
                 assertEquals("tim", ((WavTag)tag).getInfoTag().getFirst(FieldKey.ARTIST));

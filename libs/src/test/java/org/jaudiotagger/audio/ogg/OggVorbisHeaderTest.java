@@ -28,7 +28,7 @@ public class OggVorbisHeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testReadFile.ogg"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             //assertEquals("192",f.getAudioHeader().getBitRate());
             //assertEquals("Ogg Vorbis v1",f.getAudioHeader().getEncodingType());
@@ -65,7 +65,7 @@ public class OggVorbisHeaderTest extends TestCase
             }
 
             File testFile = AbstractTestCase.copyAudioToTmp("test2.ogg", new File("test2.ogg"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             f.getTag().setField(FieldKey.ALBUM,"bbbbbbb");
             f.commit();
@@ -96,14 +96,14 @@ public class OggVorbisHeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testWriteTagToFile.ogg"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             //Size of VorbisComment should increase
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             f.getTag().setField(FieldKey.ALBUM,"bbbbbbb");
             f.commit();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             assertEquals("bbbbbbb", f.getTag().getFirst(FieldKey.ALBUM));
 
@@ -140,7 +140,7 @@ public class OggVorbisHeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("testlargeimage.ogg", new File("testWritePreviouslyLargeFile.ogg"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             //Size of VorbisComment should decrease just setting a nonsical but muuch smaller value for image
             assertTrue(f.getTag() instanceof VorbisCommentTag);
@@ -148,7 +148,7 @@ public class OggVorbisHeaderTest extends TestCase
             vorbisTag.setField(vorbisTag.createField(VorbisCommentFieldKey.COVERART, "ccc"));
             f.commit();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
 
             OggFileReader ofr = new OggFileReader();
@@ -193,14 +193,14 @@ public class OggVorbisHeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("testlargeimage.ogg", new File("testLargeWriteFile.ogg"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             //Size of VorbisComment should increase
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             f.getTag().setField(FieldKey.ALBUM,"bbbbbbb");
             f.commit();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             assertEquals("bbbbbbb", f.getTag().getFirst(FieldKey.ALBUM));
 
@@ -238,7 +238,7 @@ public class OggVorbisHeaderTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("testlargeimage.ogg", new File("testAwkwardSizeWriteFile.ogg"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             //Size of VorbisComment should increase and to a level that the setupheader cant fit completely
             //in last page pf comment header so has to be split over two pages
@@ -252,7 +252,7 @@ public class OggVorbisHeaderTest extends TestCase
             f.getTag().setField(FieldKey.TITLE,sb.toString());
             f.commit();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             assertEquals("bbbbbbb", f.getTag().getFirst(FieldKey.ALBUM));
             assertEquals(sb.toString(), f.getTag().getFirst(FieldKey.TITLE));

@@ -27,9 +27,9 @@ public class Issue277aTest extends AbstractTestCase
 
             new Mp4AtomTree(testFile).printAtomTree();
 
-            AudioFileIO.read(testFile);
+            AudioFileIO.read(testFile.toPath());
 
-            //af = AudioFileIO.read(testFile);
+            //af = AudioFileIO.read(testFile.toPath());
             //new Mp4AtomTree(testFile).printAtomTree();
 
         }

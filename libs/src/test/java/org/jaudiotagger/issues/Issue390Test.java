@@ -29,7 +29,7 @@ public class Issue390Test extends AbstractTestCase
             }
 
             File testFile = AbstractTestCase.copyAudioToTmp("test101.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             MP3File mp3 = (MP3File)af;
             assertNotNull(mp3.getID3v2Tag());
             assertNotNull(mp3.getID3v2Tag().getFrame("TIPL"));

@@ -89,7 +89,7 @@ public class TestAudioTagger
                 count++;
                 try
                 {
-                    AudioFileIO.read(audioFile);
+                    AudioFileIO.read(audioFile.toPath());
                 }
                 catch (Throwable t)
                 {

@@ -23,7 +23,7 @@ public class Issue286Test extends AbstractTestCase
     public void testReadVorbisCoverartOne() throws Exception
     {
         File file = new File("testdata", "test76.ogg");
-        AudioFile af = AudioFileIO.read(file);
+        AudioFile af = AudioFileIO.read(file.toPath());
         assertEquals(1,af.getTag().getArtworkList().size());
         Artwork artwork = af.getTag().getFirstArtwork();
         System.out.println(artwork);
@@ -41,7 +41,7 @@ public class Issue286Test extends AbstractTestCase
     public void testReadVorbisCoverartTwo() throws Exception
     {
         File file = new File("testdata", "test77.ogg");
-        AudioFile af = AudioFileIO.read(file);
+        AudioFile af = AudioFileIO.read(file.toPath());
         assertEquals(1,af.getTag().getArtworkList().size());
         Artwork artwork = af.getTag().getFirstArtwork();
         System.out.println(artwork);
@@ -64,7 +64,7 @@ public class Issue286Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test3.ogg");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
 
             assertEquals(1, tag.getArtworkList().size());
@@ -81,7 +81,7 @@ public class Issue286Test extends AbstractTestCase
             assertTrue(ImageFormats.isPortableFormat(newartwork.getBinaryData()));
             tag.addField(newartwork);
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = af.getTag();
             assertEquals(2, tag.getArtworkList().size());
 

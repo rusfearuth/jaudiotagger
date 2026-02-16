@@ -32,12 +32,12 @@ public class Issue268Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test8.wma");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag().toString());
 
             af.getTag().setField(FieldKey.ALBUM,"FRED");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag().toString());
             assertEquals("FRED",af.getTag().getFirst(FieldKey.ALBUM));
 

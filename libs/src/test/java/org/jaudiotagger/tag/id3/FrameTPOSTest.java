@@ -37,7 +37,7 @@ public class FrameTPOSTest extends AbstractTestCase
 
         try
         {
-            AudioFile af = AudioFileIO.read(orig);
+            AudioFile af = AudioFileIO.read(orig.toPath());
             Tag newTags = (Tag)af.getTag();
             Iterator<TagField> i = newTags.getFields();
             while(i.hasNext())

@@ -38,7 +38,7 @@ public class Issue451Test extends AbstractTestCase
 
         try
         {
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             ImageFormats.getMimeTypeForBinarySignature(af.getTag().getArtworkList().get(0).getBinaryData());
         }
         catch(ArrayIndexOutOfBoundsException aex)

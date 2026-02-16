@@ -32,7 +32,7 @@ public class Issue270Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test49.m4a");
 
             //Read FileFails
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag().toString());
         }
         catch(Exception e)

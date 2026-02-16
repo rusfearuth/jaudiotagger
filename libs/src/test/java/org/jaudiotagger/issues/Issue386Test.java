@@ -24,7 +24,7 @@ public class Issue386Test extends AbstractTestCase
             }
 
             File testFile = AbstractTestCase.copyAudioToTmp("test99.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getAudioHeader());
         }
         catch(Exception e)

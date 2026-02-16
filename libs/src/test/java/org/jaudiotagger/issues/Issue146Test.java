@@ -26,7 +26,7 @@ public class Issue146Test extends AbstractTestCase
 
         if (file.exists())
         {
-            AudioFile afile = AudioFileIO.read(file);
+            AudioFile afile = AudioFileIO.read(file.toPath());
             Tag tag = afile.getTagOrCreateDefault();
 
             System.out.println(tag);
@@ -40,7 +40,7 @@ public class Issue146Test extends AbstractTestCase
             tag.setField(FieldKey.TITLE,"好好学习");
             afile.commit();
             System.out.println(tag.getValue(FieldKey.TITLE, 0)+tag.getValue(FieldKey.TITLE, 0).getBytes().length);
-            tag = AudioFileIO.read(file).getTag();
+            tag = AudioFileIO.read(file.toPath()).getTag();
             System.out.println(tag.getValue(FieldKey.TITLE, 0)+tag.getValue(FieldKey.TITLE, 0).getBytes().length);
         }
     }

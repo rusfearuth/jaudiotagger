@@ -74,12 +74,12 @@ public class M4aWriteDrmTagTest extends TestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test9.m4p", new File("WriteDrmFile1.m4p"));
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             tag.setField(FieldKey.ARTIST,"AUTHOR");
             tag.setField(FieldKey.ALBUM,"ALBUM");
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
 
             System.out.println(f.getAudioHeader());
