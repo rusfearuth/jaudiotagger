@@ -25,7 +25,7 @@ public class Issue081Test extends AbstractTestCase
         }
         File file = AbstractTestCase.copyAudioToTmp("test142.wav", new File("test142SaveInfo.wav"));
 
-        AudioFile audioFile = AudioFileIO.read(file);
+        AudioFile audioFile = AudioFileIO.read(file.toPath());
         System.out.println(audioFile.getAudioHeader());
         WavTag tag = (WavTag) audioFile.getTag();
         System.out.println(tag.getInfoTag());
@@ -41,7 +41,7 @@ public class Issue081Test extends AbstractTestCase
         }
         File file = AbstractTestCase.copyAudioToTmp("test142.wav", new File("test142SaveId3.wav"));
 
-        AudioFile audioFile = AudioFileIO.read(file);
+        AudioFile audioFile = AudioFileIO.read(file.toPath());
         WavTag tag = (WavTag) audioFile.getTag();
         ID3v24Tag id3Tag = new ID3v24Tag();
         id3Tag.setField(FieldKey.TITLE,"Skeksis (Original Mix)");
@@ -70,7 +70,7 @@ public class Issue081Test extends AbstractTestCase
         }
         File file = AbstractTestCase.copyAudioToTmp("test142.wav", new File("test142SaveInfo.wav"));
 
-        AudioFile audioFile = AudioFileIO.read(file);
+        AudioFile audioFile = AudioFileIO.read(file.toPath());
         WavTag tag = (WavTag) audioFile.getTag();
         WavInfoTag wavInfoTag = new WavInfoTag();
         wavInfoTag.setField(FieldKey.TITLE,"Skeksis (Original Mix)");

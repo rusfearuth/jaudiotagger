@@ -31,7 +31,7 @@ public class Issue260Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test40.m4a");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertTrue(af.getTag().isEmpty());
         }
         catch(Exception e)
@@ -62,7 +62,7 @@ public class Issue260Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test40.m4a");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertTrue(af.getTag().isEmpty());
 
             //Write file
@@ -74,7 +74,7 @@ public class Issue260Test extends AbstractTestCase
             af.commit();
 
             //Read file again okay
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("artist",af.getTag().getFirst(FieldKey.ARTIST));
             assertEquals("album",af.getTag().getFirst(FieldKey.ALBUM));
             assertEquals("title",af.getTag().getFirst(FieldKey.TITLE));
@@ -110,7 +110,7 @@ public class Issue260Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test43.m4a");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals("test43",af.getTag().getFirst(FieldKey.TITLE));
         }
         catch(Exception e)
@@ -141,7 +141,7 @@ public class Issue260Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test43.m4a");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals("test43",af.getTag().getFirst(FieldKey.TITLE));
 
             //Write file
@@ -153,7 +153,7 @@ public class Issue260Test extends AbstractTestCase
             af.commit();
 
             //Read file again okay
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("artist",af.getTag().getFirst(FieldKey.ARTIST));
             assertEquals("album",af.getTag().getFirst(FieldKey.ALBUM));
             assertEquals("title",af.getTag().getFirst(FieldKey.TITLE));

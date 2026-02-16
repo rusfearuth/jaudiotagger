@@ -32,7 +32,7 @@ public class Issue224Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test31.mp3");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             assertEquals(11, tag.getFieldCount());
             assertTrue(tag instanceof ID3v23Tag);

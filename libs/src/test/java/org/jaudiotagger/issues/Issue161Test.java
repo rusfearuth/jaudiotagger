@@ -23,7 +23,7 @@ public class Issue161Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test159.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
         }

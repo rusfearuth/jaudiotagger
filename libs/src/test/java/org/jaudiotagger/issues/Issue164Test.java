@@ -31,17 +31,17 @@ public class Issue164Test extends AbstractTestCase
             atomTree.printAtomTree();
 
             File testFile = AbstractTestCase.copyAudioToTmp("test164.m4a");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             af.getTagOrCreateDefault().setField(FieldKey.PERFORMER,"performer");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             af.getTagOrCreateDefault().setField(FieldKey.ARTIST,"artist");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
         }

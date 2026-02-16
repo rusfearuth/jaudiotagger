@@ -22,7 +22,7 @@ public class WavSimpleTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.wav");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             System.out.println(f.getTag());
 
@@ -57,7 +57,7 @@ public class WavSimpleTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test105.wav");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             System.out.println(f.getTag());
 
@@ -102,7 +102,7 @@ public class WavSimpleTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test127.wav");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             System.out.println(f.getTag());
 
@@ -132,7 +132,7 @@ public class WavSimpleTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test129.wav");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             System.out.println(f.getTag());
 
@@ -162,7 +162,7 @@ public class WavSimpleTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test128.wav");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             System.out.println(f.getTag());
 
@@ -192,7 +192,7 @@ public class WavSimpleTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test130.wav");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             System.out.println(f.getTag());
 
@@ -223,7 +223,7 @@ public class WavSimpleTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test131.wav");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             System.out.println(f.getTag());
 

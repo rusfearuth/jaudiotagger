@@ -31,7 +31,7 @@ public class Issue383Test extends AbstractTestCase
             }
 
             File testFile = AbstractTestCase.copyAudioToTmp("test106.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals(af.getAudioHeader().getPreciseTrackLength(),368.5355102040817);
             assertEquals(af.getAudioHeader().getTrackLength(),369);
         }
@@ -61,7 +61,7 @@ public class Issue383Test extends AbstractTestCase
             }
 
             File testFile = AbstractTestCase.copyAudioToTmp("test107.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals(af.getTag().getFirst(FieldKey.TRACK),"01");
             assertEquals(af.getAudioHeader().getTrackLength(),4372);
         }

@@ -27,7 +27,7 @@ public class Issue283Test extends AbstractTestCase {
         try
         {
             testFile = AbstractTestCase.copyAudioToTmp("test56.m4b");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag().toString());
             assertEquals("Aesop",af.getTag().getFirst(FieldKey.ARTIST));
             assertEquals("Aesop's Fables (Unabridged)",af.getTag().getFirst(FieldKey.TITLE));
@@ -57,11 +57,11 @@ public class Issue283Test extends AbstractTestCase {
            try
            {
                testFile = AbstractTestCase.copyAudioToTmp("test56.m4b");
-               AudioFile af = AudioFileIO.read(testFile);
+               AudioFile af = AudioFileIO.read(testFile.toPath());
                af.getTag().setField(FieldKey.ARTIST,"Aesops");
                af.commit();
 
-               af = AudioFileIO.read(testFile);
+               af = AudioFileIO.read(testFile.toPath());
                assertEquals("Aesops",af.getTag().getFirst(FieldKey.ARTIST));
 
 

@@ -29,11 +29,11 @@ public class Issue291Test extends AbstractTestCase
         try
         {
             testFile = AbstractTestCase.copyAudioToTmp("test83.mp4");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             System.out.println("Tag is"+af.getTag().toString());
             af.getTag().setField(af.getTag().createField(FieldKey.ARTIST,"Kenny Rankin1"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("Kenny Rankin1",af.getTag().getFirst(FieldKey.ARTIST));
         }
         catch (Exception e)

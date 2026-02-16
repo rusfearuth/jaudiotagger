@@ -18,7 +18,7 @@ public class Issue468Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.flac");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             FlacTag tag = (FlacTag)af.getTag();
             tag.setField( tag.createArtworkField(null, 1, "","", 100, 200, 128, 1));

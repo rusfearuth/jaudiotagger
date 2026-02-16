@@ -29,7 +29,7 @@ public class Issue265aTest extends AbstractTestCase
         {
             TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
             File testFile = AbstractTestCase.copyAudioToTmp("test532.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             System.out.println(af.getAudioHeader());
@@ -57,7 +57,7 @@ public class Issue265aTest extends AbstractTestCase
             TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
             TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_BOTH_AND_SYNC);
             File testFile = AbstractTestCase.copyAudioToTmp("test532.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
 
@@ -66,7 +66,7 @@ public class Issue265aTest extends AbstractTestCase
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "A new album");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "A new album");
         }
@@ -93,7 +93,7 @@ public class Issue265aTest extends AbstractTestCase
             TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
             TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_BOTH);
             File testFile = AbstractTestCase.copyAudioToTmp("test532.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
 
@@ -102,7 +102,7 @@ public class Issue265aTest extends AbstractTestCase
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "A new album");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "A new album");
         }
@@ -129,7 +129,7 @@ public class Issue265aTest extends AbstractTestCase
             TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
             TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_ACTIVE);
             File testFile = AbstractTestCase.copyAudioToTmp("test532.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
 
@@ -138,7 +138,7 @@ public class Issue265aTest extends AbstractTestCase
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "A new album");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "A new album");
         }
@@ -165,7 +165,7 @@ public class Issue265aTest extends AbstractTestCase
             TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
             TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_EXISTING_AND_ACTIVE);
             File testFile = AbstractTestCase.copyAudioToTmp("test532.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
 
@@ -174,7 +174,7 @@ public class Issue265aTest extends AbstractTestCase
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "A new album");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "A new album");
         }
@@ -201,7 +201,7 @@ public class Issue265aTest extends AbstractTestCase
             TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY);
             TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_EXISTING_AND_ACTIVE);
             File testFile = AbstractTestCase.copyAudioToTmp("test532.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
 
@@ -210,7 +210,7 @@ public class Issue265aTest extends AbstractTestCase
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "A new album");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "A new album");
         }

@@ -32,7 +32,7 @@ public class Issue255Test extends AbstractTestCase
         {
             testFile = AbstractTestCase.copyAudioToTmp("test35.m4a");
 
-            AudioFileIO.read(testFile);
+            AudioFileIO.read(testFile.toPath());
 
             //Print Out Tree
 
@@ -77,7 +77,7 @@ public class Issue255Test extends AbstractTestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test28.m4p", new File("WriteFileWithInvalidFreeAtom.m4p"));
 
-            AudioFileIO.read(testFile);
+            AudioFileIO.read(testFile.toPath());
         }
         catch (Exception e)
         {
@@ -106,7 +106,7 @@ public class Issue255Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test35.m4a");
 
             //Add a v24Tag
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.getTag().setField(FieldKey.ALBUM,"NewValue");
             af.commit();
         }

@@ -28,7 +28,7 @@ public class Issue373Test extends AbstractTestCase
             File testFile = AbstractTestCase.copyAudioToTmp("test94.mp3");
 
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.setTag(new ID3v23Tag());
             af.getTag().setField(FieldKey.ARTIST,"artist");
 

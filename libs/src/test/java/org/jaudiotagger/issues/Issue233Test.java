@@ -87,8 +87,8 @@ public class Issue233Test extends AbstractTestCase
         try
         {
             File        testFile    = AbstractTestCase.copyAudioToTmp("test32.mp3");
-            AudioFile   af          = AudioFileIO.read(testFile);
-            AudioFileIO.delete(af);
+            AudioFile   af          = AudioFileIO.read(testFile.toPath());
+            af.delete();
         }
         catch (Exception e)
         {
@@ -110,7 +110,7 @@ public class Issue233Test extends AbstractTestCase
         try
         {
             File        testFile    = AbstractTestCase.copyAudioToTmp("test32.mp3");
-            AudioFile   af          = AudioFileIO.read(testFile);
+            AudioFile   af          = AudioFileIO.read(testFile.toPath());
             MP3File     mf          = (MP3File)af;
             assertEquals("The Ides Of March",af.getTag().getFirst(FieldKey.TITLE));
             assertEquals("Iron Maiden",mf.getID3v1Tag().getFirst(FieldKey.ARTIST));

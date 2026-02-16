@@ -27,7 +27,7 @@ public class Issue227Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test510.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
         }
@@ -52,7 +52,7 @@ public class Issue227Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test515.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -78,7 +78,7 @@ public class Issue227Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test516.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getAudioHeader());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
@@ -88,7 +88,7 @@ public class Issue227Test extends AbstractTestCase
             af.getTag().setField(newartwork);
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -115,7 +115,7 @@ public class Issue227Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test517.aif");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -125,7 +125,7 @@ public class Issue227Test extends AbstractTestCase
             af.getTag().setField(newartwork);
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -153,7 +153,7 @@ public class Issue227Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test518.flac");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -162,7 +162,7 @@ public class Issue227Test extends AbstractTestCase
             af.getTag().setField(newartwork);
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -190,7 +190,7 @@ public class Issue227Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test519.m4a");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -199,7 +199,7 @@ public class Issue227Test extends AbstractTestCase
             af.getTag().setField(newartwork);
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -227,7 +227,7 @@ public class Issue227Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test520.wma");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -236,7 +236,7 @@ public class Issue227Test extends AbstractTestCase
             af.getTag().setField(newartwork);
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -264,7 +264,7 @@ public class Issue227Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test521.aif");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -276,7 +276,7 @@ public class Issue227Test extends AbstractTestCase
             //af.getTag().setField(newartwork);
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -305,7 +305,7 @@ public class Issue227Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test522.aif");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -316,7 +316,7 @@ public class Issue227Test extends AbstractTestCase
             //af.getTag().setField(newartwork);
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getAudioHeader());
             System.out.println(af.getTag());
@@ -343,7 +343,7 @@ public class Issue227Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test525.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
         }
         catch(Exception e)

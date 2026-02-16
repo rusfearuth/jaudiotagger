@@ -30,7 +30,7 @@ public class M4aWriteDatatoMultTrackAudioTest extends TestCase
             atomTree.printAtomTree();
 
             //Now we try to make some changes
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             System.out.println(tag);
 
@@ -38,7 +38,7 @@ public class M4aWriteDatatoMultTrackAudioTest extends TestCase
             tag.setField(FieldKey.ARTIST,"AUTHOR");
 
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
             System.out.println(tag);
 
@@ -74,7 +74,7 @@ public class M4aWriteDatatoMultTrackAudioTest extends TestCase
             atomTree.printAtomTree();
 
             //Now we try to make some changes
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             System.out.println(tag);
 
@@ -82,7 +82,7 @@ public class M4aWriteDatatoMultTrackAudioTest extends TestCase
             tag.setField(FieldKey.ARTIST,"A");
             tag.setField(FieldKey.TITLE,"T");
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
             System.out.println(tag);
 
@@ -118,14 +118,14 @@ public class M4aWriteDatatoMultTrackAudioTest extends TestCase
             atomTree.printAtomTree();
 
             //Now we try to make some changes
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             System.out.println(tag);
 
             //Change values and Save changes and reread from disk
             tag.setField(FieldKey.ARTIST,"AR");
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
             System.out.println(tag);
 
@@ -157,7 +157,7 @@ public class M4aWriteDatatoMultTrackAudioTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test16.m4a", new File("testWriteMultiTrack8.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             new Mp4AtomTree(testFile).printAtomTree();
 
             Tag tag = f.getTag();
@@ -188,7 +188,7 @@ public class M4aWriteDatatoMultTrackAudioTest extends TestCase
             tag.setField(tag.createField(FieldKey.ENCODER, "encoder"));
             //Save changes and reread from disk
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
             System.out.println(f.getAudioHeader());
             System.out.println(tag);
@@ -244,7 +244,7 @@ public class M4aWriteDatatoMultTrackAudioTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test21.m4a", new File("testWriteMultiTrack6.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change values
@@ -273,7 +273,7 @@ public class M4aWriteDatatoMultTrackAudioTest extends TestCase
             tag.setField(tag.createField(FieldKey.ENCODER, "encoder"));
             //Save changes and reread from disk
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
             System.out.println(f.getAudioHeader());
             System.out.println(tag);
@@ -329,7 +329,7 @@ public class M4aWriteDatatoMultTrackAudioTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test21.m4a", new File("testWriteMultiTrack7.m4a"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
 
             //Change values
@@ -369,7 +369,7 @@ public class M4aWriteDatatoMultTrackAudioTest extends TestCase
 
             //Save changes and reread from disk
             f.commit();
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = f.getTag();
             System.out.println(f.getAudioHeader());
             System.out.println(tag);

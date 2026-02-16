@@ -16,14 +16,14 @@ public class Issue426Test extends AbstractTestCase
     public void testHasField() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("testV25.mp3");
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         Tag tag = f.getTagOrCreateAndSetDefault();
         tag.setField(FieldKey.ARTIST,"fred");
         tag.setField(FieldKey.MUSICBRAINZ_ARTISTID,"fred");
         tag.setField(FieldKey.MUSICBRAINZ_TRACK_ID,"fred");
         f.commit();
 
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tag = f.getTag();
 
         assertTrue(tag.hasField(FieldKey.ARTIST));

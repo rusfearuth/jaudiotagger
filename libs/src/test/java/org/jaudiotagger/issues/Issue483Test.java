@@ -20,8 +20,8 @@ public class Issue483Test extends AbstractTestCase
         }
 
 
-        AudioFile af1 = AudioFileIO.read(orig);
-        AudioFile af2 = AudioFileIO.read(orig);
+        AudioFile af1 = AudioFileIO.read(orig.toPath());
+        AudioFile af2 = AudioFileIO.read(orig.toPath());
         assertNotSame(af1,af2);
         assertEquals(af1.getTag(),af2.getTag());
     }
@@ -29,8 +29,8 @@ public class Issue483Test extends AbstractTestCase
     public void testCompareMp4Tag() throws Exception
     {
         File orig = new File("testdata", "test.m4a");
-        AudioFile af1 = AudioFileIO.read(orig);
-        AudioFile af2 = AudioFileIO.read(orig);
+        AudioFile af1 = AudioFileIO.read(orig.toPath());
+        AudioFile af2 = AudioFileIO.read(orig.toPath());
         assertNotSame(af1,af2);
         assertNotSame(af1.getTag(),af2.getTag());
     }
@@ -38,8 +38,8 @@ public class Issue483Test extends AbstractTestCase
     public void testCompareFlacTag() throws Exception
     {
         File orig = new File("testdata", "test.flac");
-        AudioFile af1 = AudioFileIO.read(orig);
-        AudioFile af2 = AudioFileIO.read(orig);
+        AudioFile af1 = AudioFileIO.read(orig.toPath());
+        AudioFile af2 = AudioFileIO.read(orig.toPath());
         assertNotSame(af1,af2);
         assertNotSame(af1.getTag(),af2.getTag());
     }
@@ -47,8 +47,8 @@ public class Issue483Test extends AbstractTestCase
     public void testCompareOggTag() throws Exception
     {
         File orig = new File("testdata", "test.ogg");
-        AudioFile af1 = AudioFileIO.read(orig);
-        AudioFile af2 = AudioFileIO.read(orig);
+        AudioFile af1 = AudioFileIO.read(orig.toPath());
+        AudioFile af2 = AudioFileIO.read(orig.toPath());
         assertNotSame(af1,af2);
         assertNotSame(af1.getTag(),af2.getTag());
     }
@@ -56,8 +56,8 @@ public class Issue483Test extends AbstractTestCase
     public void testCompareAifTag() throws Exception
     {
         File orig = new File("testdata", "test132.aif");
-        AudioFile af1 = AudioFileIO.read(orig);
-        AudioFile af2 = AudioFileIO.read(orig);
+        AudioFile af1 = AudioFileIO.read(orig.toPath());
+        AudioFile af2 = AudioFileIO.read(orig.toPath());
         assertNotSame(af1,af2);
         assertNotSame(af1.getTag(),af2.getTag());
     }
@@ -65,8 +65,8 @@ public class Issue483Test extends AbstractTestCase
     public void testCompareWavTag() throws Exception
     {
         File orig = new File("testdata", "test125.wav");
-        AudioFile af1 = AudioFileIO.read(orig);
-        AudioFile af2 = AudioFileIO.read(orig);
+        AudioFile af1 = AudioFileIO.read(orig.toPath());
+        AudioFile af2 = AudioFileIO.read(orig.toPath());
         assertNotSame(af1,af2);
         assertNotSame(af1.getTag(),af2.getTag());
     }
@@ -74,8 +74,8 @@ public class Issue483Test extends AbstractTestCase
     public void testCompareWmaTag() throws Exception
     {
         File orig = new File("testdata", "test1.wma");
-        AudioFile af1 = AudioFileIO.read(orig);
-        AudioFile af2 = AudioFileIO.read(orig);
+        AudioFile af1 = AudioFileIO.read(orig.toPath());
+        AudioFile af2 = AudioFileIO.read(orig.toPath());
         assertNotSame(af1,af2);
         assertNotSame(af1.getTag(),af2.getTag());
     }

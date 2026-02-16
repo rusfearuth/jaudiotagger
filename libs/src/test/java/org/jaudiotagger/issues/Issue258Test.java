@@ -32,7 +32,7 @@ public class Issue258Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
 
             //Read File, and write tag cause padding to be adjusted and temp file created
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag t = af.getTagOrCreateAndSetDefault();
             t.setField(FieldKey.ARTIST,"fred");
             af.commit();
@@ -65,7 +65,7 @@ public class Issue258Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("01.m4a");   
 
             //Read File
-            AudioFile af = AudioFileIO.read(testFile);            
+            AudioFile af = AudioFileIO.read(testFile.toPath());            
             Tag t = af.getTagOrCreateAndSetDefault();
             t.setField(FieldKey.ARTIST,"fred");
             af.commit();

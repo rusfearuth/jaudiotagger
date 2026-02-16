@@ -40,7 +40,7 @@ public class Issue173Test extends AbstractTestCase
             AudioFile mp4File = null;
             Mp4Tag tag = null;
             File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
-            mp4File = AudioFileIO.read(testFile);
+            mp4File = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) mp4File.getTag();
             //Set valid value
             tag.setField(FieldKey.GENRE, "Rock");
@@ -51,7 +51,7 @@ public class Issue173Test extends AbstractTestCase
             mp4File.commit();
 
             //Rereads as value
-            mp4File = AudioFileIO.read(testFile);
+            mp4File = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) mp4File.getTag();
             assertEquals("Rock", tag.getFirst(FieldKey.GENRE));
             assertEquals("Rock", tag.getFirst(Mp4FieldKey.GENRE));
@@ -65,7 +65,7 @@ public class Issue173Test extends AbstractTestCase
             assertEquals("1", tag.getFirst(Mp4FieldKey.GENRE));
             mp4File.commit();
             //On fresh reread shows as mapped value
-            mp4File = AudioFileIO.read(testFile);
+            mp4File = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) mp4File.getTag();
             assertEquals("Classic Rock", tag.getFirst(FieldKey.GENRE));
             assertEquals("Classic Rock", tag.getFirst(Mp4FieldKey.GENRE));
@@ -127,7 +127,7 @@ public class Issue173Test extends AbstractTestCase
             AudioFile mp4File = null;
             Mp4Tag tag = null;
             File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
-            mp4File = AudioFileIO.read(testFile);
+            mp4File = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) mp4File.getTag();
             //Set valid value
             tag.setField(Mp4FieldKey.GENRE, "Rock");
@@ -165,7 +165,7 @@ public class Issue173Test extends AbstractTestCase
             AudioFile mp4File = null;
             Mp4Tag tag = null;
             File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
-            mp4File = AudioFileIO.read(testFile);
+            mp4File = AudioFileIO.read(testFile.toPath());
             tag = (Mp4Tag) mp4File.getTag();
             //Set valid value
             tag.setField(Mp4FieldKey.GENRE, "Rocky");
@@ -193,7 +193,7 @@ public class Issue173Test extends AbstractTestCase
             AudioFile mp3File = null;
             ID3v24Tag tag = null;
             File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
-            mp3File = AudioFileIO.read(testFile);
+            mp3File = AudioFileIO.read(testFile.toPath());
             mp3File.getTagOrCreateAndSetDefault();
             tag = (ID3v24Tag) mp3File.getTag();
 
@@ -247,7 +247,7 @@ public class Issue173Test extends AbstractTestCase
             body = (FrameBodyTCON)((AbstractID3v2Frame)tag.getFrame("TCON")).getBody();
             assertEquals("1\u00002",body.getText());
             mp3File.commit();
-            mp3File = AudioFileIO.read(testFile);
+            mp3File = AudioFileIO.read(testFile.toPath());
             tag = (ID3v24Tag) mp3File.getTag();
             results = tag.getAll(FieldKey.GENRE);
             assertEquals("Classic Rock",results.get(0));
@@ -263,7 +263,7 @@ public class Issue173Test extends AbstractTestCase
             body = (FrameBodyTCON)((AbstractID3v2Frame)tag.getFrame("TCON")).getBody();
             assertEquals("RX\u0000CR",body.getText());
             mp3File.commit();
-            mp3File = AudioFileIO.read(testFile);
+            mp3File = AudioFileIO.read(testFile.toPath());
             tag = (ID3v24Tag) mp3File.getTag();
             assertEquals("Remix",tag.getFirst(FieldKey.GENRE));
             assertEquals("Remix",tag.getValue(FieldKey.GENRE, 0));
@@ -297,7 +297,7 @@ public class Issue173Test extends AbstractTestCase
             AudioFile mp3File = null;
             ID3v22Tag tag = null;
             File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
-            mp3File = AudioFileIO.read(testFile);
+            mp3File = AudioFileIO.read(testFile.toPath());
             mp3File.getTagOrCreateAndSetDefault();
             tag = (ID3v22Tag) mp3File.getTag();
 
@@ -352,7 +352,7 @@ public class Issue173Test extends AbstractTestCase
             body = (FrameBodyTCON)((AbstractID3v2Frame)tag.getFrame("TCO").get(0)).getBody();
             assertEquals("(1)(2)",body.getText());
             mp3File.commit();
-            mp3File = AudioFileIO.read(testFile);
+            mp3File = AudioFileIO.read(testFile.toPath());
             tag = (ID3v22Tag) mp3File.getTag();
             results = tag.getAll(FieldKey.GENRE);
             assertEquals("(1)(2)",body.getText());
@@ -367,7 +367,7 @@ public class Issue173Test extends AbstractTestCase
 //            assertEquals("Remix",tag.getValue(FieldKey.GENRE, 0));
 //            assertEquals("Cover",tag.getValue(FieldKey.GENRE, 1));
             mp3File.commit();
-            mp3File = AudioFileIO.read(testFile);
+            mp3File = AudioFileIO.read(testFile.toPath());
             tag = (ID3v22Tag) mp3File.getTag();
             body = (FrameBodyTCON)((AbstractID3v2Frame)tag.getFrame("TCO").get(0)).getBody();
             assertEquals("(RX)(CR)",body.getText());
@@ -396,7 +396,7 @@ public class Issue173Test extends AbstractTestCase
             AudioFile mp3File = null;
             ID3v23Tag tag = null;
             File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
-            mp3File = AudioFileIO.read(testFile);
+            mp3File = AudioFileIO.read(testFile.toPath());
             mp3File.getTagOrCreateAndSetDefault();
             tag = (ID3v23Tag) mp3File.getTag();
 
@@ -451,7 +451,7 @@ public class Issue173Test extends AbstractTestCase
             body = (FrameBodyTCON)((AbstractID3v2Frame)tag.getFrame("TCON").get(0)).getBody();
             assertEquals("(1)(2)",body.getText());
             mp3File.commit();
-            mp3File = AudioFileIO.read(testFile);
+            mp3File = AudioFileIO.read(testFile.toPath());
             tag = (ID3v23Tag) mp3File.getTag();
             results = tag.getAll(FieldKey.GENRE);
             assertEquals("(1)(2)",body.getText());
@@ -466,7 +466,7 @@ public class Issue173Test extends AbstractTestCase
             assertEquals("Remix",tag.getValue(FieldKey.GENRE, 0));
             assertEquals("Cover",tag.getValue(FieldKey.GENRE, 1));
             mp3File.commit();
-            mp3File = AudioFileIO.read(testFile);
+            mp3File = AudioFileIO.read(testFile.toPath());
             tag = (ID3v23Tag) mp3File.getTag();
             body = (FrameBodyTCON)((AbstractID3v2Frame)tag.getFrame("TCON").get(0)).getBody();
             assertEquals("(RX)(CR)",body.getText());

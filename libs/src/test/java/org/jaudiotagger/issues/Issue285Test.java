@@ -33,7 +33,7 @@ public class Issue285Test extends AbstractTestCase
             //OggFileReader ofr = new OggFileReader();
             //ofr.summarizeOggPageHeaders(testFile);
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.getTag().setField(FieldKey.COMMENT,"TEST");
             af.commit();
 

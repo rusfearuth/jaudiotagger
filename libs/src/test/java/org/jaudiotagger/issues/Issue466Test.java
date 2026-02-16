@@ -25,7 +25,7 @@ public class Issue466Test extends AbstractTestCase
             }
 
             File testFile = AbstractTestCase.copyAudioToTmp("test115.flac");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             assertEquals("", af.getTag().getFirst(FieldKey.ALBUM_ARTIST));
 

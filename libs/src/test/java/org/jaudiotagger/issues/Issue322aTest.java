@@ -29,7 +29,7 @@ public class Issue322aTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test322.dsf");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
         }
@@ -57,11 +57,11 @@ public class Issue322aTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test322.dsf");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             af.getTag().setField(FieldKey.ARTIST,"Freddy");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ARTIST),"Freddy");
             System.out.println(af.getTag());

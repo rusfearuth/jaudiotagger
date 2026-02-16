@@ -37,7 +37,7 @@ public class WavMetadataNewTagsInfobeforeId3Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test123.wav", new File("test123ModifyMetadataSaveBothNew.wav"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             assertEquals("529", f.getAudioHeader().getBitRate());
             assertEquals("1", f.getAudioHeader().getChannels());
@@ -68,7 +68,7 @@ public class WavMetadataNewTagsInfobeforeId3Test extends AbstractTestCase
             f.commit();
 
             //Read modified metadata now in file
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof WavTag);
             tag = (WavTag) f.getTag();
             System.out.println(((WavTag) tag).getInfoTag());
@@ -103,7 +103,7 @@ public class WavMetadataNewTagsInfobeforeId3Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test123.wav", new File("test123ModifyMoreMetadataNew.wav"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             assertEquals("529", f.getAudioHeader().getBitRate());
             assertEquals("1", f.getAudioHeader().getChannels());
@@ -133,7 +133,7 @@ public class WavMetadataNewTagsInfobeforeId3Test extends AbstractTestCase
             f.commit();
 
             //Read modified metadata now in file
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof WavTag);
             tag = (WavTag) f.getTag();
             System.out.println(((WavTag) tag).getInfoTag());
@@ -173,7 +173,7 @@ public class WavMetadataNewTagsInfobeforeId3Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test123.wav", new File("test123ModifyMetadataSaveExistingActiveId3New.wav"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             assertEquals("529", f.getAudioHeader().getBitRate());
             assertEquals("1", f.getAudioHeader().getChannels());
@@ -204,7 +204,7 @@ public class WavMetadataNewTagsInfobeforeId3Test extends AbstractTestCase
             f.commit();
 
             //Read modified metadata now in file
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof WavTag);
             tag = (WavTag) f.getTag();
             System.out.println(((WavTag) tag).getInfoTag());
@@ -238,7 +238,7 @@ public class WavMetadataNewTagsInfobeforeId3Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test123.wav", new File("test123ModifyMetadataSaveActiveId3New.wav"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             assertEquals("529", f.getAudioHeader().getBitRate());
             assertEquals("1", f.getAudioHeader().getChannels());
@@ -269,7 +269,7 @@ public class WavMetadataNewTagsInfobeforeId3Test extends AbstractTestCase
             f.commit();
 
             //Read modified metadata now in file
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof WavTag);
             tag = (WavTag) f.getTag();
             System.out.println(((WavTag) tag).getInfoTag());
@@ -308,7 +308,7 @@ public class WavMetadataNewTagsInfobeforeId3Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test126.wav", new File("test126ModifyMetadataSaveActiveId3New.wav"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             System.out.println(f.getAudioHeader());
             assertEquals("529", f.getAudioHeader().getBitRate());
             assertEquals("1", f.getAudioHeader().getChannels());
@@ -339,7 +339,7 @@ public class WavMetadataNewTagsInfobeforeId3Test extends AbstractTestCase
             f.commit();
 
             //Read modified metadata now in file
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof WavTag);
             tag = (WavTag) f.getTag();
             System.out.println(((WavTag) tag).getInfoTag());
@@ -388,7 +388,7 @@ public class WavMetadataNewTagsInfobeforeId3Test extends AbstractTestCase
 
         File testFile = AbstractTestCase.copyAudioToTmp("test129.wav", new File("test128OddData.wav"));
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             f.delete();
 
         }

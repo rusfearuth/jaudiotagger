@@ -42,14 +42,14 @@ public class Issue180Test extends AbstractTestCase {
         mp3File.save();
 
         //Read using new Interface
-        final AudioFile v22File = AudioFileIO.read(testFile);
+        final AudioFile v22File = AudioFileIO.read(testFile.toPath());
         assertEquals("grouping", v22File.getTag().getFirst(FieldKey.GROUPING));
         assertEquals("work", v22File.getTag().getFirst(FieldKey.WORK));
 
         // now switch to regular mode
         options.setId3v2ITunes12_6WorkGroupingMode(false);
 
-        final AudioFile regV22File = AudioFileIO.read(testFile);
+        final AudioFile regV22File = AudioFileIO.read(testFile.toPath());
         assertEquals("work", regV22File.getTag().getFirst(FieldKey.GROUPING));
         final String w = regV22File.getTag().getFirst(FieldKey.WORK);
         assertTrue(w == null || w.isEmpty());
@@ -70,14 +70,14 @@ public class Issue180Test extends AbstractTestCase {
         mp3File.save();
 
         //Read using new Interface
-        final AudioFile v22File = AudioFileIO.read(testFile);
+        final AudioFile v22File = AudioFileIO.read(testFile.toPath());
         assertEquals("grouping", v22File.getTag().getFirst(FieldKey.GROUPING));
         assertEquals("work", v22File.getTag().getFirst(FieldKey.WORK));
 
         // now switch to iTunes mode
         options.setId3v2ITunes12_6WorkGroupingMode(true);
 
-        final AudioFile iTunesV22File = AudioFileIO.read(testFile);
+        final AudioFile iTunesV22File = AudioFileIO.read(testFile.toPath());
         final String g = iTunesV22File.getTag().getFirst(FieldKey.GROUPING);
         assertTrue(g == null || g.isEmpty());
         assertEquals("grouping", iTunesV22File.getTag().getFirst(FieldKey.WORK));
@@ -98,14 +98,14 @@ public class Issue180Test extends AbstractTestCase {
         mp3File.save();
 
         //Read using new Interface
-        final AudioFile v23File = AudioFileIO.read(testFile);
+        final AudioFile v23File = AudioFileIO.read(testFile.toPath());
         assertEquals("grouping", v23File.getTag().getFirst(FieldKey.GROUPING));
         assertEquals("work", v23File.getTag().getFirst(FieldKey.WORK));
 
         // now switch to regular mode
         options.setId3v2ITunes12_6WorkGroupingMode(false);
 
-        final AudioFile regV23File = AudioFileIO.read(testFile);
+        final AudioFile regV23File = AudioFileIO.read(testFile.toPath());
         assertEquals("work", regV23File.getTag().getFirst(FieldKey.GROUPING));
         final String w = regV23File.getTag().getFirst(FieldKey.WORK);
         assertTrue(w == null || w.isEmpty());
@@ -126,14 +126,14 @@ public class Issue180Test extends AbstractTestCase {
         mp3File.save();
 
         //Read using new Interface
-        final AudioFile v23File = AudioFileIO.read(testFile);
+        final AudioFile v23File = AudioFileIO.read(testFile.toPath());
         assertEquals("grouping", v23File.getTag().getFirst(FieldKey.GROUPING));
         assertEquals("work", v23File.getTag().getFirst(FieldKey.WORK));
 
         // now switch to iTunes mode
         options.setId3v2ITunes12_6WorkGroupingMode(true);
 
-        final AudioFile iTunesV23File = AudioFileIO.read(testFile);
+        final AudioFile iTunesV23File = AudioFileIO.read(testFile.toPath());
         final String g = iTunesV23File.getTag().getFirst(FieldKey.GROUPING);
         assertTrue(g == null || g.isEmpty());
         assertEquals("grouping", iTunesV23File.getTag().getFirst(FieldKey.WORK));
@@ -154,14 +154,14 @@ public class Issue180Test extends AbstractTestCase {
         mp3File.save();
 
         //Read using new Interface
-        final AudioFile v24File = AudioFileIO.read(testFile);
+        final AudioFile v24File = AudioFileIO.read(testFile.toPath());
         assertEquals("grouping", v24File.getTag().getFirst(FieldKey.GROUPING));
         assertEquals("work", v24File.getTag().getFirst(FieldKey.WORK));
 
         // now switch to regular mode
         options.setId3v2ITunes12_6WorkGroupingMode(false);
 
-        final AudioFile regV24File = AudioFileIO.read(testFile);
+        final AudioFile regV24File = AudioFileIO.read(testFile.toPath());
         assertEquals("work", regV24File.getTag().getFirst(FieldKey.GROUPING));
         final String w = regV24File.getTag().getFirst(FieldKey.WORK);
         assertTrue(w == null || w.isEmpty());
@@ -182,14 +182,14 @@ public class Issue180Test extends AbstractTestCase {
         mp3File.save();
 
         //Read using new Interface
-        final AudioFile v24File = AudioFileIO.read(testFile);
+        final AudioFile v24File = AudioFileIO.read(testFile.toPath());
         assertEquals("grouping", v24File.getTag().getFirst(FieldKey.GROUPING));
         assertEquals("work", v24File.getTag().getFirst(FieldKey.WORK));
 
         // now switch to iTunes mode
         options.setId3v2ITunes12_6WorkGroupingMode(true);
 
-        final AudioFile iTunesV24File = AudioFileIO.read(testFile);
+        final AudioFile iTunesV24File = AudioFileIO.read(testFile.toPath());
         final String g = iTunesV24File.getTag().getFirst(FieldKey.GROUPING);
         assertTrue(g == null || g.isEmpty());
         assertEquals("grouping", iTunesV24File.getTag().getFirst(FieldKey.WORK));
@@ -202,21 +202,21 @@ public class Issue180Test extends AbstractTestCase {
         options.setId3v2ITunes12_6WorkGroupingMode(true);
 
         final File testFile = AbstractTestCase.copyAudioToTmp("test119.aif");
-        final AudioFile audioFile = AudioFileIO.read(testFile);
+        final AudioFile audioFile = AudioFileIO.read(testFile.toPath());
         audioFile.getTag().setField(FieldKey.GROUPING, "grouping");
         audioFile.getTag().setField(FieldKey.WORK, "work");
         System.out.println(((AiffTag) audioFile.getTag()));
         audioFile.commit();
 
         //Read using new Interface
-        final AudioFile v22File = AudioFileIO.read(testFile);
+        final AudioFile v22File = AudioFileIO.read(testFile.toPath());
         assertEquals("grouping", v22File.getTag().getFirst(FieldKey.GROUPING));
         assertEquals("work", v22File.getTag().getFirst(FieldKey.WORK));
 
         // now switch to regular mode
         options.setId3v2ITunes12_6WorkGroupingMode(false);
 
-        final AudioFile regV22File = AudioFileIO.read(testFile);
+        final AudioFile regV22File = AudioFileIO.read(testFile.toPath());
         assertEquals("work", regV22File.getTag().getFirst(FieldKey.GROUPING));
         final String w = regV22File.getTag().getFirst(FieldKey.WORK);
         assertTrue(w == null || w.isEmpty());
@@ -230,7 +230,7 @@ public class Issue180Test extends AbstractTestCase {
 
 
         final File testFile = AbstractTestCase.copyAudioToTmp("test119.aif");
-        final AudioFile audioFile = AudioFileIO.read(testFile);
+        final AudioFile audioFile = AudioFileIO.read(testFile.toPath());
         audioFile.getTag().setField(FieldKey.GROUPING, "grouping");
         audioFile.getTag().setField(FieldKey.WORK, "work");
         System.out.println(((AiffTag) audioFile.getTag()));
@@ -238,14 +238,14 @@ public class Issue180Test extends AbstractTestCase {
 
 
         //Read using new Interface
-        final AudioFile v22File = AudioFileIO.read(testFile);
+        final AudioFile v22File = AudioFileIO.read(testFile.toPath());
         assertEquals("grouping", v22File.getTag().getFirst(FieldKey.GROUPING));
         assertEquals("work", v22File.getTag().getFirst(FieldKey.WORK));
 
         // now switch to iTunes mode
         options.setId3v2ITunes12_6WorkGroupingMode(true);
 
-        final AudioFile iTunesV22File = AudioFileIO.read(testFile);
+        final AudioFile iTunesV22File = AudioFileIO.read(testFile.toPath());
         final String g = iTunesV22File.getTag().getFirst(FieldKey.GROUPING);
         assertTrue(g == null || g.isEmpty());
         assertEquals("grouping", iTunesV22File.getTag().getFirst(FieldKey.WORK));
@@ -258,21 +258,21 @@ public class Issue180Test extends AbstractTestCase {
         options.setId3v2ITunes12_6WorkGroupingMode(true);
 
         final File testFile = AbstractTestCase.copyAudioToTmp("test.wav");
-        final AudioFile audioFile = AudioFileIO.read(testFile);
+        final AudioFile audioFile = AudioFileIO.read(testFile.toPath());
         audioFile.getTag().setField(FieldKey.GROUPING, "grouping");
         audioFile.getTag().setField(FieldKey.WORK,"work");
         System.out.println(((WavTag)audioFile.getTag()));
         audioFile.commit();
 
         //Read using new Interface
-        final AudioFile v22File = AudioFileIO.read(testFile);
+        final AudioFile v22File = AudioFileIO.read(testFile.toPath());
         assertEquals("grouping", v22File.getTag().getFirst(FieldKey.GROUPING));
         assertEquals("work", v22File.getTag().getFirst(FieldKey.WORK));
 
         // now switch to regular mode
         options.setId3v2ITunes12_6WorkGroupingMode(false);
 
-        final AudioFile regV22File = AudioFileIO.read(testFile);
+        final AudioFile regV22File = AudioFileIO.read(testFile.toPath());
         assertEquals("work", regV22File.getTag().getFirst(FieldKey.GROUPING));
         final String w = regV22File.getTag().getFirst(FieldKey.WORK);
         assertTrue(w == null || w.isEmpty());
@@ -286,7 +286,7 @@ public class Issue180Test extends AbstractTestCase {
 
 
         final File testFile = AbstractTestCase.copyAudioToTmp("test.wav");
-        final AudioFile audioFile = AudioFileIO.read(testFile);
+        final AudioFile audioFile = AudioFileIO.read(testFile.toPath());
         audioFile.getTag().setField(FieldKey.GROUPING, "grouping");
         audioFile.getTag().setField(FieldKey.WORK,"work");
         System.out.println(((WavTag)audioFile.getTag()));
@@ -294,14 +294,14 @@ public class Issue180Test extends AbstractTestCase {
 
 
         //Read using new Interface
-        final AudioFile v22File = AudioFileIO.read(testFile);
+        final AudioFile v22File = AudioFileIO.read(testFile.toPath());
         assertEquals("grouping", v22File.getTag().getFirst(FieldKey.GROUPING));
         assertEquals("work", v22File.getTag().getFirst(FieldKey.WORK));
 
         // now switch to iTunes mode
         options.setId3v2ITunes12_6WorkGroupingMode(true);
 
-        final AudioFile iTunesV22File = AudioFileIO.read(testFile);
+        final AudioFile iTunesV22File = AudioFileIO.read(testFile.toPath());
         final String g = iTunesV22File.getTag().getFirst(FieldKey.GROUPING);
         assertTrue(g == null || g.isEmpty());
         assertEquals("grouping", iTunesV22File.getTag().getFirst(FieldKey.WORK));

@@ -31,7 +31,7 @@ public class Issue276Test extends AbstractTestCase
         {
             TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V23);
             File testFile = AbstractTestCase.copyAudioToTmp("test536.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             Tag tag=af.getTagAndConvertOrCreateAndSetDefault();

@@ -16,7 +16,7 @@ public class DffAudioFileTest extends TestCase {
 
         File testFile = AbstractTestCase.copyAudioToTmp("test229.dff",new File("test229read.dff"));
         try {
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             AudioHeader ah = f.getAudioHeader();
             System.out.println(ah);
             assertEquals("5644800", ah.getBitRate());

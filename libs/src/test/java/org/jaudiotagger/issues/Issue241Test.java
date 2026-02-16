@@ -34,13 +34,13 @@ public class Issue241Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.setTag(new ID3v24Tag());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.LANGUAGE,"eng"));
             tag.setField(tag.createField(FieldKey.KEY,"C#"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = af.getTag();
             assertEquals("eng",af.getTag().getFirst(FieldKey.LANGUAGE));
             assertEquals("C#",af.getTag().getFirst(FieldKey.KEY));
@@ -94,13 +94,13 @@ public class Issue241Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.getTagOrCreateAndSetDefault();
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.LANGUAGE,"eng"));
             tag.setField(tag.createField(FieldKey.KEY,"C#"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("eng",af.getTag().getFirst(FieldKey.LANGUAGE));
             assertEquals("C#",af.getTag().getFirst(FieldKey.KEY));
             assertEquals("English",Languages.getInstanceOf().getValueForId(af.getTag().getFirst(FieldKey.LANGUAGE)));
@@ -126,13 +126,13 @@ public class Issue241Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.setTag(new ID3v22Tag());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.LANGUAGE,"eng"));
             tag.setField(tag.createField(FieldKey.KEY,"C#"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("eng",af.getTag().getFirst(FieldKey.LANGUAGE));
             assertEquals("C#",af.getTag().getFirst(FieldKey.KEY));
             assertEquals("English",Languages.getInstanceOf().getValueForId(af.getTag().getFirst(FieldKey.LANGUAGE)));
@@ -158,12 +158,12 @@ public class Issue241Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test.ogg");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.LANGUAGE,"eng"));
             tag.setField(tag.createField(FieldKey.KEY,"C#"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("eng",af.getTag().getFirst(FieldKey.LANGUAGE));
             assertEquals("C#",af.getTag().getFirst(FieldKey.KEY));
             assertEquals("English",Languages.getInstanceOf().getValueForId(af.getTag().getFirst(FieldKey.LANGUAGE)));
@@ -189,12 +189,12 @@ public class Issue241Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test.flac");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.LANGUAGE,"eng"));
             tag.setField(tag.createField(FieldKey.KEY,"C#"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("eng",af.getTag().getFirst(FieldKey.LANGUAGE));
             assertEquals("C#",af.getTag().getFirst(FieldKey.KEY));
             assertEquals("English",Languages.getInstanceOf().getValueForId(af.getTag().getFirst(FieldKey.LANGUAGE)));
@@ -222,12 +222,12 @@ public class Issue241Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test1.wma");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.LANGUAGE,"eng"));
             tag.setField(tag.createField(FieldKey.KEY,"C#"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("eng",af.getTag().getFirst(FieldKey.LANGUAGE));
             assertEquals("C#",af.getTag().getFirst(FieldKey.KEY));
             assertEquals("English",Languages.getInstanceOf().getValueForId(af.getTag().getFirst(FieldKey.LANGUAGE)));
@@ -253,12 +253,12 @@ public class Issue241Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Tag tag = af.getTag();
             tag.setField(tag.createField(FieldKey.LANGUAGE,"eng"));
             tag.setField(tag.createField(FieldKey.KEY,"C#"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("eng",af.getTag().getFirst(FieldKey.LANGUAGE));
             assertEquals("C#",af.getTag().getFirst(FieldKey.KEY));
             assertEquals("English",Languages.getInstanceOf().getValueForId(af.getTag().getFirst(FieldKey.LANGUAGE)));
@@ -284,7 +284,7 @@ public class Issue241Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.setTag(new ID3v24Tag());
             Tag tag = af.getTag();
 

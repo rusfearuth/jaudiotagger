@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 
 /**
  * <p>This is the main object manipulated by the user representing an audiofile, its properties and its tag.
- * <p>The preferred way to obtain an <code>AudioFile</code> is to use the <code>AudioFileIO.read(Path)</code> method.
+ * <p>The preferred way to obtain an <code>AudioFile</code> is to use the <code>AudioFileIO.read(Path.toPath())</code> method.
  * <p>The <code>AudioHeader</code> contains every properties associated with the file itself (no meta-data), like the bitrate, the sampling rate, the encoding audioHeaders, etc.
  * <p>To get the meta-data contained in this file you have to get the <code>Tag</code> of this <code>AudioFile</code>
  *
@@ -72,7 +72,7 @@ public class AudioFile
     }
 
     /**
-     * <p>These constructors are used by the different readers, users should not use them, but use the <code>AudioFileIO.read(Path)</code> method instead !.
+     * <p>These constructors are used by the different readers, users should not use them, but use the <code>AudioFileIO.read(Path.toPath())</code> method instead !.
      * <p>Create the AudioFile representing file f, the encoding audio headers and containing the tag
      *
      * @param f           The file of the audio file
@@ -88,7 +88,7 @@ public class AudioFile
 
 
     /**
-     * <p>These constructors are used by the different readers, users should not use them, but use the <code>AudioFileIO.read(Path)</code> method instead !.
+     * <p>These constructors are used by the different readers, users should not use them, but use the <code>AudioFileIO.read(Path.toPath())</code> method instead !.
      * <p>Create the AudioFile representing file denoted by pathnames, the encoding audio Headers and containing the tag
      *
      * @param s           The pathname of the audio file
@@ -103,26 +103,26 @@ public class AudioFile
     }
 
     /**
-     * <p>Write the tag contained in this AudioFile in the actual file on the disk, this is the same as calling the <code>AudioFileIO.write(this)</code> method.
+     * <p>Write the tag contained in this AudioFile to disk via {@link AudioFileIO}'s default instance.
      *
      * @throws NoWritePermissionsException if the file could not be written to due to file permissions
-     * @throws CannotWriteException If the file could not be written/accessed, the extension wasn't recognized, or other IO error occured.
+     * @throws CannotWriteException If the file could not be written/accessed, the extension wasn't recognized, or other IO error occurred.
      * @see AudioFileIO
      */
     public void commit() throws CannotWriteException
     {
-        AudioFileIO.write(this);
+        AudioFileIO.getDefaultAudioFileIO().writeFile(this, (Path) null);
     }
 
     /**
-     * <p>Delete any tags that exist in the fie , this is the same as calling the <code>AudioFileIO.delete(this)</code> method.
+     * <p>Delete any tags that exist in the file via {@link AudioFileIO}'s default instance.
      *
-     * @throws CannotWriteException If the file could not be written/accessed, the extension wasn't recognized, or other IO error occured.
+     * @throws CannotWriteException If the file could not be written/accessed, the extension wasn't recognized, or other IO error occurred.
      * @see AudioFileIO
      */
     public void delete() throws CannotReadException, CannotWriteException
     {
-        AudioFileIO.delete(this);
+        AudioFileIO.getDefaultAudioFileIO().deleteTag(this);
     }
 
     /**

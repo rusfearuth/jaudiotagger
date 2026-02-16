@@ -25,13 +25,13 @@ public class Issue239Test extends AbstractTestCase
             File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
 
             //Add a v24Tag
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             MP3File mp3File= (MP3File)af;
             mp3File.setID3v2Tag(new ID3v23Tag());
             mp3File.save();
             mp3File = new MP3File(testFile);
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File= (MP3File)af;
             //Check mapped okay ands empty
             assertEquals(0,mp3File.getTag().getFields(FieldKey.COMMENT).size());
@@ -42,7 +42,7 @@ public class Issue239Test extends AbstractTestCase
 
             mp3File.save();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File= (MP3File)af;
             //Check mapped okay ands empty
             assertTrue(mp3File.getTag() instanceof ID3v23Tag);
@@ -53,7 +53,7 @@ public class Issue239Test extends AbstractTestCase
             assertEquals(0,mp3File.getTag().getFields(FieldKey.COMMENT).size());
             mp3File.save();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File= (MP3File)af;
             assertEquals(0,mp3File.getTag().getFields(FieldKey.COMMENT).size());
 
@@ -77,13 +77,13 @@ public class Issue239Test extends AbstractTestCase
             File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
 
             //Add a v24Tag
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             MP3File mp3File= (MP3File)af;
             mp3File.setID3v2Tag(new ID3v23Tag());
             mp3File.save();
             mp3File = new MP3File(testFile);
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File= (MP3File)af;
             //Check mapped okay ands empty
             assertEquals(0,mp3File.getTag().getFields(FieldKey.CUSTOM1).size());
@@ -94,7 +94,7 @@ public class Issue239Test extends AbstractTestCase
 
             mp3File.save();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File= (MP3File)af;
             //Check mapped okay ands empty
             assertTrue(mp3File.getTag() instanceof ID3v23Tag);
@@ -105,7 +105,7 @@ public class Issue239Test extends AbstractTestCase
             assertEquals(0,mp3File.getTag().getFields(FieldKey.CUSTOM1).size());
             mp3File.save();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File= (MP3File)af;
             assertEquals(0,mp3File.getTag().getFields(FieldKey.CUSTOM1).size());
 
@@ -129,13 +129,13 @@ public class Issue239Test extends AbstractTestCase
             File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
 
             //Add a v24Tag
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             MP3File mp3File= (MP3File)af;
             mp3File.setID3v2Tag(new ID3v23Tag());
             mp3File.save();
             mp3File = new MP3File(testFile);
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File= (MP3File)af;
             //Check mapped okay ands empty
             assertEquals(0,mp3File.getTag().getFields(FieldKey.CUSTOM1).size());
@@ -146,7 +146,7 @@ public class Issue239Test extends AbstractTestCase
 
             mp3File.save();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File= (MP3File)af;
             //Check mapped okay ands empty
             assertTrue(mp3File.getTag() instanceof ID3v23Tag);
@@ -158,7 +158,7 @@ public class Issue239Test extends AbstractTestCase
             assertEquals(1,mp3File.getTag().getFields(FieldKey.CUSTOM2).size());
             mp3File.save();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File= (MP3File)af;
             assertEquals(0,mp3File.getTag().getFields(FieldKey.CUSTOM1).size());
             assertEquals(1,mp3File.getTag().getFields(FieldKey.CUSTOM2).size());

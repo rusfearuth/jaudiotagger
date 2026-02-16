@@ -29,7 +29,7 @@ public class Issue274Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test54.flac");
 
 
-            AudioFileIO.read(testFile);
+            AudioFileIO.read(testFile.toPath());
 
 
         }

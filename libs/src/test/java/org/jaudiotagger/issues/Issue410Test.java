@@ -26,16 +26,16 @@ public class Issue410Test extends AbstractTestCase
             }
 
             File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.getTagOrCreateAndSetDefault().setField(FieldKey.LANGUAGE, "English");
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("English", af.getTag().getFirst(FieldKey.LANGUAGE));
 
             af.getTagOrCreateAndSetDefault().setField(FieldKey.LANGUAGE,
                     Languages.getInstanceOf().getIdForValue("English"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("eng", af.getTag().getFirst(FieldKey.LANGUAGE));
         }
         catch(Exception e)

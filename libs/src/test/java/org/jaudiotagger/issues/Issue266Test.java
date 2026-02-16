@@ -29,7 +29,7 @@ public class Issue266Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test534.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             assertFalse(((WavTag)af.getTag()).isBadChunkData());
             assertTrue(((WavTag)af.getTag()).isNonStandardPadding());
@@ -56,7 +56,7 @@ public class Issue266Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test534.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             assertFalse(((WavTag)af.getTag()).isBadChunkData());
             assertTrue(((WavTag)af.getTag()).isNonStandardPadding());
@@ -67,7 +67,7 @@ public class Issue266Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_ACTIVE);
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "Album");
             assertFalse(((WavTag)af.getTag()).isBadChunkData());
@@ -96,7 +96,7 @@ public class Issue266Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test534.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             assertFalse(((WavTag)af.getTag()).isBadChunkData());
             assertTrue(((WavTag)af.getTag()).isNonStandardPadding());
@@ -107,7 +107,7 @@ public class Issue266Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_BOTH);
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "Album");
             assertFalse(((WavTag)af.getTag()).isBadChunkData());
@@ -136,7 +136,7 @@ public class Issue266Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test534.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             assertFalse(((WavTag)af.getTag()).isBadChunkData());
             assertTrue(((WavTag)af.getTag()).isNonStandardPadding());
@@ -147,7 +147,7 @@ public class Issue266Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_EXISTING_AND_ACTIVE);
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "Album");
             assertFalse(((WavTag)af.getTag()).isBadChunkData());
@@ -176,7 +176,7 @@ public class Issue266Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test534.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             assertFalse(((WavTag)af.getTag()).isBadChunkData());
             assertTrue(((WavTag)af.getTag()).isNonStandardPadding());
@@ -187,7 +187,7 @@ public class Issue266Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setWavSaveOptions(WavSaveOptions.SAVE_EXISTING_AND_ACTIVE_AND_SYNC);
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ALBUM), "Album");
             assertFalse(((WavTag)af.getTag()).isBadChunkData());

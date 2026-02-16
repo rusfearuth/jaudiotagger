@@ -6,7 +6,7 @@ import org.jaudiotagger.tag.FieldKey;
 
 import java.io.File;
 
-public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
+public class AudioFileIOPathParityRegressionTest extends AbstractTestCase
 {
     private static final String SOURCE_MP3 = "01.mp3";
     private static final String SOURCE_OGG = "test.ogg";
@@ -17,7 +17,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testReadUsingFileApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_MP3, new File("file-api-read.mp3"));
-        AudioFile audioFile = AudioFileIO.read(source);
+        AudioFile audioFile = AudioFileIO.read(source.toPath());
 
         assertEquals("mp3", audioFile.getExt());
         assertEquals(source.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
@@ -27,7 +27,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testReadAsUsingFileApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_MP3, new File("file-api-read-as.mp3"));
-        AudioFile audioFile = AudioFileIO.readAs(source, "mp3");
+        AudioFile audioFile = AudioFileIO.readAs(source.toPath(), "mp3");
 
         assertEquals("mp3", audioFile.getExt());
         assertNotNull(audioFile.getAudioHeader());
@@ -36,7 +36,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testReadMagicUsingFileApi() throws Exception
     {
         File source = copyAudioToTmp("01.mp3", new File("file-api-read-magic.mp3"));
-        AudioFile audioFile = AudioFileIO.readMagic(source);
+        AudioFile audioFile = AudioFileIO.readMagic(source.toPath());
 
         assertEquals("mp3", audioFile.getExt());
     }
@@ -44,11 +44,11 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testWriteAsUsingStringApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_MP3, new File("file-api-write-as-source.mp3"));
-        AudioFile audioFile = AudioFileIO.read(source);
+        AudioFile audioFile = AudioFileIO.read(source.toPath());
         audioFile.getTagOrCreateAndSetDefault().setField(FieldKey.TITLE, "FileApiRegression");
 
         File destinationWithoutExt = new File(source.getParentFile(), "file-api-write-as-dest");
-        AudioFileIO.writeAs(audioFile, destinationWithoutExt.getPath());
+        AudioFileIO.writeAs(audioFile, destinationWithoutExt.toPath());
 
         File destinationWithExt = new File(destinationWithoutExt.getPath() + ".mp3");
         assertEquals(destinationWithExt.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
@@ -58,7 +58,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testReadOggUsingFileApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_OGG, new File("file-api-read.ogg"));
-        AudioFile audioFile = AudioFileIO.read(source);
+        AudioFile audioFile = AudioFileIO.read(source.toPath());
 
         assertEquals("ogg", audioFile.getExt());
         assertEquals(source.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
@@ -68,7 +68,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testReadAsOggUsingFileApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_OGG, new File("file-api-read-as.ogg"));
-        AudioFile audioFile = AudioFileIO.readAs(source, "ogg");
+        AudioFile audioFile = AudioFileIO.readAs(source.toPath(), "ogg");
 
         assertEquals("ogg", audioFile.getExt());
         assertNotNull(audioFile.getAudioHeader());
@@ -79,7 +79,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
         File source = copyAudioToTmp(SOURCE_OGG, new File("file-api-read-magic.ogg"));
         try
         {
-            AudioFileIO.readMagic(source);
+            AudioFileIO.readMagic(source.toPath());
             fail("Expected CannotReadException");
         }
         catch (CannotReadException expected)
@@ -91,11 +91,11 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testWriteAsOggUsingStringApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_OGG, new File("file-api-write-as-source.ogg"));
-        AudioFile audioFile = AudioFileIO.read(source);
+        AudioFile audioFile = AudioFileIO.read(source.toPath());
         audioFile.getTagOrCreateAndSetDefault().setField(FieldKey.TITLE, "FileApiRegressionOgg");
 
         File destinationWithoutExt = new File(source.getParentFile(), "file-api-write-as-dest-ogg");
-        AudioFileIO.writeAs(audioFile, destinationWithoutExt.getPath());
+        AudioFileIO.writeAs(audioFile, destinationWithoutExt.toPath());
 
         File destinationWithExt = new File(destinationWithoutExt.getPath() + ".ogg");
         assertEquals(destinationWithExt.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
@@ -105,7 +105,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testReadWmaUsingFileApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_WMA, new File("file-api-read.wma"));
-        AudioFile audioFile = AudioFileIO.read(source);
+        AudioFile audioFile = AudioFileIO.read(source.toPath());
 
         assertEquals("wma", audioFile.getExt());
         assertEquals(source.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
@@ -115,7 +115,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testReadAsWmaUsingFileApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_WMA, new File("file-api-read-as.wma"));
-        AudioFile audioFile = AudioFileIO.readAs(source, "wma");
+        AudioFile audioFile = AudioFileIO.readAs(source.toPath(), "wma");
 
         assertEquals("wma", audioFile.getExt());
         assertNotNull(audioFile.getAudioHeader());
@@ -126,7 +126,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
         File source = copyAudioToTmp(SOURCE_WMA, new File("file-api-read-magic.wma"));
         try
         {
-            AudioFile byFile = AudioFileIO.readMagic(source);
+            AudioFile byFile = AudioFileIO.readMagic(source.toPath());
             AudioFile byPath = AudioFileIO.readMagic(source.toPath());
             assertEquals(byPath.getExt(), byFile.getExt());
         }
@@ -147,11 +147,11 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testWriteAsWmaUsingStringApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_WMA, new File("file-api-write-as-source.wma"));
-        AudioFile audioFile = AudioFileIO.read(source);
+        AudioFile audioFile = AudioFileIO.read(source.toPath());
         audioFile.getTagOrCreateAndSetDefault().setField(FieldKey.TITLE, "FileApiRegressionWma");
 
         File destinationWithoutExt = new File(source.getParentFile(), "file-api-write-as-dest-wma");
-        AudioFileIO.writeAs(audioFile, destinationWithoutExt.getPath());
+        AudioFileIO.writeAs(audioFile, destinationWithoutExt.toPath());
 
         File destinationWithExt = new File(destinationWithoutExt.getPath() + ".wma");
         assertEquals(destinationWithExt.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
@@ -161,7 +161,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testFileAndPathApisReturnEquivalentExtensionsForWma() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_WMA, new File("file-api-parity.wma"));
-        AudioFile byFile = AudioFileIO.read(source);
+        AudioFile byFile = AudioFileIO.read(source.toPath());
         AudioFile byPath = AudioFileIO.read(source.toPath());
 
         assertEquals(byPath.getExt(), byFile.getExt());
@@ -170,7 +170,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testReadRaUsingFileApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_RA, new File("file-api-read.ra"));
-        AudioFile audioFile = AudioFileIO.read(source);
+        AudioFile audioFile = AudioFileIO.read(source.toPath());
 
         assertEquals("ra", audioFile.getExt());
         assertEquals(source.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
@@ -180,7 +180,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testReadAsRaUsingFileApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_RA, new File("file-api-read-as.ra"));
-        AudioFile audioFile = AudioFileIO.readAs(source, "ra");
+        AudioFile audioFile = AudioFileIO.readAs(source.toPath(), "ra");
 
         assertEquals("ra", audioFile.getExt());
         assertNotNull(audioFile.getAudioHeader());
@@ -191,7 +191,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
         File source = copyAudioToTmp(SOURCE_RA, new File("file-api-read-magic.ra"));
         try
         {
-            AudioFile byFile = AudioFileIO.readMagic(source);
+            AudioFile byFile = AudioFileIO.readMagic(source.toPath());
             AudioFile byPath = AudioFileIO.readMagic(source.toPath());
             assertEquals(byPath.getExt(), byFile.getExt());
         }
@@ -212,7 +212,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testFileAndPathApisReturnEquivalentExtensionsForRa() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_RA, new File("file-api-parity.ra"));
-        AudioFile byFile = AudioFileIO.read(source);
+        AudioFile byFile = AudioFileIO.read(source.toPath());
         AudioFile byPath = AudioFileIO.read(source.toPath());
 
         assertEquals(byPath.getExt(), byFile.getExt());
@@ -221,7 +221,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testReadRmUsingFileApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_RM, new File("file-api-read.rm"));
-        AudioFile audioFile = AudioFileIO.read(source);
+        AudioFile audioFile = AudioFileIO.read(source.toPath());
 
         assertEquals("rm", audioFile.getExt());
         assertEquals(source.getAbsolutePath(), audioFile.getFile().getAbsolutePath());
@@ -231,7 +231,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testReadAsRmUsingFileApi() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_RM, new File("file-api-read-as.rm"));
-        AudioFile audioFile = AudioFileIO.readAs(source, "rm");
+        AudioFile audioFile = AudioFileIO.readAs(source.toPath(), "rm");
 
         assertEquals("rm", audioFile.getExt());
         assertNotNull(audioFile.getAudioHeader());
@@ -242,7 +242,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
         File source = copyAudioToTmp(SOURCE_RM, new File("file-api-read-magic.rm"));
         try
         {
-            AudioFile byFile = AudioFileIO.readMagic(source);
+            AudioFile byFile = AudioFileIO.readMagic(source.toPath());
             AudioFile byPath = AudioFileIO.readMagic(source.toPath());
             assertEquals(byPath.getExt(), byFile.getExt());
         }
@@ -263,7 +263,7 @@ public class AudioFileIOFileApiRegressionTest extends AbstractTestCase
     public void testFileAndPathApisReturnEquivalentExtensionsForRm() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_RM, new File("file-api-parity.rm"));
-        AudioFile byFile = AudioFileIO.read(source);
+        AudioFile byFile = AudioFileIO.read(source.toPath());
         AudioFile byPath = AudioFileIO.read(source.toPath());
 
         assertEquals(byPath.getExt(), byFile.getExt());

@@ -58,7 +58,7 @@ public class AudioFileIOPathApiTest extends AbstractTestCase
     public void testFileAndPathApisReturnEquivalentExtensions() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_MP3, new File("path-api-parity.mp3"));
-        AudioFile byFile = AudioFileIO.read(source);
+        AudioFile byFile = AudioFileIO.read(source.toPath());
         AudioFile byPath = AudioFileIO.read(source.toPath());
 
         assertEquals(byFile.getExt(), byPath.getExt());
@@ -113,7 +113,7 @@ public class AudioFileIOPathApiTest extends AbstractTestCase
     public void testFileAndPathApisReturnEquivalentExtensionsForOgg() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_OGG, new File("path-api-parity.ogg"));
-        AudioFile byFile = AudioFileIO.read(source);
+        AudioFile byFile = AudioFileIO.read(source.toPath());
         AudioFile byPath = AudioFileIO.read(source.toPath());
 
         assertEquals(byFile.getExt(), byPath.getExt());
@@ -143,14 +143,14 @@ public class AudioFileIOPathApiTest extends AbstractTestCase
         try
         {
             AudioFile byPath = AudioFileIO.readMagic(source.toPath());
-            AudioFile byFile = AudioFileIO.readMagic(source);
+            AudioFile byFile = AudioFileIO.readMagic(source.toPath());
             assertEquals(byFile.getExt(), byPath.getExt());
         }
         catch (CannotReadException expectedByPath)
         {
             try
             {
-                AudioFileIO.readMagic(source);
+                AudioFileIO.readMagic(source.toPath());
                 fail("Expected CannotReadException");
             }
             catch (CannotReadException expectedByFile)
@@ -177,7 +177,7 @@ public class AudioFileIOPathApiTest extends AbstractTestCase
     public void testFileAndPathApisReturnEquivalentExtensionsForWma() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_WMA, new File("path-api-parity.wma"));
-        AudioFile byFile = AudioFileIO.read(source);
+        AudioFile byFile = AudioFileIO.read(source.toPath());
         AudioFile byPath = AudioFileIO.read(source.toPath());
 
         assertEquals(byFile.getExt(), byPath.getExt());
@@ -207,14 +207,14 @@ public class AudioFileIOPathApiTest extends AbstractTestCase
         try
         {
             AudioFile byPath = AudioFileIO.readMagic(source.toPath());
-            AudioFile byFile = AudioFileIO.readMagic(source);
+            AudioFile byFile = AudioFileIO.readMagic(source.toPath());
             assertEquals(byFile.getExt(), byPath.getExt());
         }
         catch (CannotReadException expectedByPath)
         {
             try
             {
-                AudioFileIO.readMagic(source);
+                AudioFileIO.readMagic(source.toPath());
                 fail("Expected CannotReadException");
             }
             catch (CannotReadException expectedByFile)
@@ -227,7 +227,7 @@ public class AudioFileIOPathApiTest extends AbstractTestCase
     public void testFileAndPathApisReturnEquivalentExtensionsForRa() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_RA, new File("path-api-parity.ra"));
-        AudioFile byFile = AudioFileIO.read(source);
+        AudioFile byFile = AudioFileIO.read(source.toPath());
         AudioFile byPath = AudioFileIO.read(source.toPath());
 
         assertEquals(byFile.getExt(), byPath.getExt());
@@ -257,14 +257,14 @@ public class AudioFileIOPathApiTest extends AbstractTestCase
         try
         {
             AudioFile byPath = AudioFileIO.readMagic(source.toPath());
-            AudioFile byFile = AudioFileIO.readMagic(source);
+            AudioFile byFile = AudioFileIO.readMagic(source.toPath());
             assertEquals(byFile.getExt(), byPath.getExt());
         }
         catch (CannotReadException expectedByPath)
         {
             try
             {
-                AudioFileIO.readMagic(source);
+                AudioFileIO.readMagic(source.toPath());
                 fail("Expected CannotReadException");
             }
             catch (CannotReadException expectedByFile)
@@ -277,7 +277,7 @@ public class AudioFileIOPathApiTest extends AbstractTestCase
     public void testFileAndPathApisReturnEquivalentExtensionsForRm() throws Exception
     {
         File source = copyAudioToTmp(SOURCE_RM, new File("path-api-parity.rm"));
-        AudioFile byFile = AudioFileIO.read(source);
+        AudioFile byFile = AudioFileIO.read(source.toPath());
         AudioFile byPath = AudioFileIO.read(source.toPath());
 
         assertEquals(byFile.getExt(), byPath.getExt());

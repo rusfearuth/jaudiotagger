@@ -30,7 +30,7 @@ public class Issue463Test extends AbstractTestCase
             Mp4AtomTree tree = new Mp4AtomTree(testFile, false);
             tree.printAtomTree();
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             assertEquals("Zbigniew Preisner", af.getTag().getFirst(FieldKey.ARTIST));
 
@@ -42,7 +42,7 @@ public class Issue463Test extends AbstractTestCase
             tree = new Mp4AtomTree(testFile,false);
             tree.printAtomTree();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             assertEquals("fred",af.getTag().getFirst(FieldKey.ARTIST));
 

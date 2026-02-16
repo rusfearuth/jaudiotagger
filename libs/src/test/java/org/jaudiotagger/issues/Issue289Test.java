@@ -33,12 +33,12 @@ public class Issue289Test extends AbstractTestCase
             OggFileReader ofr = new OggFileReader();
             //ofr.shortSummarizeOggPageHeaders(testFile);
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             System.out.println(af.getTag().toString());
             af.getTag().setField(af.getTag().createField(FieldKey.MUSICIP_ID,"91421a81-50b9-f577-70cf-20356eea212e"));
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("91421a81-50b9-f577-70cf-20356eea212e",af.getTag().getFirst(FieldKey.MUSICIP_ID));
 
             ofr.shortSummarizeOggPageHeaders(testFile);

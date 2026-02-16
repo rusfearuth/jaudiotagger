@@ -19,7 +19,7 @@ public class Issue005Test extends AbstractTestCase
         try
         {
             File orig = new File("testdata", "testNonExistent.mp3");
-            AudioFileIO.read(orig);
+            AudioFileIO.read(orig.toPath());
         }
         catch(Exception ex)
         {
@@ -49,7 +49,7 @@ public class Issue005Test extends AbstractTestCase
         try
         {
             File orig = new File("testdata", "testNonExistent.flac");
-            AudioFile af = AudioFileIO.read(orig);
+            AudioFile af = AudioFileIO.read(orig.toPath());
             af.getTag();
         }
         catch(Exception ex)
@@ -66,7 +66,7 @@ public class Issue005Test extends AbstractTestCase
         try
         {
             File orig = new File("testdata", "testNonExistent.ogg");
-            AudioFile af = AudioFileIO.read(orig);
+            AudioFile af = AudioFileIO.read(orig.toPath());
             af.getTag();
         }
         catch(Exception ex)
@@ -83,7 +83,7 @@ public class Issue005Test extends AbstractTestCase
         try
         {
             File orig = new File("testdata", "testNonExistent.m4a");
-            AudioFile af = AudioFileIO.read(orig);
+            AudioFile af = AudioFileIO.read(orig.toPath());
             af.getTag();
         }
         catch(Exception ex)
@@ -100,7 +100,7 @@ public class Issue005Test extends AbstractTestCase
         try
         {
             File orig = new File("testdata", "testNonExistent.wma");
-            AudioFile af = AudioFileIO.read(orig);
+            AudioFile af = AudioFileIO.read(orig.toPath());
             af.getTag();
         }
         catch(Exception ex)
@@ -117,7 +117,7 @@ public class Issue005Test extends AbstractTestCase
         try
         {
             File orig = new File("testdata", "testNonExistent.wav");
-            AudioFile af = AudioFileIO.read(orig);
+            AudioFile af = AudioFileIO.read(orig.toPath());
             af.getTag();
         }
         catch(Exception ex)

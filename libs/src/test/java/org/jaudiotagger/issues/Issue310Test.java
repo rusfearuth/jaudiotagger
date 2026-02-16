@@ -30,10 +30,10 @@ public class Issue310Test extends AbstractTestCase
         try
         {
             testFile = AbstractTestCase.copyAudioToTmp("test85.mp4",new File("test85Test1.mp4"));
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.getTag().setField(af.getTag().createField(FieldKey.ARTIST,"Kenny Rankin1"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("Kenny Rankin1",af.getTag().getFirst(FieldKey.ARTIST));
         }
         catch (Exception e)
@@ -61,11 +61,11 @@ public class Issue310Test extends AbstractTestCase
            try
            {
                testFile = AbstractTestCase.copyAudioToTmp("test85.mp4",new File("test85Test2.mp4"));
-               AudioFile af = AudioFileIO.read(testFile);
+               AudioFile af = AudioFileIO.read(testFile.toPath());
 
                af.getTag().deleteField(FieldKey.ENCODER);
                af.commit();
-               af = AudioFileIO.read(testFile);
+               af = AudioFileIO.read(testFile.toPath());
                assertEquals("",af.getTag().getFirst(FieldKey.ENCODER));
            }
            catch (Exception e)
@@ -94,10 +94,10 @@ public class Issue310Test extends AbstractTestCase
         try
         {
             testFile = AbstractTestCase.copyAudioToTmp("test85.mp4",new File("test85Test3.mp4"));
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.getTag().setField(ArtworkFactory.createArtworkFromFile(new File("testdata", "coverart.png")));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
         }
         catch (Exception e)
         {

@@ -27,7 +27,7 @@ public class Issue309Test extends AbstractTestCase
         try
         {
             final File testFile = AbstractTestCase.copyAudioToTmp("test73.m4a");
-            AudioFileIO.read(testFile);
+            AudioFileIO.read(testFile.toPath());
 
         }
         catch(Exception ex)
@@ -52,7 +52,7 @@ public class Issue309Test extends AbstractTestCase
         try
         {
             final File testFile = AbstractTestCase.copyAudioToTmp("test309.m4a");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.getTag().setField(FieldKey.MUSICBRAINZ_WORK,"fkmgfkjkfjbvkfdjvbkfnbfn");
             af.commit();
         }

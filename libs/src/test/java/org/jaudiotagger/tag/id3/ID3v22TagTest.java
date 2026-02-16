@@ -139,7 +139,7 @@ public class ID3v22TagTest extends TestCase
             mp3File.save();
 
             //Read using new Interface
-            AudioFile v22File = AudioFileIO.read(testFile);
+            AudioFile v22File = AudioFileIO.read(testFile.toPath());
             assertEquals("fred", v22File.getTag().getFirst(FieldKey.TITLE));
             assertEquals("artist", v22File.getTag().getFirst(FieldKey.ARTIST));
             assertEquals("album", v22File.getTag().getFirst(FieldKey.ALBUM));
@@ -188,13 +188,13 @@ public class ID3v22TagTest extends TestCase
         mp3File.setID3v2Tag(v2Tag);
         mp3File.save();
 
-        final AudioFile v22File = AudioFileIO.read(modifiedFile);
+        final AudioFile v22File = AudioFileIO.read(modifiedFile.toPath());
         final Artwork firstArtwork = v22File.getTag().getFirstArtwork();
         assertTrue(Arrays.equals(firstArtwork.getBinaryData(), binaryData));
         assertEquals("fred", v22File.getTag().getFirst(FieldKey.TITLE));
 
         // make sure the audio portion of the file is still identical
-        final AudioFile mp3OrigFile = AudioFileIO.read(origFile);
+        final AudioFile mp3OrigFile = AudioFileIO.read(origFile.toPath());
         final MP3AudioHeader origAudioHeader = (MP3AudioHeader)mp3OrigFile.getAudioHeader();
         final MP3AudioHeader modifiedAudioHeader = (MP3AudioHeader)v22File.getAudioHeader();
 
@@ -219,7 +219,7 @@ public class ID3v22TagTest extends TestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test24.mp3");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             MP3File m = (MP3File) af;
 
             //Read using new Interface getFirst method with key
@@ -278,7 +278,7 @@ public class ID3v22TagTest extends TestCase
         mp3File.save();
 
         //Delete using generic key
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
@@ -288,7 +288,7 @@ public class ID3v22TagTest extends TestCase
         f.commit();
 
         //Delete using flac id
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
@@ -299,7 +299,7 @@ public class ID3v22TagTest extends TestCase
         assertEquals(0,tagFields.size());
         f.commit();
 
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
     }

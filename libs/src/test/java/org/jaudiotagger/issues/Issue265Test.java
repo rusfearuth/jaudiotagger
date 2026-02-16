@@ -33,7 +33,7 @@ public class Issue265Test extends AbstractTestCase
             TagOptionSingleton.getInstance().setTruncateTextWithoutErrors(false);
 
             File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             assertEquals(0, tag.getFields(FieldKey.COVER_ART).size());
 
@@ -74,7 +74,7 @@ public class Issue265Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             Tag tag = f.getTag();
             assertEquals(0, tag.getFields(FieldKey.COVER_ART).size());
 
@@ -115,7 +115,7 @@ public class Issue265Test extends AbstractTestCase
            try
            {
                File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
-               AudioFile f = AudioFileIO.read(testFile);
+               AudioFile f = AudioFileIO.read(testFile.toPath());
                Tag tag = f.getTag();
 
                TagOptionSingleton.getInstance().setTruncateTextWithoutErrors(false);
@@ -154,7 +154,7 @@ public class Issue265Test extends AbstractTestCase
            try
            {
                File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
-               AudioFile f = AudioFileIO.read(testFile);
+               AudioFile f = AudioFileIO.read(testFile.toPath());
                Tag tag = f.getTag();
 
                //Enable value

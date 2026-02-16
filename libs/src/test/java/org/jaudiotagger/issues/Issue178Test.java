@@ -32,7 +32,7 @@ public class Issue178Test extends AbstractTestCase
         {
             testFile = AbstractTestCase.copyAudioToTmp("test36.ogg");
 
-            AudioFileIO.read(testFile);
+            AudioFileIO.read(testFile.toPath());
 
             //Print Out Tree
 

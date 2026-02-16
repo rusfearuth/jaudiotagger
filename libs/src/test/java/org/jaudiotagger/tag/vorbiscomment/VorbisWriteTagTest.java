@@ -56,7 +56,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testWriteTagTest.ogg"));
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
 
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
@@ -121,7 +121,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
 
             f.commit();
 
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (VorbisCommentTag) f.getTag();
             assertTrue(tag instanceof VorbisCommentTag);
             assertEquals("AUTHOR", tag.getFirst(FieldKey.ARTIST));
@@ -251,7 +251,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testWriteTagTestRequiresTwoPages.ogg"));
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
@@ -268,7 +268,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
             f.commit();
 
             //Reread
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (VorbisCommentTag) f.getTag();
 
             //Check changes
@@ -309,7 +309,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testWriteTagTestRequiresTwoPagesHeaderSplit.ogg"));
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
@@ -326,7 +326,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
             f.commit();
 
             //Reread
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (VorbisCommentTag) f.getTag();
 
             //Check changes
@@ -378,7 +378,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
             pageHeader = null;
             raf.close();
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
@@ -389,7 +389,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
             f.commit();
 
             //Reread
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (VorbisCommentTag) f.getTag();
 
             //Check changes
@@ -436,7 +436,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
             pageHeader = null;
             raf.close();
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
@@ -447,7 +447,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
             f.commit();
 
             //Reread
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (VorbisCommentTag) f.getTag();
 
             //Check changes
@@ -486,7 +486,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testWriteTagWithExtraPacketsHeaderMuchLargerSize.ogg"));
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
@@ -503,7 +503,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
             f.commit();
 
             //Reread
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (VorbisCommentTag) f.getTag();
 
             //Check changes
@@ -546,7 +546,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test2.ogg", new File("testWriteTagWithExtraPacketsHeaderMuchLargerSizeAndSplit.ogg"));
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
@@ -563,7 +563,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
             f.commit();
 
             //Reread
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
 
             RandomAccessFile raf = new RandomAccessFile(testFile, "r");
             OggFileReader oggFileReader = new OggFileReader();
@@ -609,7 +609,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test3.ogg", new File("testWriteTagTestNoLongerRequiresTwoPages.ogg"));
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
@@ -621,7 +621,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
             f.commit();
 
             //Reread
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (VorbisCommentTag) f.getTag();
 
             //Check changes
@@ -663,7 +663,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test5.ogg", new File("testWriteTagTestNoLongerRequiresTwoPagesNorSplit.ogg"));
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
@@ -675,7 +675,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
             f.commit();
 
             //Reread
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (VorbisCommentTag) f.getTag();
 
             //Check changes
@@ -716,7 +716,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test4.ogg", new File("testWriteTagTestWithPacketsNoLongerRequiresTwoPages.ogg"));
 
-            AudioFile f = AudioFileIO.read(testFile);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
             assertTrue(f.getTag() instanceof VorbisCommentTag);
             VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
@@ -729,7 +729,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
             f.commit();
 
             //Reread
-            f = AudioFileIO.read(testFile);
+            f = AudioFileIO.read(testFile.toPath());
             tag = (VorbisCommentTag) f.getTag();
 
             //Check changes
@@ -758,11 +758,11 @@ public class VorbisWriteTagTest extends AbstractTestCase
     public void testDeleteTag() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testDelete.ogg"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         f.setTag(VorbisCommentTag.createNewTag());
         f.commit();
 
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertTrue(f.getTag().isEmpty());
         assertEquals("jaudiotagger", ((VorbisCommentTag) f.getTag()).getVendor());
     }
@@ -770,10 +770,10 @@ public class VorbisWriteTagTest extends AbstractTestCase
     public void testDeleteTag2() throws Exception
     {
         File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testDelete2.ogg"));
-        AudioFile f = AudioFileIO.read(testFile);
-        AudioFileIO.delete(f);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
+        f.delete();
 
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         assertTrue(f.getTag().isEmpty());
         assertEquals("jaudiotagger", ((VorbisCommentTag) f.getTag()).getVendor());
     }
@@ -785,11 +785,11 @@ public class VorbisWriteTagTest extends AbstractTestCase
 
 
         File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testWriteMultiple.ogg"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         f.getTag().addField(FieldKey.ALBUM_ARTIST,"artist1");
         f.getTag().addField(FieldKey.ALBUM_ARTIST,"artist2");
         f.commit();
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST);
         assertEquals(tagFields.size(),2);
     }
@@ -798,7 +798,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
     {
         //Delete using generic key
         File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testDeleteFields.ogg"));
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
@@ -809,7 +809,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
         f.commit();
 
         //Delete using flac id
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
@@ -821,7 +821,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
         assertEquals(0,tagFields.size());
         f.commit();
 
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
 
@@ -834,13 +834,13 @@ public class VorbisWriteTagTest extends AbstractTestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg", new File("testwrite1.ogg"));
 
-            AudioFile f = AudioFileIO.read(testFile);
-            AudioFileIO.delete(f);
+            AudioFile f = AudioFileIO.read(testFile.toPath());
+            f.delete();
 
             // Tests multiple iterations on same file
             for (int i = 0; i < 2; i++)
             {
-                f = AudioFileIO.read(testFile);
+                f = AudioFileIO.read(testFile.toPath());
                 Tag tag = f.getTag();
                 for (FieldKey key : FieldKey.values())
                 {
@@ -851,7 +851,7 @@ public class VorbisWriteTagTest extends AbstractTestCase
                     }
                 }
                 f.commit();
-                f = AudioFileIO.read(testFile);
+                f = AudioFileIO.read(testFile.toPath());
                 tag = f.getTag();
                 for (FieldKey key : FieldKey.values())
                 {

@@ -22,7 +22,7 @@ public class Issue370Test extends AbstractTestCase
             }
             //ToDO Fix Issue
             //File testFile = AbstractTestCase.copyAudioToTmp("test96.m4a");
-            //AudioFile af = AudioFileIO.read(testFile);
+            //AudioFile af = AudioFileIO.read(testFile.toPath());
         }
         catch(Exception e)
         {

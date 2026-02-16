@@ -49,11 +49,11 @@ public class WmaContentDescriptionTest extends WmaTestCase
         for (String currKey : ContentDescription.ALLOWED)
         {
             AsfFieldKey curr = AsfFieldKey.getAsfFieldKey(currKey);
-            AudioFileIO.delete(file);
+            file.delete();
             header = AsfHeaderReader.readHeader(file.getFile());
             assertNull(header.getContentDescription());
             assertNull(header.getExtendedContentDescription());
-            file = AudioFileIO.read(file.getFile());
+            file = AudioFileIO.read(file.getFile().toPath());
             tag = (AsfTag) file.getTag();
             tag.addField(tag.createField(curr, curr.getFieldName()));
             file.commit();

@@ -27,7 +27,7 @@ public class Issue218Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test218.mp4");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals("1968",(af.getTag().getFirst(FieldKey.YEAR)));

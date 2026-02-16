@@ -30,7 +30,7 @@ public class WmaContainerTest extends WmaTestCase {
 
     public void testExtContentAfterWrite() throws Exception {
         File prepareTestFile = prepareTestFile(null);
-        AudioFile read = AudioFileIO.read(prepareTestFile);
+        AudioFile read = AudioFileIO.read(prepareTestFile.toPath());
         read.commit(); // Normalize Text file
         byte[] ext = AsfHeaderUtils.getFirstChunk(read.getFile(), GUID.GUID_EXTENDED_CONTENT_DESCRIPTION);
         read.commit();

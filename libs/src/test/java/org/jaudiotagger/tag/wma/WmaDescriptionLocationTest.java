@@ -60,9 +60,9 @@ public class WmaDescriptionLocationTest extends WmaTestCase
     private void applyTag(File testFile, boolean hcd, boolean hecd) throws Exception
     {
         // getFields an audio file instance
-        AudioFile read = AudioFileIO.read(testFile);
+        AudioFile read = AudioFileIO.read(testFile.toPath());
         // deleteField all managed data
-        AudioFileIO.delete(read);
+        read.delete();
         // Create chunks
         MetadataContainer[] distributeMetadata = TagConverter.distributeMetadata(this.testTag);
         // createField creator for the content description object (chunk)
@@ -110,7 +110,7 @@ public class WmaDescriptionLocationTest extends WmaTestCase
      */
     private void checkExcpectations(File testFile, boolean hcd, boolean hecd, boolean ehcd, boolean ehecd) throws Exception
     {
-        AudioFile read = AudioFileIO.read(testFile);
+        AudioFile read = AudioFileIO.read(testFile.toPath());
         assertTrue(read.getAudioHeader().isVariableBitRate());
         assertEquals("TheArtist", read.getTag().getFirst(FieldKey.ARTIST));
         AsfHeader readHeader = AsfHeaderReader.readHeader(testFile);
@@ -133,8 +133,8 @@ public class WmaDescriptionLocationTest extends WmaTestCase
     public void testChunkLocations() throws Exception
     {
         File testFile = prepareTestFile(null);
-        AudioFile read = AudioFileIO.read(testFile);
-        AudioFileIO.delete(read);
+        AudioFile read = AudioFileIO.read(testFile.toPath());
+        read.delete();
         read.setTag(testTag);
         read.commit();
         checkExcpectations(testFile, true, true, false, false);

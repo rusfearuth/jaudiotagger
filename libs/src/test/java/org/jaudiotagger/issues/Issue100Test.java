@@ -50,7 +50,7 @@ public class Issue100Test extends AbstractTestCase
                 ID3v24Frame frame = new ID3v24Frame(ID3v24Frames.FRAME_ID_UNIQUE_FILE_ID);
                 tag.setFrame(frame);
             }
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             MP3File mp3File = (MP3File)af;
             mp3File.setID3v2Tag(tag);
 
@@ -61,7 +61,7 @@ public class Issue100Test extends AbstractTestCase
             assertEquals("UFID",iter.next());
             mp3File.save();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File = (MP3File)af;
             assertEquals(2,mp3File.getID3v2Tag().getFieldCount());
 
@@ -97,7 +97,7 @@ public class Issue100Test extends AbstractTestCase
                 ID3v23Frame frame = new ID3v23Frame(ID3v23Frames.FRAME_ID_V3_UNIQUE_FILE_ID);
                 tag.setFrame(frame);
             }
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             MP3File mp3File = (MP3File)af;
             mp3File.setID3v2Tag(tag);
 
@@ -108,7 +108,7 @@ public class Issue100Test extends AbstractTestCase
             assertEquals("UFID",iter.next());
             mp3File.save();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File = (MP3File)af;
             assertEquals(2,mp3File.getID3v2Tag().getFieldCount());
 
@@ -145,7 +145,7 @@ public class Issue100Test extends AbstractTestCase
                 ID3v22Frame frame = new ID3v22Frame(ID3v22Frames.FRAME_ID_V2_UNIQUE_FILE_ID);
                 tag.setFrame(frame);
             }
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             MP3File mp3File = (MP3File)af;
             mp3File.setID3v2Tag(tag);
 
@@ -156,7 +156,7 @@ public class Issue100Test extends AbstractTestCase
             assertEquals("UFI",iter.next());
             mp3File.save();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             mp3File = (MP3File)af;
             assertEquals(2,mp3File.getID3v2Tag().getFieldCount());
 

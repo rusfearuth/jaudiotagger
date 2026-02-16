@@ -34,13 +34,13 @@ public class WavManyMetadataChunksTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test605.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             af.getTag().setField(FieldKey.ARTIST,"artist");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ARTIST),"artist");
@@ -71,13 +71,13 @@ public class WavManyMetadataChunksTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test605.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             af.getTag().setField(FieldKey.ARTIST,"artist");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ARTIST),"artist");
@@ -108,13 +108,13 @@ public class WavManyMetadataChunksTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test605.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             af.getTag().setField(FieldKey.ARTIST,"artist");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ARTIST),"artist");
@@ -145,13 +145,13 @@ public class WavManyMetadataChunksTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test605.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             af.getTag().setField(FieldKey.ARTIST,"artist");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ARTIST),"artist");
@@ -182,13 +182,13 @@ public class WavManyMetadataChunksTest extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test605.wav");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             af.getTag().setField(FieldKey.ARTIST,"artist");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertNotNull(af.getTag());
             System.out.println(af.getTag());
             assertEquals(af.getTag().getFirst(FieldKey.ARTIST),"artist");

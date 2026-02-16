@@ -37,7 +37,7 @@ public class Issue282Test extends AbstractTestCase
             //make Relative
             assertTrue(outputFile.exists());
             //Read File okay
-            AudioFile af = AudioFileIO.read(outputFile);
+            AudioFile af = AudioFileIO.read(outputFile.toPath());
             System.out.println(af.getTag().toString());
 
             //Change File
@@ -79,7 +79,7 @@ public class Issue282Test extends AbstractTestCase
                //make Relative
                assertTrue(outputFile.exists());
                //Read File okay
-               AudioFile af = AudioFileIO.read(outputFile);
+               AudioFile af = AudioFileIO.read(outputFile.toPath());
 
                //Create tag and Change File
                af.getTagOrCreateAndSetDefault();

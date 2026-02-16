@@ -34,7 +34,7 @@ public class Issue308Test extends AbstractTestCase
                 System.err.println("Unable to test file - not available");
                 return;
             }
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Artwork artwork = ArtworkFactory.getNew();
             artwork.setFromFile(new File("testdata","coverart_large.jpg"));
 
@@ -43,7 +43,7 @@ public class Issue308Test extends AbstractTestCase
 
             //Reread
             System.out.println("Read Audio");
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             System.out.println("Rewrite Audio");
             af.commit();
             

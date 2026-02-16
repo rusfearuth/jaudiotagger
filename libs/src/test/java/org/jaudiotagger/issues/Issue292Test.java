@@ -36,13 +36,13 @@ public class Issue292Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("testV1Cbr128ID3v2.mp3");
 
             //Read and save chnages
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.getTag().setField(af.getTag().createField(FieldKey.ARTIST,"fredqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"));
             af.getTag().setField(af.getTag().createField(FieldKey.AMAZON_ID,"fredqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"));
 
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("fredqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",af.getTag().getFirst(FieldKey.ARTIST));
         }
         catch (Exception e)
@@ -81,13 +81,13 @@ public class Issue292Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test8.m4a");
 
             //Read and save chnages
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.getTag().setField(af.getTag().createField(FieldKey.ARTIST,"fredqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"));
             af.getTag().setField(af.getTag().createField(FieldKey.AMAZON_ID,"fredqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"));
 
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals("fredqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",af.getTag().getFirst(FieldKey.ARTIST));
         }
         catch (Exception e)

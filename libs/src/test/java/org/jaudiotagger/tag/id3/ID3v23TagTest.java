@@ -446,7 +446,7 @@ public class ID3v23TagTest extends TestCase
         mp3File.save();
 
         //Delete using generic key
-        AudioFile f = AudioFileIO.read(testFile);
+        AudioFile f = AudioFileIO.read(testFile.toPath());
         List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
@@ -456,7 +456,7 @@ public class ID3v23TagTest extends TestCase
         f.commit();
 
         //Delete using flac id
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
         f.getTag().addField(FieldKey.ALBUM_ARTIST_SORT,"artist1");
@@ -467,7 +467,7 @@ public class ID3v23TagTest extends TestCase
         assertEquals(0,tagFields.size());
         f.commit();
 
-        f = AudioFileIO.read(testFile);
+        f = AudioFileIO.read(testFile.toPath());
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0,tagFields.size());
     }

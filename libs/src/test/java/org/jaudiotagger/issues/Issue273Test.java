@@ -25,16 +25,16 @@ public class Issue273Test extends AbstractTestCase
         try
         {
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             af.getTagOrCreateAndSetDefault();
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             ID3v23Tag tag = (ID3v23Tag)af.getTag();
             tag.addField(FieldKey.COMMENT,"COMMENTVALUE");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = (ID3v23Tag)af.getTag();
             assertEquals("COMMENTVALUE",tag.getFirst(FieldKey.COMMENT));
             AbstractID3v2Frame frame = tag.getFirstField("COMM");
@@ -48,7 +48,7 @@ public class Issue273Test extends AbstractTestCase
             assertEquals("XXX",fb.getLanguage());
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = (ID3v23Tag)af.getTag();
             assertEquals("COMMENTVALUE",tag.getFirst(FieldKey.COMMENT));
             frame = tag.getFirstField("COMM");
@@ -59,7 +59,7 @@ public class Issue273Test extends AbstractTestCase
             fb.setLanguage("\0\0\0");
             af.commit();
 
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             tag = (ID3v23Tag)af.getTag();
             assertEquals("COMMENTVALUE",tag.getFirst(FieldKey.COMMENT));
             frame = tag.getFirstField("COMM");

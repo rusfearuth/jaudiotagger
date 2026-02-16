@@ -33,13 +33,13 @@ public class Issue277Test extends AbstractTestCase
         {
             testFile = AbstractTestCase.copyAudioToTmp("test1.m4a");
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals(0,af.getTag().getFields(FieldKey.IS_COMPILATION).size());
 
             //Old way
             af.getTag().setField(af.getTag().createField(FieldKey.IS_COMPILATION,"1"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals(1,af.getTag().getFields(FieldKey.IS_COMPILATION).size());
             assertEquals("1",af.getTag().getFirst(FieldKey.IS_COMPILATION));
 
@@ -71,13 +71,13 @@ public class Issue277Test extends AbstractTestCase
         {
             testFile = AbstractTestCase.copyAudioToTmp("test1.m4a");
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals(0,af.getTag().getFields(FieldKey.IS_COMPILATION).size());
 
             //Old way
             af.getTag().setField(af.getTag().createField(FieldKey.IS_COMPILATION,"true"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals(1,af.getTag().getFields(FieldKey.IS_COMPILATION).size());
             assertEquals("1",af.getTag().getFirst(FieldKey.IS_COMPILATION));
 
@@ -109,14 +109,14 @@ public class Issue277Test extends AbstractTestCase
         {
             testFile = AbstractTestCase.copyAudioToTmp("test1.m4a");
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Mp4Tag tag = (Mp4Tag)af.getTag();
             assertEquals(0,tag.get(Mp4FieldKey.RATING).size());
 
             //Old way
             af.getTag().setField(tag.createField(Mp4FieldKey.RATING,"1"));
             af.commit();
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals(1,tag.get(Mp4FieldKey.RATING).size());
             assertEquals("1",tag.getFirst(Mp4FieldKey.RATING));
 
@@ -148,7 +148,7 @@ public class Issue277Test extends AbstractTestCase
         {
             testFile = AbstractTestCase.copyAudioToTmp("test1.m4a");
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             Mp4Tag tag = (Mp4Tag)af.getTag();
             assertEquals(0,tag.get(Mp4FieldKey.RATING).size());
 

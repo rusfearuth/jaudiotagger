@@ -25,13 +25,13 @@ public class Issue324Test extends AbstractTestCase
 
         File testFile = AbstractTestCase.copyAudioToTmp("test32.mp3");
         assertEquals(1853744,testFile.length());
-        MP3File f = (MP3File)AudioFileIO.read(testFile);
+        MP3File f = (MP3File)AudioFileIO.read(testFile.toPath());
         assertEquals("Iron Maiden",f.getID3v1Tag().getFirst(FieldKey.ARTIST));
         f.setID3v1Tag(new ID3v11Tag());
         f.getID3v1Tag().setField(FieldKey.ARTIST,"Iron Mask");
         f.commit();
         assertEquals(1853744,testFile.length());
-        f = (MP3File)AudioFileIO.read(testFile);
+        f = (MP3File)AudioFileIO.read(testFile.toPath());
         assertEquals("Iron Mask",f.getID3v1Tag().getFirst(FieldKey.ARTIST));
 
     }

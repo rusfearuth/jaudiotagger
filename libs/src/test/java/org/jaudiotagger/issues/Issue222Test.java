@@ -30,7 +30,7 @@ public class Issue222Test extends AbstractTestCase
             testFile = AbstractTestCase.copyAudioToTmp("test4.m4a");
 
             //Read File okay
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertTrue(af.getTag().isEmpty());    //But empty
         }
         catch(Exception e)

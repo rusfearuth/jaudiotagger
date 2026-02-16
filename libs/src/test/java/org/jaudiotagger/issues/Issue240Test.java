@@ -27,7 +27,7 @@ public class Issue240Test extends AbstractTestCase
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test34.m4a");
 
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals(0,((Mp4Tag)af.getTag()).getFields(FieldKey.COVER_ART).size());
 
             //Add new image
@@ -38,7 +38,7 @@ public class Issue240Test extends AbstractTestCase
             af.commit();
 
             //Read File back
-            af = AudioFileIO.read(testFile);
+            af = AudioFileIO.read(testFile.toPath());
             assertEquals(1,((Mp4Tag)af.getTag()).getFields(FieldKey.COVER_ART).size());
         }
         catch (Exception e)

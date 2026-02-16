@@ -17,7 +17,7 @@ public class Issue437Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.flac");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals(16,af.getAudioHeader().getBitsPerSample());
         }
         catch(Exception ex)
@@ -33,7 +33,7 @@ public class Issue437Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals(16,af.getAudioHeader().getBitsPerSample());
         }
         catch(Exception ex)
@@ -49,7 +49,7 @@ public class Issue437Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test.ogg");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals(16,af.getAudioHeader().getBitsPerSample());
         }
         catch(Exception ex)
@@ -65,7 +65,7 @@ public class Issue437Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("test1.wma");
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals(16,af.getAudioHeader().getBitsPerSample());
         }
         catch(Exception ex)
@@ -81,7 +81,7 @@ public class Issue437Test extends AbstractTestCase
         try
         {
             File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3", new File("testGetBitsPerSampleMp3.mp3"));
-            AudioFile af = AudioFileIO.read(testFile);
+            AudioFile af = AudioFileIO.read(testFile.toPath());
             assertEquals(16,af.getAudioHeader().getBitsPerSample());
         }
         catch(Exception ex)
