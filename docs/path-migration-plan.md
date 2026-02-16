@@ -3,11 +3,18 @@
 ## Goal
 Migrate file operations toward `java.nio.file.Path` with full backward compatibility through `File` wrappers for 1-2 releases.
 
-## Scope of current iteration
+## Scope of completed iteration (iteration 4: Real)
 - Add `Path` overload API alongside current `File`/`String` API.
 - Keep old methods operational and mark as `@Deprecated`.
 - Migrate exactly one legacy format in this iteration: `Real` (reader-first).
 - Run full regression before and after changes: `./gradlew :libs:test`.
+
+## Scope of current iteration (iteration 5: deprecation removal decision)
+- Freeze deprecation policy for `File`/`String` APIs.
+- Keep deprecated wrappers for 2 releases (compatibility window).
+- Do not remove deprecated APIs in this iteration.
+- Document removal gates and earliest removal release.
+- Keep `AudioFile.commit()/delete()` as compatibility bridge in this iteration.
 
 ## Locked decisions
 - Primary API is `Path`.
@@ -39,7 +46,7 @@ Migrate file operations toward `java.nio.file.Path` with full backward compatibi
   - [x] `writeFile(AudioFile, Path)`
 - [x] Adapt `File`/`String` methods to delegate to `Path` methods.
 - [x] Mark legacy wrappers as `@Deprecated`.
-- [ ] Expand Javadoc replacement notes for each deprecated entry point.
+- [x] Expand Javadoc replacement notes for each deprecated entry point.
 
 ### Epic C - Internal adapters
 - [x] Add `Path` variants in `audio.generic.Utils`:
@@ -97,7 +104,46 @@ Migrate file operations toward `java.nio.file.Path` with full backward compatibi
 - Real path entry has no behavior regressions.
 
 ## Planned next iterations
-1. Deprecation removal decision after release window
+1. Implement `File`/`String` API removal no earlier than release `R+2` if all gates pass.
+
+## Iteration 5 - Deprecation Removal Decision
+
+### Locked decisions (iteration 5)
+- Compatibility window is fixed at 2 releases.
+- Earliest removal is release `R+2`.
+- `AudioFile.commit()/delete()` remain supported bridge methods in this iteration.
+- `Path` and Android `ParcelFileDescriptor` entry points remain supported.
+- Removal implementation happens in a separate iteration after gates pass.
+
+### Deprecated API inventory and replacements
+| API entry point | Replacement | Earliest removal |
+|---|---|---|
+| `AudioFileIO.read(File)` | `AudioFileIO.read(Path)` | `R+2` |
+| `AudioFileIO.readAs(File, String)` | `AudioFileIO.readAs(Path, String)` | `R+2` |
+| `AudioFileIO.readMagic(File)` | `AudioFileIO.readMagic(Path)` | `R+2` |
+| `AudioFileIO.writeAs(AudioFile, String)` | `AudioFileIO.writeAs(AudioFile, Path)` | `R+2` |
+| `AudioFileIO.readFile(File)` | `AudioFileIO.readFile(Path)` | `R+2` |
+| `AudioFileIO.readFileAs(File, String)` | `AudioFileIO.readFileAs(Path, String)` | `R+2` |
+| `AudioFileIO.readFileMagic(File)` | `AudioFileIO.readFileMagic(Path)` | `R+2` |
+| `AudioFileIO.writeFile(AudioFile, String)` | `AudioFileIO.writeFile(AudioFile, Path)` | `R+2` |
+
+### Release timeline and decision points
+- `R+0` (current): deprecation policy is documented and migration targets are fixed.
+- `R+1`: migration progress review for tests/docs and compatibility signal check.
+- `R+2`: removal PR is allowed only if all removal gates are green.
+
+### Removal gates (must pass before removal PR)
+- [ ] `./gradlew :libs:test` is green in CI without new migration regressions.
+- [ ] Public examples and Javadocs use `Path` replacements for file-based flows.
+- [ ] Dedicated regression coverage for deprecated wrappers is kept until actual removal.
+- [ ] No unresolved replacement mapping remains for deprecated APIs.
+- [ ] `AudioFile.commit()/delete()` strategy is reviewed separately before any bridge changes.
+
+### Migration guide (public API mapping)
+- `AudioFileIO.read(File)` -> `AudioFileIO.read(Path)`
+- `AudioFileIO.readAs(File, ext)` -> `AudioFileIO.readAs(Path, ext)`
+- `AudioFileIO.readMagic(File)` -> `AudioFileIO.readMagic(Path)`
+- `AudioFileIO.writeAs(AudioFile, String)` -> `AudioFileIO.writeAs(AudioFile, Path)`
 
 ## Regression command
 ```bash

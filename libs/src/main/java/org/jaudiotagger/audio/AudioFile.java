@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 
 /**
  * <p>This is the main object manipulated by the user representing an audiofile, its properties and its tag.
- * <p>The preferred way to obtain an <code>AudioFile</code> is to use the <code>AudioFileIO.read(File)</code> method.
+ * <p>The preferred way to obtain an <code>AudioFile</code> is to use the <code>AudioFileIO.read(Path)</code> method.
  * <p>The <code>AudioHeader</code> contains every properties associated with the file itself (no meta-data), like the bitrate, the sampling rate, the encoding audioHeaders, etc.
  * <p>To get the meta-data contained in this file you have to get the <code>Tag</code> of this <code>AudioFile</code>
  *
@@ -72,7 +72,7 @@ public class AudioFile
     }
 
     /**
-     * <p>These constructors are used by the different readers, users should not use them, but use the <code>AudioFileIO.read(File)</code> method instead !.
+     * <p>These constructors are used by the different readers, users should not use them, but use the <code>AudioFileIO.read(Path)</code> method instead !.
      * <p>Create the AudioFile representing file f, the encoding audio headers and containing the tag
      *
      * @param f           The file of the audio file
@@ -88,7 +88,7 @@ public class AudioFile
 
 
     /**
-     * <p>These constructors are used by the different readers, users should not use them, but use the <code>AudioFileIO.read(File)</code> method instead !.
+     * <p>These constructors are used by the different readers, users should not use them, but use the <code>AudioFileIO.read(Path)</code> method instead !.
      * <p>Create the AudioFile representing file denoted by pathnames, the encoding audio Headers and containing the tag
      *
      * @param s           The pathname of the audio file

@@ -40,7 +40,7 @@ import java.util.List;
  *
  * <pre>
  * <code>
- * AudioFile file = AudioFileIO.read(new File(&quot;C:\\test.mp3&quot;));
+ * AudioFile file = AudioFileIO.read(Paths.get(&quot;C:\\test.mp3&quot;));
  *
  * Tag tag = file.getTag();
  * </code>
