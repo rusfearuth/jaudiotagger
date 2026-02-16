@@ -22,7 +22,7 @@
 package org.jaudiotagger.audio.exceptions;
 
 /**
- * This is the exception when try and access a read only file
+ * Thrown when an operation requires write access but target file is read-only.
  */
 public class ReadOnlyFileException extends Exception
 {
@@ -31,28 +31,39 @@ public class ReadOnlyFileException extends Exception
 	 */
 	private static final long serialVersionUID = 3390133566776688874L;
 
-	/**
-     * Creates a new ReadOnlyException datatype.
+    /**
+     * Creates an instance.
      */
     public ReadOnlyFileException()
     {
     }
 
+    /**
+     * Creates an instance with root cause.
+     *
+     * @param ex root cause.
+     */
     public ReadOnlyFileException(Throwable ex)
     {
         super(ex);
     }
 
     /**
-     * Creates a new ReadOnlyException datatype.
+     * Creates an instance with details.
      *
-     * @param msg the detail message.
+     * @param msg error details.
      */
     public ReadOnlyFileException(String msg)
     {
         super(msg);
     }
 
+    /**
+     * Creates an instance with details and root cause.
+     *
+     * @param msg error details.
+     * @param ex root cause.
+     */
     public ReadOnlyFileException(String msg, Throwable ex)
     {
         super(msg, ex);

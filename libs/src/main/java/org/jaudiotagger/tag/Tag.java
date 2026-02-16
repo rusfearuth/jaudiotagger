@@ -25,25 +25,17 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * This interface represents the basic data structure for the default
- * audio library functionality.<br>
+ * Format-agnostic metadata container for a single audio file.
  *
- * Some audio file tagging systems allow to specify multiple values for one type
- * of information. The artist for example. Some songs may be a cooperation of
- * two or more artists. Sometimes a tagging user wants to specify them in the
- * tag without making one long text string.<br>
+ * <p>Implementations map common {@link FieldKey} values to format-specific fields (ID3, Vorbis Comment,
+ * MP4 atoms, and so on). Some formats support multi-value fields while others collapse values into a
+ * single stored representation.</p>
  *
- * The addField() method can be used for this but it is possible the underlying implementation
- * does not support that kind of storing multiple values and will just overwrite the existing value<br>
- * <br>
- * <b>Code Examples:</b><br>
- *
+ * <p>Typical usage:</p>
  * <pre>
- * <code>
- * AudioFile file = AudioFileIO.read(Paths.get(&quot;C:\\test.mp3&quot;));
- *
- * Tag tag = file.getTag();
- * </code>
+ * AudioFile file = AudioFileIO.read(Paths.get("test.mp3"));
+ * Tag tag = file.getTagOrCreateAndSetDefault();
+ * tag.setField(FieldKey.ARTIST, "Artist");
  * </pre>
  *
  * @author Raphael Slinckx
@@ -52,40 +44,40 @@ import java.util.List;
 public interface Tag {
 
     /**
-     * Create the field based on the generic key and set it in the tag
+     * Sets the value(s) of a generic field key, replacing existing values for that key.
      *
-     * @param genericKey
-     * @param value
-     * @throws KeyNotFoundException
-     * @throws FieldDataInvalidException
+     * @param genericKey format-agnostic key to set.
+     * @param value value(s) to assign.
+     * @throws KeyNotFoundException if the key is unsupported by this tag implementation.
+     * @throws FieldDataInvalidException if provided value cannot be encoded for this format.
      */
     void setField(FieldKey genericKey, String... value) throws KeyNotFoundException, FieldDataInvalidException;
 
     /**
-     * Create the field based on the generic key and add it to the tag
+     * Adds value(s) for a generic field key without deleting existing values first.
      *
-     * This is handled differently by different formats
+     * <p>Behavior for multi-value storage is format-specific.</p>
      *
-     * @param genericKey
-     * @param value
-     * @throws KeyNotFoundException
-     * @throws FieldDataInvalidException
+     * @param genericKey format-agnostic key to add.
+     * @param value value(s) to add.
+     * @throws KeyNotFoundException if the key is unsupported by this tag implementation.
+     * @throws FieldDataInvalidException if provided value cannot be encoded for this format.
      */
     void addField(FieldKey genericKey, String... value) throws KeyNotFoundException, FieldDataInvalidException;
 
     /**
-     * Delete any fields with this key
+     * Deletes all fields mapped to the provided generic key.
      *
-     * @param fieldKey
-     * @throws KeyNotFoundException
+     * @param fieldKey format-agnostic key to delete.
+     * @throws KeyNotFoundException if key is unsupported.
      */
     void deleteField(FieldKey fieldKey) throws KeyNotFoundException;
 
     /**
-     * Delete any fields with this Flac (Vorbis Comment) id
+     * Deletes all fields with the exact format-specific field identifier.
      *
-     * @param key
-     * @throws KeyNotFoundException
+     * @param key format-specific field id (for example Vorbis key).
+     * @throws KeyNotFoundException if key is unsupported.
      */
     void deleteField(String key)throws KeyNotFoundException;
 
@@ -120,39 +112,39 @@ public interface Tag {
 
 
     /**
-     * Retrieve String value of the first value that exists for this format specific key
+     * Returns first value for a format-specific identifier.
      *
-     * <p>Can be used to retrieve fields with any identifier, useful if the identifier is not within {@link FieldKey}
+     * <p>Useful for fields not represented by {@link FieldKey}.</p>
      *
-     * @param id
-     * @return
+     * @param id format-specific field id.
+     * @return first value or empty string.
      */
     String getFirst(String id);
 
     /**
-     * Retrieve String value of the first tag field that exists for this generic key
+     * Returns first value mapped to a generic key.
      *
-     * @param id
-     * @return String value or empty string
-     * @throws KeyNotFoundException
+     * @param id format-agnostic key.
+     * @return first value or empty string.
+     * @throws KeyNotFoundException if key is unsupported.
      */
     String getFirst(FieldKey id) throws KeyNotFoundException;
 
     /**
-     * Retrieve all String values that exist for this generic key
+     * Returns all values mapped to a generic key.
      *
-     * @param id
-     * @return
-     * @throws KeyNotFoundException
+     * @param id format-agnostic key.
+     * @return possibly empty list of values.
+     * @throws KeyNotFoundException if key is unsupported.
      */
     List<String> getAll(FieldKey id) throws KeyNotFoundException;
 
     /**
-     * Retrieve String value of the nth tag field that exists for this generic key
+     * Returns Nth value mapped to a generic key.
      *
-     * @param id
-     * @param n
-     * @return
+     * @param id format-agnostic key.
+     * @param n zero-based index.
+     * @return value at index or empty string if unavailable.
      */
     String getValue(FieldKey id, int n);
 
@@ -167,8 +159,10 @@ public interface Tag {
     TagField getFirstField(String id);
 
     /**
-     * @param id
-     * @return the first field that matches this generic key
+     * Returns first field object matching this generic key.
+     *
+     * @param id format-agnostic key.
+     * @return field object or {@code null} when unavailable.
      */
     TagField getFirstField(FieldKey id);
 
@@ -182,10 +176,10 @@ public interface Tag {
     boolean hasCommonFields();
 
     /**
-     * Determines whether the tag has at least one field with the specified field key.
+     * Determines whether the tag has at least one value for the provided generic key.
      *
-     * @param fieldKey
-     * @return
+     * @param fieldKey format-agnostic key.
+     * @return {@code true} when at least one value exists.
      */
     boolean hasField(FieldKey fieldKey);
 
@@ -223,13 +217,11 @@ public interface Tag {
 
 
     /**
-     * Return the number of fields taking multiple value fields into consideration
+     * Returns number of fields counting sub-values for multi-value fields.
      *
-     * Fields that actually contain multiple values are counted seperately
+     * <p>For example, one ID3v2.4 TCON field with two genres contributes {@code 2}.</p>
      *
-     * i.e. a TCON frame in ID3v24 frame containing multiple genres would add to count for each genre.
-     *
-     * @return total number of fields taking multiple value fields into consideration
+     * @return total count including sub-values.
      */
     int getFieldCountIncludingSubValues();
 

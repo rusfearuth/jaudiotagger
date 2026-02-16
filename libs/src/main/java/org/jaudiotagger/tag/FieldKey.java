@@ -1,11 +1,10 @@
 package org.jaudiotagger.tag;
 
 /**
- * This is an enumeration of fields implemented by all major formats
+ * Format-agnostic metadata keys used by {@link Tag} implementations.
  *
- * This enumeration is used by subclasses to map from the common key to their implementation key, the keys
- * are grouped within EnumSets within Tag class.
- *
+ * <p>Each concrete tag format maps these keys to its own representation (for example ID3 frame ids,
+ * Vorbis keys, or MP4 atom ids). Not every format supports every key.</p>
  */
 public enum FieldKey
 {

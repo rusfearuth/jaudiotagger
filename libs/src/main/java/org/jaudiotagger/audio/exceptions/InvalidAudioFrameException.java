@@ -9,7 +9,7 @@
 package org.jaudiotagger.audio.exceptions;
 
 /**
- * Thrown if portion of file thought to be an AudioFrame is found to not be.
+ * Thrown when bytes expected to represent an audio frame are invalid.
  */
 public class InvalidAudioFrameException extends Exception
 {
@@ -18,6 +18,11 @@ public class InvalidAudioFrameException extends Exception
 	 */
 	private static final long serialVersionUID = 7213597113547233971L;
 
+	/**
+     * Creates an instance with details.
+     *
+     * @param message error details.
+     */
 	public InvalidAudioFrameException(String message)
     {
         super(message);

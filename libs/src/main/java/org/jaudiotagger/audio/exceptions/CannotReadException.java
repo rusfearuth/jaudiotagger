@@ -19,8 +19,9 @@
 package org.jaudiotagger.audio.exceptions;
 
 /**
- * This exception is thrown if an audio file cannot be read.<br>
- * Causes may be invalid data or IO errors.
+ * Thrown when audio metadata or header information cannot be read.
+ *
+ * <p>Typical causes include unsupported format payload, malformed frames/chunks, and I/O failures.</p>
  *
  * @author Raphaël Slinckx
  */
@@ -39,15 +40,20 @@ public class CannotReadException extends Exception
         super();
     }
 
+    /**
+     * Creates an instance with root cause.
+     *
+     * @param ex root cause.
+     */
     public CannotReadException(Throwable ex)
     {
         super(ex);
     }
 
     /**
-     * Creates an instance.
+     * Creates an instance with details.
      *
-     * @param message The message.
+     * @param message error details.
      */
     public CannotReadException(String message)
     {

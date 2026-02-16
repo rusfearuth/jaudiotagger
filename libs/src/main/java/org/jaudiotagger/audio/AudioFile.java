@@ -29,10 +29,13 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * <p>This is the main object manipulated by the user representing an audiofile, its properties and its tag.
- * <p>The preferred way to obtain an <code>AudioFile</code> is to use the <code>AudioFileIO.read(Path.toPath())</code> method.
- * <p>The <code>AudioHeader</code> contains every properties associated with the file itself (no meta-data), like the bitrate, the sampling rate, the encoding audioHeaders, etc.
- * <p>To get the meta-data contained in this file you have to get the <code>Tag</code> of this <code>AudioFile</code>
+ * Represents an audio file together with parsed audio header and metadata tag.
+ *
+ * <p>The preferred way to obtain an instance is through {@link AudioFileIO#read(Path)} or
+ * other {@link AudioFileIO} read entry points.</p>
+ *
+ * <p>{@link #getAudioHeader()} exposes stream properties (bitrate, sample rate, encoding, and so on),
+ * while {@link #getTag()} exposes editable metadata fields.</p>
  *
  * @author Raphael Slinckx
  * @version $Id$
@@ -46,23 +49,22 @@ public class AudioFile
     public static Logger logger = Logger.getLogger("org.jaudiotagger.audio");
 
     /**
-     *
-     * The physical file that this instance represents.
+     * Physical file represented by this instance.
      */
     protected File file;
 
     /**
-     * The Audio header info
+     * Parsed audio header information.
      */
     protected AudioHeader audioHeader;
 
     /**
-     * The tag
+     * Parsed metadata tag.
      */
     protected Tag tag;
     
     /**
-     * The tag
+     * Lower-case file extension used for format-specific operations.
      */
     protected String extension;
 
@@ -72,12 +74,14 @@ public class AudioFile
     }
 
     /**
-     * <p>These constructors are used by the different readers, users should not use them, but use the <code>AudioFileIO.read(Path.toPath())</code> method instead !.
-     * <p>Create the AudioFile representing file f, the encoding audio headers and containing the tag
+     * Creates an audio file model.
      *
-     * @param f           The file of the audio file
-     * @param audioHeader the encoding audioHeaders over this file
-     * @param tag         the tag contained in this file or null if no tag exists
+     * <p>This constructor is primarily used by readers. Client code should usually read via
+     * {@link AudioFileIO#read(Path)}.</p>
+     *
+     * @param f physical audio file.
+     * @param audioHeader parsed header.
+     * @param tag parsed tag, or {@code null} if absent.
      */
     public AudioFile(File f, AudioHeader audioHeader, Tag tag)
     {
@@ -88,12 +92,14 @@ public class AudioFile
 
 
     /**
-     * <p>These constructors are used by the different readers, users should not use them, but use the <code>AudioFileIO.read(Path.toPath())</code> method instead !.
-     * <p>Create the AudioFile representing file denoted by pathnames, the encoding audio Headers and containing the tag
+     * Creates an audio file model from pathname.
      *
-     * @param s           The pathname of the audio file
-     * @param audioHeader the encoding audioHeaders over this file
-     * @param tag         the tag contained in this file
+     * <p>This constructor is primarily used by readers. Client code should usually read via
+     * {@link AudioFileIO#read(Path)}.</p>
+     *
+     * @param s pathname for physical audio file.
+     * @param audioHeader parsed header.
+     * @param tag parsed tag.
      */
     public AudioFile(String s, AudioHeader audioHeader, Tag tag)
     {
@@ -126,9 +132,9 @@ public class AudioFile
     }
 
     /**
-     * Set the file to store the info in
+     * Sets the backing physical file for this model.
      *
-     * @param file
+     * @param file physical file.
      */
     public void setFile(File file)
     {
@@ -136,9 +142,9 @@ public class AudioFile
     }
 
     /**
-     * Retrieve the physical file
+     * Returns the backing physical file.
      *
-     * @return
+     * @return physical file.
      */
     public File getFile()
     {
@@ -146,9 +152,9 @@ public class AudioFile
     }
 
     /**
-     * Set the file extension
+     * Sets the file extension used for format-specific behavior.
      *
-     * @param ext
+     * @param ext lower-case extension without leading dot.
      */
     public void setExt(String ext)
     {
@@ -156,9 +162,9 @@ public class AudioFile
     }
 
     /**
-     * Retrieve the file extension
+     * Returns the currently configured extension.
      *
-     * @return
+     * @return lower-case extension without leading dot.
      */
     public String getExt()
     {
@@ -166,9 +172,9 @@ public class AudioFile
     }
 
     /**
-     *  Assign a tag to this audio file
-     *  
-     *  @param tag   Tag to be assigned
+     * Assigns a metadata tag to this audio file.
+     *
+     * @param tag tag instance to assign.
      */
     public void setTag(Tag tag)
     {
@@ -176,8 +182,9 @@ public class AudioFile
     }
 
     /**
-     * Return audio header information
-     * @return
+     * Returns parsed audio header information.
+     *
+     * @return audio header.
      */
     public AudioHeader getAudioHeader()
     {
@@ -210,10 +217,10 @@ public class AudioFile
     }
 
     /**
-     * Check does file exist
+     * Validates that the file exists.
      *
-     * @param file
-     * @throws FileNotFoundException  if file not found
+     * @param file file to validate.
+     * @throws FileNotFoundException if file does not exist.
      */
     public void checkFileExists(File file)throws FileNotFoundException
     {
@@ -226,13 +233,14 @@ public class AudioFile
     }
 
     /**
-     * Checks the file is accessible with the correct permissions, otherwise exception occurs
+     * Opens the file in read-only or read-write mode after permission checks.
      *
-     * @param file
-     * @param readOnly
-     * @throws ReadOnlyFileException
-     * @throws FileNotFoundException
-     * @return
+     * @param file file to open.
+     * @param readOnly when {@code true}, validates read access only.
+     * @return random access file handle.
+     * @throws ReadOnlyFileException if write access is required but unavailable.
+     * @throws FileNotFoundException if file does not exist.
+     * @throws CannotReadException if read access is unavailable.
      */
     protected RandomAccessFile checkFilePermissions(File file, boolean readOnly) throws ReadOnlyFileException, FileNotFoundException, CannotReadException
     {
@@ -286,9 +294,13 @@ public class AudioFile
     }
 
 
-    /** Create Default Tag
+    /**
+     * Creates a default tag implementation based on current file extension.
      *
-     * @return
+     * <p>The extension is taken from {@link #getExt()} or inferred from file name when missing.</p>
+     *
+     * @return default format-specific tag.
+     * @throws RuntimeException when no default tag implementation exists for the extension.
      */
     public Tag createDefaultTag()
     {
@@ -363,9 +375,11 @@ public class AudioFile
     }
 
     /**
-     * Get the tag or if the file doesn't have one at all, create a default tag  and return
+     * Returns current tag, or creates a default one if none exists.
      *
-     * @return
+     * <p>This method does not assign the created tag to the instance.</p>
+     *
+     * @return existing or newly created default tag.
      */
     public Tag getTagOrCreateDefault()
     {
@@ -378,10 +392,9 @@ public class AudioFile
     }
 
      /**
-     * Get the tag or if the file doesn't have one at all, create a default tag and set it
-     * as the tag of this file
+     * Returns current tag, or creates a default one and assigns it to this file.
      *
-     * @return
+     * @return existing or newly created and assigned default tag.
      */
     public Tag getTagOrCreateAndSetDefault()
     {
@@ -391,11 +404,12 @@ public class AudioFile
     }
 
     /**
-     *  Get the tag and convert to the default tag version or if the file doesn't have one at all, create a default tag
+     * Returns tag and converts ID3 versions to configured default when needed.
      *
-     *  Conversions are currently only necessary/available for some formats that support ID3- Dsf, Mp3
+     * <p>If no tag exists, a default one is created. Conversion currently applies to formats using ID3 tags
+     * (for example DSF and MP3).</p>
      *
-     * @return
+     * @return existing, converted, or newly created default tag.
      */
     public Tag getTagAndConvertOrCreateDefault()
     {
@@ -423,12 +437,9 @@ public class AudioFile
     }
 
     /**
-     * Get the tag and convert to the default tag version or if the file doesn't have one at all, create a default tag
-     * set as tag for this file
+     * Returns tag from {@link #getTagAndConvertOrCreateDefault()} and assigns it to this file.
      *
-     * Conversions are currently only necessary/available for some formats that support ID3- Dsf, Mp3
-     *
-     * @return
+     * @return existing, converted, or newly created and assigned default tag.
      */
     public Tag getTagAndConvertOrCreateAndSetDefault()
     {
@@ -438,9 +449,10 @@ public class AudioFile
     }
 
     /**
+     * Returns file name without the last extension segment.
      *
-     * @param file
-     * @return filename with audioFormat separator stripped off.
+     * @param file source file.
+     * @return file name without extension.
      */
     public static String getBaseFilename(File file)
     {
@@ -453,9 +465,11 @@ public class AudioFile
     }
 
     /**
-     * If using ID3 format convert tag from current version to another as specified by id3V2Version,
+     * Converts ID3v2 tags to requested target version.
      *
-     * @return null if no conversion necessary
+     * @param tag source tag.
+     * @param id3V2Version target ID3 version.
+     * @return converted tag, or {@code null} when no conversion is required.
      */
     public AbstractID3v2Tag convertID3Tag(AbstractID3v2Tag tag, ID3V2Version id3V2Version)
     {
