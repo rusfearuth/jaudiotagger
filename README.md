@@ -78,7 +78,7 @@ To run Android instrumentation tests (Android 9+ device/emulator connected):
 
     ./gradlew :libs:connectedAndroidTest
 
-## API Usage (Path + ParcelFileDescriptor)
+## API Usage (Path + Uri)
 
 The file-based API is now centered on `java.nio.file.Path`.
 
@@ -94,11 +94,11 @@ Write and delete:
     audioFile.delete();
     AudioFileIO.writeAs(audioFile, Paths.get("export/song_copy"));
 
-Android `ParcelFileDescriptor` entry points are also supported:
+Android `Uri` entry points are also supported:
 
-    AudioFile fromPfd = AudioFileIO.readAs(pfd, "mp3");
-    AudioFileIO.write(audioFile, pfd);
-    AudioFileIO.delete(audioFile, pfd);
+    AudioFile fromUri = AudioFileIO.readAs(context, uri, "mp3");
+    AudioFileIO.write(context, audioFile, uri);
+    AudioFileIO.delete(context, audioFile, uri);
 
 ### Migration from removed legacy API
 

@@ -18,7 +18,8 @@
  */
 package org.jaudiotagger.audio;
 
-import android.os.ParcelFileDescriptor;
+import android.content.Context;
+import android.net.Uri;
 import org.jaudiotagger.audio.aiff.AiffFileReader;
 import org.jaudiotagger.audio.aiff.AiffFileWriter;
 import org.jaudiotagger.audio.asf.AsfFileReader;
@@ -39,13 +40,13 @@ import org.jaudiotagger.audio.ogg.OggFileWriter;
 import org.jaudiotagger.audio.real.RealFileReader;
 import org.jaudiotagger.audio.wav.WavFileReader;
 import org.jaudiotagger.audio.wav.WavFileWriter;
+import org.jaudiotagger.audio.io.UriIO;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.TagException;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -106,9 +107,9 @@ public class AudioFileIO
     /**
      * Android-first delete entry point.
      */
-    public static void delete(AudioFile audioFile, ParcelFileDescriptor pfd) throws CannotReadException, CannotWriteException
+    public static void delete(Context context, AudioFile audioFile, Uri uri) throws CannotReadException, CannotWriteException
     {
-        getDefaultAudioFileIO().deleteTag(audioFile, pfd);
+        getDefaultAudioFileIO().deleteTag(context, audioFile, uri);
     }
 
     /**
@@ -137,10 +138,10 @@ public class AudioFileIO
     /**
      * Android-first read entry point.
      */
-    public static AudioFile readAs(ParcelFileDescriptor pfd, String ext)
+    public static AudioFile readAs(Context context, Uri uri, String ext)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
-        return getDefaultAudioFileIO().readFileAs(pfd, ext);
+        return getDefaultAudioFileIO().readFileAs(context, uri, ext);
     }
 
     /**
@@ -165,19 +166,19 @@ public class AudioFileIO
      * Android-first read entry point. The hint can be either plain extension ("mp3")
      * or a display name ("track01.mp3"), extension is required.
      */
-    public static AudioFile read(ParcelFileDescriptor pfd, String displayNameOrExtHint)
+    public static AudioFile read(Context context, Uri uri, String displayNameOrExtHint)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
         final String ext = extractExtensionHint(displayNameOrExtHint);
-        return readAs(pfd, ext);
+        return readAs(context, uri, ext);
     }
 
     /**
      * Android-first write entry point.
      */
-    public static void write(AudioFile audioFile, ParcelFileDescriptor pfd) throws CannotWriteException
+    public static void write(Context context, AudioFile audioFile, Uri uri) throws CannotWriteException
     {
-        getDefaultAudioFileIO().writeFile(audioFile, pfd);
+        getDefaultAudioFileIO().writeFile(context, audioFile, uri);
     }
 
     /**
@@ -236,14 +237,28 @@ public class AudioFileIO
         return hint;
     }
 
-    private static Path resolvePathFromDescriptor(ParcelFileDescriptor pfd) throws IOException
+    private static String inferUriExtension(Uri uri)
     {
-        if (pfd == null)
+        if (uri == null)
         {
-            throw new IOException("ParcelFileDescriptor cannot be null");
+            return "";
         }
-        Path descriptorPath = Paths.get("/proc/self/fd/" + pfd.getFd());
-        return descriptorPath.toRealPath();
+        String segment = uri.getLastPathSegment();
+        if (segment == null || segment.isEmpty())
+        {
+            return "";
+        }
+        int slash = segment.lastIndexOf('/');
+        if (slash >= 0 && slash < segment.length() - 1)
+        {
+            segment = segment.substring(slash + 1);
+        }
+        int lastDot = segment.lastIndexOf('.');
+        if (lastDot < 0 || lastDot == segment.length() - 1)
+        {
+            return "";
+        }
+        return segment.substring(lastDot + 1).toLowerCase();
     }
 
     /**
@@ -343,20 +358,20 @@ public class AudioFileIO
         return tempFile;
     }
 
-    public AudioFile readFileAs(ParcelFileDescriptor pfd, String ext)
+    public AudioFile readFileAs(Context context, Uri uri, String ext)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
         final String normalizedExt = extractExtensionHint(ext);
-        final Path path;
+        final Path tempPath;
         try
         {
-            path = resolvePathFromDescriptor(pfd);
+            tempPath = UriIO.copyUriToTempFile(context, uri);
         }
         catch (IOException e)
         {
-            throw new CannotReadException("Unable to resolve ParcelFileDescriptor path: " + e.getMessage(), e);
+            throw new CannotReadException("Unable to open uri for read: " + e.getMessage(), e);
         }
-        return readFileAs(path, normalizedExt);
+        return readFileAs(tempPath, normalizedExt);
     }
 
     public AudioFile readFileMagic(Path path)
@@ -392,40 +407,116 @@ public class AudioFileIO
         return tempFile;
     }
 
-    public void writeFile(AudioFile f, ParcelFileDescriptor pfd) throws CannotWriteException
+    public void writeFile(Context context, AudioFile f, Uri uri) throws CannotWriteException
     {
-        final Path path;
+        if (f == null)
+        {
+            throw new CannotWriteException("AudioFile is null");
+        }
+
+        final Path tempPath;
+        final File originalFile = f.getFile();
+        final String originalExt = f.getExt();
         try
         {
-            path = resolvePathFromDescriptor(pfd);
+            tempPath = UriIO.copyUriToTempFile(context, uri);
         }
         catch (IOException e)
         {
-            throw new CannotWriteException("Unable to resolve ParcelFileDescriptor path: " + e.getMessage(), e);
+            throw new CannotWriteException("Unable to open uri for write: " + e.getMessage(), e);
         }
 
-        f.setFile(path.toFile());
-        if (f.getExt() == null || f.getExt().isEmpty())
+        try
         {
-            f.setExt(Utils.getExtension(path));
+            f.setFile(tempPath.toFile());
+
+            String ext = f.getExt();
+            if (ext == null || ext.isEmpty())
+            {
+                ext = originalExt;
+                if (ext == null || ext.isEmpty())
+                {
+                    ext = originalFile != null ? Utils.getExtension(originalFile.toPath()) : "";
+                }
+                if (ext == null || ext.isEmpty())
+                {
+                    ext = inferUriExtension(uri);
+                }
+                if (ext == null || ext.isEmpty())
+                {
+                    throw new CannotWriteException("Unable to determine extension for uri write");
+                }
+                f.setExt(ext);
+            }
+
+            writeFile(f, (Path) null);
+            UriIO.copyTempFileToUri(context, tempPath, uri);
         }
-        writeFile(f, (Path) null);
+        catch (IOException e)
+        {
+            throw new CannotWriteException("Unable to persist changes to uri: " + e.getMessage(), e);
+        }
+        finally
+        {
+            f.setFile(originalFile);
+            f.setExt(originalExt);
+            UriIO.deleteQuietly(tempPath);
+        }
     }
 
-    public void deleteTag(AudioFile f, ParcelFileDescriptor pfd) throws CannotReadException, CannotWriteException
+    public void deleteTag(Context context, AudioFile f, Uri uri) throws CannotReadException, CannotWriteException
     {
-        final Path path;
+        if (f == null)
+        {
+            throw new CannotWriteException("AudioFile is null");
+        }
+
+        final Path tempPath;
+        final File originalFile = f.getFile();
+        final String originalExt = f.getExt();
         try
         {
-            path = resolvePathFromDescriptor(pfd);
+            tempPath = UriIO.copyUriToTempFile(context, uri);
         }
         catch (IOException e)
         {
-            throw new CannotWriteException("Unable to resolve ParcelFileDescriptor path: " + e.getMessage(), e);
+            throw new CannotWriteException("Unable to open uri for delete: " + e.getMessage(), e);
         }
 
-        f.setFile(path.toFile());
-        deleteTag(f);
+        try
+        {
+            f.setFile(tempPath.toFile());
+            if (f.getExt() == null || f.getExt().isEmpty())
+            {
+                String ext = originalExt;
+                if (ext == null || ext.isEmpty())
+                {
+                    ext = originalFile != null ? Utils.getExtension(originalFile.toPath()) : "";
+                }
+                if (ext == null || ext.isEmpty())
+                {
+                    ext = inferUriExtension(uri);
+                }
+                if (ext == null || ext.isEmpty())
+                {
+                    throw new CannotWriteException("Unable to determine extension for uri delete");
+                }
+                f.setExt(ext);
+            }
+
+            deleteTag(f);
+            UriIO.copyTempFileToUri(context, tempPath, uri);
+        }
+        catch (IOException e)
+        {
+            throw new CannotWriteException("Unable to persist delete to uri: " + e.getMessage(), e);
+        }
+        finally
+        {
+            f.setFile(originalFile);
+            f.setExt(originalExt);
+            UriIO.deleteQuietly(tempPath);
+        }
     }
 
     /**
