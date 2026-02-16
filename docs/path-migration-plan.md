@@ -3,7 +3,7 @@
 ## Summary
 `AudioFileIO` now uses `Path` as the primary file API and no longer exposes legacy `File`/`String` wrapper entry points.
 
-Android `ParcelFileDescriptor` entry points are implemented as real flows and no longer fail with "not wired" stubs.
+Android `Uri` entry points are implemented as real flows and no longer fail with "not wired" stubs.
 
 ## Final public API
 
@@ -13,11 +13,11 @@ Android `ParcelFileDescriptor` entry points are implemented as real flows and no
 - `AudioFileIO.readMagic(Path)`
 - `AudioFileIO.writeAs(AudioFile, Path)`
 
-### Android entry points (`ParcelFileDescriptor`)
-- `AudioFileIO.read(ParcelFileDescriptor, String)`
-- `AudioFileIO.readAs(ParcelFileDescriptor, String)`
-- `AudioFileIO.write(AudioFile, ParcelFileDescriptor)`
-- `AudioFileIO.delete(AudioFile, ParcelFileDescriptor)`
+### Android entry points (`Context + Uri`)
+- `AudioFileIO.read(Context, Uri, String)`
+- `AudioFileIO.readAs(Context, Uri, String)`
+- `AudioFileIO.write(Context, AudioFile, Uri)`
+- `AudioFileIO.delete(Context, AudioFile, Uri)`
 
 ## Removed legacy API
 

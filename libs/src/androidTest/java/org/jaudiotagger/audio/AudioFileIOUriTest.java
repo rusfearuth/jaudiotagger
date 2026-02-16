@@ -1,7 +1,7 @@
 package org.jaudiotagger.audio;
 
 import android.content.Context;
-import android.os.ParcelFileDescriptor;
+import android.net.Uri;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -19,67 +19,67 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
-public class AudioFileIOParcelFileDescriptorTest
+public class AudioFileIOUriTest
 {
     @Test
-    public void readViaParcelFileDescriptorUsesRealFlow() throws Exception
+    public void readViaUriUsesRealFlow() throws Exception
     {
-        File testFile = createFile("pfd-read.mp3", 256);
-        try (ParcelFileDescriptor pfd = ParcelFileDescriptor.open(testFile, ParcelFileDescriptor.MODE_READ_ONLY))
+        File testFile = createFile("uri-read.mp3", 256);
+        Uri uri = Uri.fromFile(testFile);
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+
+        try
         {
-            try
-            {
-                AudioFileIO.readAs(pfd, "mp3");
-                fail("Expected CannotReadException for invalid mp3 payload");
-            }
-            catch (CannotReadException expected)
-            {
-                assertNotStub(expected.getMessage());
-            }
+            AudioFileIO.readAs(context, uri, "mp3");
+            fail("Expected CannotReadException for invalid mp3 payload");
+        }
+        catch (CannotReadException expected)
+        {
+            assertNotStub(expected.getMessage());
         }
     }
 
     @Test
-    public void writeViaParcelFileDescriptorUsesRealFlow() throws Exception
+    public void writeViaUriUsesRealFlow() throws Exception
     {
-        File testFile = createFile("pfd-write.wav", 10);
+        File testFile = createFile("uri-write.wav", 10);
+        Uri uri = Uri.fromFile(testFile);
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+
         AudioFile audioFile = new AudioFile();
         audioFile.setFile(testFile);
         audioFile.setExt("wav");
 
-        try (ParcelFileDescriptor pfd = ParcelFileDescriptor.open(testFile, ParcelFileDescriptor.MODE_READ_WRITE))
+        try
         {
-            try
-            {
-                AudioFileIO.write(audioFile, pfd);
-                fail("Expected CannotWriteException for tiny file");
-            }
-            catch (CannotWriteException expected)
-            {
-                assertNotStub(expected.getMessage());
-            }
+            AudioFileIO.write(context, audioFile, uri);
+            fail("Expected CannotWriteException for tiny file");
+        }
+        catch (CannotWriteException expected)
+        {
+            assertNotStub(expected.getMessage());
         }
     }
 
     @Test
-    public void deleteViaParcelFileDescriptorUsesRealFlow() throws Exception
+    public void deleteViaUriUsesRealFlow() throws Exception
     {
-        File testFile = createFile("pfd-delete.wav", 10);
+        File testFile = createFile("uri-delete.wav", 10);
+        Uri uri = Uri.fromFile(testFile);
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+
         AudioFile audioFile = new AudioFile();
         audioFile.setFile(testFile);
         audioFile.setExt("wav");
 
-        try (ParcelFileDescriptor pfd = ParcelFileDescriptor.open(testFile, ParcelFileDescriptor.MODE_READ_WRITE))
+        try
         {
-            try
-            {
-                AudioFileIO.delete(audioFile, pfd);
-                fail("Expected CannotWriteException for tiny file");
-            }
-            catch (CannotWriteException expected)
-            {
-                assertNotStub(expected.getMessage());
-            }
+            AudioFileIO.delete(context, audioFile, uri);
+            fail("Expected CannotWriteException for tiny file");
+        }
+        catch (CannotWriteException expected)
+        {
+            assertNotStub(expected.getMessage());
         }
     }
 
