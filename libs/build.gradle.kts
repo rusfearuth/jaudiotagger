@@ -1,5 +1,7 @@
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JavaToolchainService
 
 plugins {
     id("com.android.library")
@@ -17,8 +19,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     sourceSets {
@@ -40,12 +42,19 @@ android {
 }
 
 dependencies {
-    testImplementation("junit:junit:3.8.1")
+    testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test:runner:1.6.2")
 }
 
+val javaToolchains = extensions.getByType(JavaToolchainService::class.java)
+
 tasks.withType<JavaCompile>().configureEach {
+    javaCompiler.set(
+        javaToolchains.compilerFor {
+            languageVersion.set(JavaLanguageVersion.of(11))
+        }
+    )
     exclude("org/jaudiotagger/test/**")
     exclude("org/jaudiotagger/audio/flac/FlacHeaderTest.java")
     exclude("org/jaudiotagger/issues/Issue224Test.java")
@@ -58,6 +67,12 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 tasks.withType<Test>().configureEach {
+    javaLauncher.set(
+        javaToolchains.launcherFor {
+            languageVersion.set(JavaLanguageVersion.of(11))
+        }
+    )
+    useJUnit()
     // Legacy tests resolve fixtures via paths relative to the repository root.
     workingDir = rootProject.projectDir
 }

@@ -32,4 +32,11 @@
 ## Final validation
 - [x] `./gradlew :libs:testDebugUnitTest`
 - [x] `./gradlew :libs:compileDebugAndroidTestJavaWithJavac`
-- [ ] Review deprecation warnings and decide next cleanup batch.
+- [x] Review deprecation warnings and decide next cleanup batch.
+
+## Deprecation cleanup decision (2026-02-17)
+- [x] Remove Gradle 9 deprecation warning about automatic test framework dependency loading by:
+  - updating `testImplementation` from `junit:junit:3.8.1` to `junit:junit:4.13.2`;
+  - configuring `tasks.withType<Test>().configureEach { useJUnit() }`.
+- [x] Next cleanup batch candidate: review Java compiler warnings for `source/target 8` obsolescence and plan Java toolchain migration separately.
+  - Result: migrated to Java 11 baseline and pinned JDK 11 toolchain (see `docs/java11-toolchain-plan.md` and `docs/java11-toolchain-todo.md`).
