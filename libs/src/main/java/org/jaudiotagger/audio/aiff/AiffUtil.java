@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Utility methods only of use for Aiff datatypes
@@ -12,7 +13,7 @@ import java.util.Date;
 public class AiffUtil
 {
 
-    private final static SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    private final static SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
 
 
     public static double read80BitDouble(ByteBuffer chunkData) throws IOException

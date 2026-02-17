@@ -26,6 +26,7 @@ import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
@@ -515,7 +516,7 @@ public class AudioFile
      */
     public static String getBaseFilename(File file)
     {
-        int index=file.getName().toLowerCase().lastIndexOf(".");
+        int index=file.getName().toLowerCase(Locale.ROOT).lastIndexOf(".");
         if(index>0)
         {
             return file.getName().substring(0,index);

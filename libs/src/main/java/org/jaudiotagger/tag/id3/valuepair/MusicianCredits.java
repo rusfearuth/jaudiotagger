@@ -1,6 +1,7 @@
 package org.jaudiotagger.tag.id3.valuepair;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -813,7 +814,7 @@ public class MusicianCredits
     {
         for(String next:musicianCredits)
         {
-            if(key.toLowerCase().trim().startsWith(next))
+            if(key.toLowerCase(Locale.ROOT).trim().startsWith(next))
             {
                 return true;
             }

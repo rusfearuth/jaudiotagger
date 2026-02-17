@@ -22,15 +22,15 @@ import java.util.logging.Level;
  */
 public abstract class AudioFileReader2 extends AudioFileReader
 {
-    /*
-   * Reads the given file, and return an AudioFile object containing the Tag
-   * and the encoding infos present in the file. If the file has no tag, an
-   * empty one is returned. If the encodinginfo is not valid , an exception is thrown.
-   *
-   * @param f The file to read
-   * @exception NoReadPermissionsException if permissions prevent reading of file
-   * @exception CannotReadException If anything went bad during the read of this file
-   */
+    /**
+     * Reads the given file, and return an AudioFile object containing the Tag
+     * and the encoding infos present in the file. If the file has no tag, an
+     * empty one is returned. If the encodinginfo is not valid , an exception is thrown.
+     *
+     * @param f The file to read
+     * @exception NoReadPermissionsException if permissions prevent reading of file
+     * @exception CannotReadException If anything went bad during the read of this file
+     */
     public AudioFile read(File f) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
         return read(f.toPath());

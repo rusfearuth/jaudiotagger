@@ -24,6 +24,7 @@ package org.jaudiotagger.tag.reference;
 import org.jaudiotagger.tag.datatype.AbstractIntStringValuePair;
 
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -269,7 +270,7 @@ public class GenreTypes extends AbstractIntStringValuePair
         nameToIdMap = new LinkedHashMap<String, Integer>(idToValue.size());
         for (Map.Entry<Integer, String> entry : idToValue.entrySet())
         {
-            nameToIdMap.put(entry.getValue().toLowerCase(), entry.getKey());
+            nameToIdMap.put(entry.getValue().toLowerCase(Locale.ROOT), entry.getKey());
         }
     }
 
@@ -281,7 +282,7 @@ public class GenreTypes extends AbstractIntStringValuePair
      */
     public Integer getIdForName(String name)
     {
-        return nameToIdMap.get(name.toLowerCase());
+        return nameToIdMap.get(name.toLowerCase(Locale.ROOT));
     }
 
 

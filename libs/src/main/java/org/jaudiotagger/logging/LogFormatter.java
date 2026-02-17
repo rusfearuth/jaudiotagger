@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
@@ -23,7 +24,7 @@ public final class LogFormatter extends Formatter
     // property at the moment that the SimpleFormatter was created.
     private final String lineSeparator = System.lineSeparator();
 
-    private final SimpleDateFormat sfDateOut = new SimpleDateFormat("dd/MM/yyyy HH.mm.ss:");
+    private final SimpleDateFormat sfDateOut = new SimpleDateFormat("dd/MM/yyyy HH.mm.ss:", Locale.US);
     private final Date date = new Date();
 
     public LogFormatter()
@@ -79,4 +80,3 @@ public final class LogFormatter extends Formatter
 
     public static final String IDENT = "$Id$";
 }
-

@@ -24,6 +24,7 @@ import org.jaudiotagger.logging.ErrorMessage;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
@@ -64,7 +65,7 @@ public class MetadataBlockHeader
 
     public String toString()
     {
-        return String.format("StartByte:%d BlockType:%s DataLength:%d isLastBlock:%s",startByte, blockType, dataLength, isLastBlock);
+        return String.format(Locale.ROOT, "StartByte:%d BlockType:%s DataLength:%d isLastBlock:%s",startByte, blockType, dataLength, isLastBlock);
     }
 
     /**

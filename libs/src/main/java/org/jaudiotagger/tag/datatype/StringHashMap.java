@@ -28,6 +28,7 @@ import org.jaudiotagger.tag.reference.Languages;
 
 import java.nio.charset.Charset;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeSet;
 
@@ -118,7 +119,7 @@ public class StringHashMap extends StringFixedLength implements HashMapInterface
             }
             else
             {
-                this.value = ((String) value).toLowerCase();
+                this.value = ((String) value).toLowerCase(Locale.ROOT);
             }
         }
         else

@@ -255,7 +255,7 @@ public class EventListenerList implements Serializable {
     private void readObject(ObjectInputStream s) 
 	throws IOException, ClassNotFoundException {
         listenerList = NULL_ARRAY;
-	s.defaultReadObject();
+        s.defaultReadObject();
 	Object listenerTypeOrNull;
 	
 	while (null != (listenerTypeOrNull = s.readObject())) {

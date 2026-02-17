@@ -1430,13 +1430,13 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
                 this.duplicateFrameId += ";";
             }
             this.duplicateFrameId += frameId;
-			for (TagField tagField : frameMap.get(frameId)) 
-			{
-				if (tagField instanceof AbstractID3v2Frame) 
-				{
-					this.duplicateBytes += ((AbstractID3v2Frame) tagField).getSize();
-				}
-			}          
+            for (TagField tagField : frameMap.get(frameId))
+            {
+                if (tagField instanceof AbstractID3v2Frame)
+                {
+                    this.duplicateBytes += ((AbstractID3v2Frame) tagField).getSize();
+                }
+            }
         }
         else
         {
