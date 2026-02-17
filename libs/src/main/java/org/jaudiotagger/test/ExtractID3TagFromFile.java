@@ -3,6 +3,7 @@ package org.jaudiotagger.test;
 import org.jaudiotagger.audio.mp3.MP3File;
 
 import java.io.File;
+import java.util.Locale;
 
 /**
  * Simple class that will attempt to recusively read all files within a directory, flags
@@ -82,7 +83,7 @@ public class ExtractID3TagFromFile
          */
         public final boolean accept(final File file)
         {
-            return (((file.getName()).toLowerCase().endsWith(".mp3")) || (file.isDirectory() && (this.allowDirectories)));
+            return (((file.getName()).toLowerCase(Locale.ROOT).endsWith(".mp3")) || (file.isDirectory() && (this.allowDirectories)));
         }
 
         /**

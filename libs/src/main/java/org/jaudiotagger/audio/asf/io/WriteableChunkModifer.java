@@ -47,11 +47,8 @@ public class WriteableChunkModifer implements ChunkModifier
         int chunkDiff = 0;
         long newSize = 0;
         long oldSize = 0;
-        /*
-         * Replace the outputstream with the counting one, only if assert's are
-         * evaluated.
-         */
-        assert (destination = new CountingOutputstream(destination)) != null;
+        destination = new CountingOutputstream(destination);
+        assert destination != null;
         if (!this.writableChunk.isEmpty())
         {
             newSize = this.writableChunk.writeInto(destination);

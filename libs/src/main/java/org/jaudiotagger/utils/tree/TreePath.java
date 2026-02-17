@@ -65,9 +65,9 @@ public class TreePath<T> extends Object implements Serializable {
     public TreePath(TreeNode<T>[] path) {
         if(path == null || path.length == 0)
             throw new IllegalArgumentException("path in TreePath must be non null and not empty.");
-	lastPathComponent = path[path.length - 1];
-	if(path.length > 1)
-	    parentPath = new TreePath<>(path, path.length - 1);
+        lastPathComponent = path[path.length - 1];
+        if(path.length > 1)
+            parentPath = new TreePath<>(path, path.length - 1);
     }
 
     /**
@@ -80,8 +80,8 @@ public class TreePath<T> extends Object implements Serializable {
     public TreePath(TreeNode<T> singlePath) {
         if(singlePath == null)
             throw new IllegalArgumentException("path in TreePath must be non null.");
-	lastPathComponent = singlePath;
-	parentPath = null;
+        lastPathComponent = singlePath;
+        parentPath = null;
     }
 
     /**
@@ -125,14 +125,14 @@ public class TreePath<T> extends Object implements Serializable {
      * @see #TreePath(Object[])
      */
     public TreeNode<T>[] getPath() {
-	int            i = getPathCount();
-	@SuppressWarnings("unchecked")
-	TreeNode<T>[]       result = new TreeNode[i--];
+        int i = getPathCount();
+        @SuppressWarnings("unchecked")
+        TreeNode<T>[] result = new TreeNode[i--];
 
         for(TreePath<T> path = this; path != null; path = path.parentPath) {
             result[i--] = path.lastPathComponent;
         }
-	return result;
+        return result;
     }
 
     /**
@@ -156,7 +156,7 @@ public class TreePath<T> extends Object implements Serializable {
         for(TreePath<T> path = this; path != null; path = path.parentPath) {
             result++;
         }
-	return result;
+        return result;
     }
 
     /**
@@ -180,7 +180,7 @@ public class TreePath<T> extends Object implements Serializable {
         for(int i = pathLength-1; i != element; i--) {
            path = path.parentPath;
         }
-	return path.lastPathComponent;
+        return path.lastPathComponent;
     }
 
     /**
@@ -192,22 +192,24 @@ public class TreePath<T> extends Object implements Serializable {
      * @param o the Object to compare
      */
     public boolean equals(Object o) {
-	if(o == this)
-	    return true;
+        if(o == this) {
+            return true;
+        }
         if(o instanceof TreePath) {
             @SuppressWarnings("unchecked")
-			TreePath<T>            oTreePath = (TreePath<T>)o;
+            TreePath<T> oTreePath = (TreePath<T>)o;
 
-	    if(getPathCount() != oTreePath.getPathCount())
-		return false;
-	    for(TreePath<T> path = this; path != null; path = path.parentPath) {
-		if (!(path.lastPathComponent.equals
-		      (oTreePath.lastPathComponent))) {
-		    return false;
-		}
-		oTreePath = oTreePath.parentPath;
-	    }
-	    return true;
+            if(getPathCount() != oTreePath.getPathCount()) {
+                return false;
+            }
+            for(TreePath<T> path = this; path != null; path = path.parentPath) {
+                if (!(path.lastPathComponent.equals
+                      (oTreePath.lastPathComponent))) {
+                    return false;
+                }
+                oTreePath = oTreePath.parentPath;
+            }
+            return true;
         }
         return false;
     }
@@ -239,19 +241,20 @@ public class TreePath<T> extends Object implements Serializable {
      * @return true if <code>aTreePath</code> is a descendant of this path
      */
     public boolean isDescendant(TreePath<T> aTreePath) {
-	if(aTreePath == this)
-	    return true;
+        if(aTreePath == this) {
+            return true;
+        }
 
         if(aTreePath != null) {
             int                 pathLength = getPathCount();
-	    int                 oPathLength = aTreePath.getPathCount();
+            int                 oPathLength = aTreePath.getPathCount();
 
-	    if(oPathLength < pathLength)
-		// Can't be a descendant, has fewer components in the path.
-		return false;
-	    while(oPathLength-- > pathLength)
-		aTreePath = aTreePath.getParentPath();
-	    return equals(aTreePath);
+            if(oPathLength < pathLength)
+                // Can't be a descendant, has fewer components in the path.
+                return false;
+            while(oPathLength-- > pathLength)
+                aTreePath = aTreePath.getParentPath();
+            return equals(aTreePath);
         }
         return false;
     }

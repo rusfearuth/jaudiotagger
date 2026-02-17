@@ -36,14 +36,14 @@ import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
+/**
  * This abstract class is the skeleton for tag readers. It handles the creation/closing of
  * the randomaccessfile objects and then call the subclass method getEncodingInfo and getTag.
  * These two method have to be implemented in the subclass.
- * 
- *@author	Raphael Slinckx
- *@version	$Id$
- *@since	v0.02
+ *
+ * @author Raphael Slinckx
+ * @version $Id$
+ * @since v0.02
  */
 
 public abstract class AudioFileReader
@@ -53,37 +53,37 @@ public abstract class AudioFileReader
     public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.generic");
     protected static final int MINIMUM_SIZE_FOR_VALID_AUDIO_FILE = 100;
 
-    /*
-    * Returns the encoding info object associated wih the current File.
-    * The subclass can assume the RAF pointer is at the first byte of the file.
-    * The RandomAccessFile must be kept open after this function, but can point
-    * at any offset in the file.
-    *
-    * @param raf The RandomAccessFile associtaed with the current file
-    * @exception IOException is thrown when the RandomAccessFile operations throw it (you should never throw them manually)
-    * @exception CannotReadException when an error occured during the parsing of the encoding infos
-    */
+    /**
+     * Returns the encoding info object associated wih the current File.
+     * The subclass can assume the RAF pointer is at the first byte of the file.
+     * The RandomAccessFile must be kept open after this function, but can point
+     * at any offset in the file.
+     *
+     * @param raf The RandomAccessFile associtaed with the current file
+     * @exception IOException is thrown when the RandomAccessFile operations throw it (you should never throw them manually)
+     * @exception CannotReadException when an error occured during the parsing of the encoding infos
+     */
     protected abstract GenericAudioHeader getEncodingInfo(RandomAccessFile raf) throws CannotReadException, IOException;
 
 
 
-    /*
-      * Same as above but returns the Tag contained in the file, or a new one.
-      *
-      * @param raf The RandomAccessFile associted with the current file
-      * @exception IOException is thrown when the RandomAccessFile operations throw it (you should never throw them manually)
-      * @exception CannotReadException when an error occured during the parsing of the tag
-      */
+    /**
+     * Same as above but returns the Tag contained in the file, or a new one.
+     *
+     * @param raf The RandomAccessFile associted with the current file
+     * @exception IOException is thrown when the RandomAccessFile operations throw it (you should never throw them manually)
+     * @exception CannotReadException when an error occured during the parsing of the tag
+     */
     protected abstract Tag getTag(RandomAccessFile raf) throws CannotReadException, IOException;
 
-    /*
-      * Reads the given file, and return an AudioFile object containing the Tag
-      * and the encoding infos present in the file. If the file has no tag, an
-      * empty one is returned. If the encodinginfo is not valid , an exception is thrown.
-      *
-      * @param f The file to read
-      * @exception CannotReadException If anything went bad during the read of this file
-      */
+    /**
+     * Reads the given file, and return an AudioFile object containing the Tag
+     * and the encoding infos present in the file. If the file has no tag, an
+     * empty one is returned. If the encodinginfo is not valid , an exception is thrown.
+     *
+     * @param f The file to read
+     * @exception CannotReadException If anything went bad during the read of this file
+     */
     public AudioFile read(File f) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
         return read(f.toPath());

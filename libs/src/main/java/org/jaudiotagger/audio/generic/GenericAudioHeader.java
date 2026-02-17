@@ -166,7 +166,7 @@ public class GenericAudioHeader implements AudioHeader
         {
             return -1;
         }
-    	return bitsPerSample;
+        return bitsPerSample;
     }
 
     /**
@@ -264,21 +264,21 @@ public class GenericAudioHeader implements AudioHeader
         this.samplingRate = samplingRate;
     }
     
-    /*
-     * Sets the Bits per Sample <br>
-     * 
-     * @params bitsPerSample Bits Per Sample
+    /**
+     * Sets the bits per sample.
+     *
+     * @param bitsPerSample Bits per sample
      */
     public void setBitsPerSample(int bitsPerSample)
     {
-    	this.bitsPerSample = bitsPerSample;
+        this.bitsPerSample = bitsPerSample;
     }
 
-    /*
-    * Sets the ByteRate (per second)
-    *
-    * @params ByteRate
-    */
+    /**
+     * Sets the byte rate (per second).
+     *
+     * @param byteRate Byte rate
+     */
     public void setByteRate(int byteRate)
     {
         this.byteRate = byteRate;

@@ -27,6 +27,7 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,7 +57,7 @@ public class Utils
      */
     public static String getExtension(final File f)
     {
-        final String name = f.getName().toLowerCase();
+        final String name = f.getName().toLowerCase(Locale.ROOT);
         final int i = name.lastIndexOf(".");
         if (i == -1)
         {
@@ -76,7 +77,7 @@ public class Utils
         {
             return "";
         }
-        final String name = fileName.toString().toLowerCase();
+        final String name = fileName.toString().toLowerCase(Locale.ROOT);
         final int i = name.lastIndexOf(".");
         if (i == -1)
         {

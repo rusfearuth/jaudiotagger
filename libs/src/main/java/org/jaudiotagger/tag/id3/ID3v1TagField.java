@@ -6,6 +6,7 @@ import org.jaudiotagger.tag.TagTextField;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 /**
  * This class encapsulates the name and content of a tag entry in id3 fields
@@ -55,7 +56,7 @@ public class ID3v1TagField implements TagTextField
         }
         else
         {
-            this.id = field.substring(0, i).toUpperCase();
+            this.id = field.substring(0, i).toUpperCase(Locale.ROOT);
             if (field.length() > i)
             {
                 this.content = field.substring(i + 1);
@@ -77,7 +78,7 @@ public class ID3v1TagField implements TagTextField
      */
     public ID3v1TagField(final String fieldId, final String fieldContent)
     {
-        this.id = fieldId.toUpperCase();
+        this.id = fieldId.toUpperCase(Locale.ROOT);
         this.content = fieldContent;
         checkCommon();
     }

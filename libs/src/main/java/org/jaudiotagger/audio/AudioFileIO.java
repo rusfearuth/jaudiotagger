@@ -48,6 +48,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -246,7 +247,7 @@ public class AudioFileIO
             throw new CannotReadException("displayNameOrExtHint is required");
         }
 
-        String hint = displayNameOrExtHint.trim().toLowerCase();
+        String hint = displayNameOrExtHint.trim().toLowerCase(Locale.ROOT);
         int lastDot = hint.lastIndexOf('.');
         if (lastDot >= 0 && lastDot < hint.length() - 1)
         {
@@ -284,7 +285,7 @@ public class AudioFileIO
         {
             return "";
         }
-        return segment.substring(lastDot + 1).toLowerCase();
+        return segment.substring(lastDot + 1).toLowerCase(Locale.ROOT);
     }
 
     /**

@@ -22,6 +22,7 @@ import org.jaudiotagger.audio.generic.Utils;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.Locale;
 
 /**
  * <p>This is a simple FileFilter that will only allow the file supported by this library.
@@ -72,7 +73,7 @@ public class AudioFileFilter implements FileFilter
 
         try
         {
-            if (SupportedFileFormat.valueOf(ext.toUpperCase()) != null)
+            if (SupportedFileFormat.valueOf(ext.toUpperCase(Locale.ROOT)) != null)
             {
                 return true;
             }

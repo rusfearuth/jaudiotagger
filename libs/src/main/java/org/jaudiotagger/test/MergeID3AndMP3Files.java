@@ -3,6 +3,7 @@ package org.jaudiotagger.test;
 import java.io.*;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Simple class that will attempt to recusively read all files within a directory ending in .mp3 (but
@@ -146,7 +147,7 @@ public class MergeID3AndMP3Files
          */
         public final boolean accept(final File file)
         {
-            return (((file.getName()).toLowerCase().endsWith(".mp3")) || (file.isDirectory() && (this.allowDirectories)));
+            return (((file.getName()).toLowerCase(Locale.ROOT).endsWith(".mp3")) || (file.isDirectory() && (this.allowDirectories)));
         }
 
         /**

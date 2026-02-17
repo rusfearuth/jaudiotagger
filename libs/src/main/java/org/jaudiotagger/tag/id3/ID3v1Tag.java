@@ -211,6 +211,7 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag
      * @throws IOException
      * @deprecated use {@link #ID3v1Tag(RandomAccessFile,String)} instead
      */
+    @Deprecated
     public ID3v1Tag(RandomAccessFile file) throws TagNotFoundException, IOException
     {
         this(file, "");
@@ -624,7 +625,7 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag
     {
         try
         {
-            FieldKey key = FieldKey.valueOf(id.toUpperCase());
+            FieldKey key = FieldKey.valueOf(id.toUpperCase(Locale.ROOT));
             return hasField(key);
         }
         catch(java.lang.IllegalArgumentException iae)
