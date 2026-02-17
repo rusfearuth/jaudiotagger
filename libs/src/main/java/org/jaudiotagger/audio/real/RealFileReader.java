@@ -63,7 +63,7 @@ public class RealFileReader extends AudioFileReader
             GenericAudioHeader info = getEncodingInfo(raf);
             raf.seek(0);
             Tag tag = getTag(raf);
-            return new AudioFile(file, info, tag);
+            return new AudioFile(path, info, tag);
         }
         catch (CannotReadException cre)
         {

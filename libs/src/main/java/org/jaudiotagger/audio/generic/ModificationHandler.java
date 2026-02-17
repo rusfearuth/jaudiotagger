@@ -22,6 +22,7 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.exceptions.ModifyVetoException;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Vector;
 
 /**
@@ -59,12 +60,18 @@ public class ModificationHandler implements AudioFileModificationListener
      */
     public void fileModified(AudioFile original, File temporary) throws ModifyVetoException
     {
+        fileModifiedPath(original, temporary != null ? temporary.toPath() : null);
+    }
+
+    @Override
+    public void fileModifiedPath(AudioFile original, Path temporary) throws ModifyVetoException
+    {
         for (AudioFileModificationListener listener : this.listeners)
         {
             AudioFileModificationListener current = listener;
             try
             {
-                current.fileModified(original, temporary);
+                current.fileModifiedPath(original, temporary);
             }
             catch (ModifyVetoException e)
             {
@@ -81,10 +88,16 @@ public class ModificationHandler implements AudioFileModificationListener
      */
     public void fileOperationFinished(File result)
     {
+        fileOperationFinishedPath(result != null ? result.toPath() : null);
+    }
+
+    @Override
+    public void fileOperationFinishedPath(Path result)
+    {
         for (AudioFileModificationListener listener : this.listeners)
         {
             AudioFileModificationListener current = listener;
-            current.fileOperationFinished(result);
+            current.fileOperationFinishedPath(result);
         }
     }
 

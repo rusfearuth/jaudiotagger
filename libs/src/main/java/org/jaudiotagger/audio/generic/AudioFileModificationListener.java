@@ -22,6 +22,7 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.exceptions.ModifyVetoException;
 
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Classes implementing this interface will be notified on audio file's
@@ -60,6 +61,20 @@ public interface AudioFileModificationListener
     public void fileModified(AudioFile original, File temporary) throws ModifyVetoException;
 
     /**
+     * Path-first variant of {@link #fileModified(AudioFile, File)}.
+     *
+     * <p>Default behavior delegates to the legacy File callback for backward compatibility.</p>
+     *
+     * @param original The original file on which the operation was started.
+     * @param temporary The modified copy path.
+     * @throws ModifyVetoException If the listener rejects the modification.
+     */
+    default void fileModifiedPath(AudioFile original, Path temporary) throws ModifyVetoException
+    {
+        fileModified(original, temporary != null ? temporary.toFile() : null);
+    }
+
+    /**
      * Informs the listener that the process has been finished.<br>
      * The given file is either the original file or the modified copy.<br>
      *
@@ -70,6 +85,18 @@ public interface AudioFileModificationListener
      *               needed any more.
      */
     public void fileOperationFinished(File result);
+
+    /**
+     * Path-first variant of {@link #fileOperationFinished(File)}.
+     *
+     * <p>Default behavior delegates to the legacy File callback for backward compatibility.</p>
+     *
+     * @param result resulting path.
+     */
+    default void fileOperationFinishedPath(Path result)
+    {
+        fileOperationFinished(result != null ? result.toFile() : null);
+    }
 
     /**
      * Notifies that the <code>file</code> is about to be modified.

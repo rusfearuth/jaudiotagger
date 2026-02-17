@@ -37,14 +37,14 @@ public class MP3FileReader extends AudioFileReader
     //Override because we read mp3s differently to the entagged code
     public AudioFile read(File f) throws IOException, TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException
     {
-        MP3File mp3File = new MP3File(f, MP3File.LOAD_IDV1TAG | MP3File.LOAD_IDV2TAG, true);
-        return mp3File;
+        return read(f.toPath());
     }
 
     @Override
     public AudioFile read(Path path) throws IOException, TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException
     {
         MP3File mp3File = new MP3File(path.toFile(), MP3File.LOAD_IDV1TAG | MP3File.LOAD_IDV2TAG, true);
+        mp3File.setPath(path);
         return mp3File;
     }
 

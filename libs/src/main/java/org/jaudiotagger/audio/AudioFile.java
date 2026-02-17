@@ -50,8 +50,16 @@ public class AudioFile
 
     /**
      * Physical file represented by this instance.
+     *
+     * @deprecated Prefer {@link #getPath()} and {@link #setPath(Path)}.
      */
+    @Deprecated
     protected File file;
+
+    /**
+     * Canonical path represented by this instance.
+     */
+    protected Path path;
 
     /**
      * Parsed audio header information.
@@ -86,6 +94,7 @@ public class AudioFile
     public AudioFile(File f, AudioHeader audioHeader, Tag tag)
     {
         this.file = f;
+        this.path = f != null ? f.toPath() : null;
         this.audioHeader = audioHeader;
         this.tag = tag;
     }
@@ -104,6 +113,22 @@ public class AudioFile
     public AudioFile(String s, AudioHeader audioHeader, Tag tag)
     {
         this.file = new File(s);
+        this.path = this.file.toPath();
+        this.audioHeader = audioHeader;
+        this.tag = tag;
+    }
+
+    /**
+     * Creates an audio file model from path.
+     *
+     * @param path pathname for physical audio file.
+     * @param audioHeader parsed header.
+     * @param tag parsed tag.
+     */
+    public AudioFile(Path path, AudioHeader audioHeader, Tag tag)
+    {
+        this.path = path;
+        this.file = path != null ? path.toFile() : null;
         this.audioHeader = audioHeader;
         this.tag = tag;
     }
@@ -136,9 +161,11 @@ public class AudioFile
      *
      * @param file physical file.
      */
+    @Deprecated
     public void setFile(File file)
     {
         this.file = file;
+        this.path = file != null ? file.toPath() : null;
     }
 
     /**
@@ -146,9 +173,39 @@ public class AudioFile
      *
      * @return physical file.
      */
+    @Deprecated
     public File getFile()
     {
+        if (file == null && path != null)
+        {
+            file = path.toFile();
+        }
         return file;
+    }
+
+    /**
+     * Sets the backing physical path for this model.
+     *
+     * @param path physical path.
+     */
+    public void setPath(Path path)
+    {
+        this.path = path;
+        this.file = path != null ? path.toFile() : null;
+    }
+
+    /**
+     * Returns the backing physical path.
+     *
+     * @return physical path.
+     */
+    public Path getPath()
+    {
+        if (path == null && file != null)
+        {
+            path = file.toPath();
+        }
+        return path;
     }
 
     /**
@@ -212,7 +269,9 @@ public class AudioFile
      */
     public String toString()
     {
-        return "AudioFile " + getFile().getAbsolutePath()
+        final Path audioPath = getPath();
+        final String displayPath = audioPath != null ? audioPath.toAbsolutePath().toString() : "<null>";
+        return "AudioFile " + displayPath
                 + "  --------\n" + audioHeader.toString() + "\n" + ((tag == null) ? "" : tag.toString()) + "\n-------------------";
     }
 

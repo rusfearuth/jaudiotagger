@@ -307,7 +307,12 @@ public class AudioFileIO
      */
     public void deleteTag(AudioFile f) throws CannotReadException, CannotWriteException
     {
-        String ext = Utils.getExtension(f.getFile().toPath());
+        final Path audioPath = f.getPath();
+        if (audioPath == null)
+        {
+            throw new CannotWriteException("AudioFile path reference is null");
+        }
+        String ext = Utils.getExtension(audioPath);
 
         Object afw = writers.get(ext);
         if (afw == null)
@@ -473,7 +478,7 @@ public class AudioFileIO
         }
 
         final Path tempPath;
-        final File originalFile = f.getFile();
+        final Path originalPath = f.getPath();
         final String originalExt = f.getExt();
         try
         {
@@ -486,7 +491,7 @@ public class AudioFileIO
 
         try
         {
-            f.setFile(tempPath.toFile());
+            f.setPath(tempPath);
 
             String ext = f.getExt();
             if (ext == null || ext.isEmpty())
@@ -494,7 +499,7 @@ public class AudioFileIO
                 ext = originalExt;
                 if (ext == null || ext.isEmpty())
                 {
-                    ext = originalFile != null ? Utils.getExtension(originalFile.toPath()) : "";
+                    ext = originalPath != null ? Utils.getExtension(originalPath) : "";
                 }
                 if (ext == null || ext.isEmpty())
                 {
@@ -516,7 +521,7 @@ public class AudioFileIO
         }
         finally
         {
-            f.setFile(originalFile);
+            f.setPath(originalPath);
             f.setExt(originalExt);
             UriIO.deleteQuietly(tempPath);
         }
@@ -539,7 +544,7 @@ public class AudioFileIO
         }
 
         final Path tempPath;
-        final File originalFile = f.getFile();
+        final Path originalPath = f.getPath();
         final String originalExt = f.getExt();
         try
         {
@@ -552,13 +557,13 @@ public class AudioFileIO
 
         try
         {
-            f.setFile(tempPath.toFile());
+            f.setPath(tempPath);
             if (f.getExt() == null || f.getExt().isEmpty())
             {
                 String ext = originalExt;
                 if (ext == null || ext.isEmpty())
                 {
-                    ext = originalFile != null ? Utils.getExtension(originalFile.toPath()) : "";
+                    ext = originalPath != null ? Utils.getExtension(originalPath) : "";
                 }
                 if (ext == null || ext.isEmpty())
                 {
@@ -580,7 +585,7 @@ public class AudioFileIO
         }
         finally
         {
-            f.setFile(originalFile);
+            f.setPath(originalPath);
             f.setExt(originalExt);
             UriIO.deleteQuietly(tempPath);
         }
@@ -609,15 +614,16 @@ public class AudioFileIO
      */
     public void writeFile(AudioFile f, Path targetPath) throws CannotWriteException
     {
-        if (f.getFile() == null)
+        final Path currentPath = f.getPath();
+        if (currentPath == null)
         {
-            throw new CannotWriteException("AudioFile file reference is null");
+            throw new CannotWriteException("AudioFile path reference is null");
         }
 
         String ext = f.getExt();
         if (ext == null || ext.isEmpty())
         {
-            ext = Utils.getExtension(f.getFile().toPath());
+            ext = Utils.getExtension(currentPath);
             f.setExt(ext);
         }
 
@@ -626,8 +632,8 @@ public class AudioFileIO
             final File destination = new File(targetPath.toString() + "." + ext);
             try
             {
-                Utils.copyThrowsOnException(f.getFile(), destination);
-                f.setFile(destination);
+                Utils.copyThrowsOnException(f.getPath().toFile(), destination);
+                f.setPath(destination.toPath());
             }
             catch (IOException e)
             {

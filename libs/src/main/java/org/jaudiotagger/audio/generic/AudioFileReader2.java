@@ -33,7 +33,12 @@ public abstract class AudioFileReader2 extends AudioFileReader
    */
     public AudioFile read(File f) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
-        Path path = f.toPath();
+        return read(f.toPath());
+    }
+
+    @Override
+    public AudioFile read(Path path) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
+    {
         if(logger.isLoggable(Level.CONFIG))
         {
             logger.config(ErrorMessage.GENERAL_READ.getMsg(path));
@@ -52,14 +57,14 @@ public abstract class AudioFileReader2 extends AudioFileReader
             }
         }
 
-        if (f.length() <= MINIMUM_SIZE_FOR_VALID_AUDIO_FILE)
+        if (path.toFile().length() <= MINIMUM_SIZE_FOR_VALID_AUDIO_FILE)
         {
             throw new CannotReadException(ErrorMessage.GENERAL_READ_FAILED_FILE_TOO_SMALL.getMsg(path));
         }
 
         GenericAudioHeader info = getEncodingInfo(path);
         Tag tag = getTag(path);
-        return new AudioFile(f, info, tag);
+        return new AudioFile(path, info, tag);
     }
 
     /**

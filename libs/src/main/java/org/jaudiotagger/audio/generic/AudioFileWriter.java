@@ -117,7 +117,7 @@ public abstract class AudioFileWriter
                 deleteTag(af.getTag(), raf, rafTemp);
                 if (this.modificationListener != null)
                 {
-                    this.modificationListener.fileModified(af, tempF);
+                    this.modificationListener.fileModifiedPath(af, tempF.toPath());
                 }
             }
             catch (ModifyVetoException veto)
@@ -189,7 +189,7 @@ public abstract class AudioFileWriter
             // Notify listener
             if (this.modificationListener != null)
             {
-                this.modificationListener.fileOperationFinished(result);
+                this.modificationListener.fileOperationFinishedPath(result.toPath());
             }
         }
     }
@@ -398,7 +398,7 @@ public abstract class AudioFileWriter
                 writeTag(af, af.getTag(), raf, rafTemp);
                 if (this.modificationListener != null)
                 {
-                    this.modificationListener.fileModified(af, newFile);
+                    this.modificationListener.fileModifiedPath(af, newFile.toPath());
                 }
             }
             catch (ModifyVetoException veto)
@@ -478,7 +478,7 @@ public abstract class AudioFileWriter
 
         if (this.modificationListener != null)
         {
-            this.modificationListener.fileOperationFinished(result);
+            this.modificationListener.fileOperationFinishedPath(result.toPath());
         }
     }
 
