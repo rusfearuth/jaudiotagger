@@ -16,7 +16,7 @@ The main project page is http://www.jthink.net/jaudiotagger/ and you can contact
 
 ## Requirements
 
-*Jaudiotagger* requires Java 1.8
+*Jaudiotagger* requires Java 11+ (builds are standardized on JDK 17 toolchain)
 
 ## Contributing
 

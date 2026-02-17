@@ -1,4 +1,7 @@
 Summarise Changes
+3.0.2-SNAPSHOT
+Build:Raise Java baseline to 11 and standardize Gradle builds/tests on JDK 17 toolchain
+
 3.0.1
 #039:Fixes required due to PR69 changes to AbstractID3v2Tag.getFrame() so that it now always returns list
 
