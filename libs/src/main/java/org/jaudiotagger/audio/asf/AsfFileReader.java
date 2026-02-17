@@ -260,7 +260,7 @@ public class AsfFileReader extends AudioFileReader
                 logger.warning(ErrorMessage.ASF_FILE_HEADER_SIZE_DOES_NOT_MATCH_FILE_SIZE.getMsg(f.getAbsolutePath(), header.getFileHeader().getFileSize().longValue(), f.length()));
             }
 
-            return new AudioFile(f, getAudioHeader(header), getTag(header));
+            return new AudioFile(path, getAudioHeader(header), getTag(header));
 
         }
         catch (final CannotReadException e)

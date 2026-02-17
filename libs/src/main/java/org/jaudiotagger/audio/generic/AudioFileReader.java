@@ -86,39 +86,48 @@ public abstract class AudioFileReader
       */
     public AudioFile read(File f) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
+        return read(f.toPath());
+    }
+
+    /**
+     * Reads audio metadata from a {@link Path}.
+     */
+    public AudioFile read(Path path) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
+    {
         if(logger.isLoggable(Level.CONFIG))
         {
-            logger.config(ErrorMessage.GENERAL_READ.getMsg(f.getAbsolutePath()));
+            logger.config(ErrorMessage.GENERAL_READ.getMsg(path));
         }
 
-        if (!Files.isReadable(f.toPath()))
+        if (!Files.isReadable(path))
         {
-            if(!Files.exists(f.toPath()))
+            if(!Files.exists(path))
             {
-                throw new FileNotFoundException(ErrorMessage.UNABLE_TO_FIND_FILE.getMsg(f.toPath()));
+                throw new FileNotFoundException(ErrorMessage.UNABLE_TO_FIND_FILE.getMsg(path));
             }
             else
             {
-                logger.warning(Permissions.displayPermissions(f.toPath()));
-                throw new NoReadPermissionsException(ErrorMessage.GENERAL_READ_FAILED_DO_NOT_HAVE_PERMISSION_TO_READ_FILE.getMsg(f.toPath()));
+                logger.warning(Permissions.displayPermissions(path));
+                throw new NoReadPermissionsException(ErrorMessage.GENERAL_READ_FAILED_DO_NOT_HAVE_PERMISSION_TO_READ_FILE.getMsg(path));
             }
         }
 
-        if (f.length() <= MINIMUM_SIZE_FOR_VALID_AUDIO_FILE)
+        final File file = path.toFile();
+        if (file.length() <= MINIMUM_SIZE_FOR_VALID_AUDIO_FILE)
         {
-            throw new CannotReadException(ErrorMessage.GENERAL_READ_FAILED_FILE_TOO_SMALL.getMsg(f.getAbsolutePath()));
+            throw new CannotReadException(ErrorMessage.GENERAL_READ_FAILED_FILE_TOO_SMALL.getMsg(path));
         }
 
         RandomAccessFile raf = null;
         try
         {
-            raf = new RandomAccessFile(f, "r");
+            raf = new RandomAccessFile(file, "r");
             raf.seek(0);
 
             GenericAudioHeader info = getEncodingInfo(raf);
             raf.seek(0);
             Tag tag = getTag(raf);
-            return new AudioFile(f, info, tag);
+            return new AudioFile(path, info, tag);
 
         }
         catch (CannotReadException cre)
@@ -127,8 +136,8 @@ public abstract class AudioFileReader
         }
         catch (Exception e)
         {
-            logger.log(Level.SEVERE, ErrorMessage.GENERAL_READ.getMsg(f.getAbsolutePath()),e);
-            throw new CannotReadException(f.getAbsolutePath()+":" + e.getMessage(), e);
+            logger.log(Level.SEVERE, ErrorMessage.GENERAL_READ.getMsg(path),e);
+            throw new CannotReadException(path + ":" + e.getMessage(), e);
         }
         finally
         {
@@ -141,16 +150,8 @@ public abstract class AudioFileReader
             }
             catch (Exception ex)
             {
-                logger.log(Level.WARNING, ErrorMessage.GENERAL_READ_FAILED_UNABLE_TO_CLOSE_RANDOM_ACCESS_FILE.getMsg(f.getAbsolutePath()));
+                logger.log(Level.WARNING, ErrorMessage.GENERAL_READ_FAILED_UNABLE_TO_CLOSE_RANDOM_ACCESS_FILE.getMsg(path));
             }
         }
-    }
-
-    /**
-     * Reads audio metadata from a {@link Path}. Default bridge delegates to {@link #read(File)}.
-     */
-    public AudioFile read(Path path) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
-    {
-        return read(path.toFile());
     }
 }

@@ -28,7 +28,11 @@ public abstract class AudioFileWriter2 extends AudioFileWriter
     @Override
     public void delete(AudioFile af) throws CannotReadException, CannotWriteException
     {
-        Path file = af.getFile().toPath();
+        Path file = af.getPath();
+        if (file == null)
+        {
+            throw new CannotWriteException(ErrorMessage.GENERAL_DELETE_FAILED.getMsg("null"));
+        }
 
         if (TagOptionSingleton.getInstance().isCheckIsWritable() && !Files.isWritable(file))
         {
@@ -37,7 +41,7 @@ public abstract class AudioFileWriter2 extends AudioFileWriter
                     .getMsg(file));
         }
 
-        if (af.getFile().length() <= MINIMUM_FILESIZE)
+        if (file.toFile().length() <= MINIMUM_FILESIZE)
         {
             throw new CannotWriteException(ErrorMessage.GENERAL_DELETE_FAILED_BECAUSE_FILE_IS_TOO_SMALL
                     .getMsg(file));
@@ -54,18 +58,21 @@ public abstract class AudioFileWriter2 extends AudioFileWriter
     @Override
     public void write(AudioFile af) throws CannotWriteException
     {
-        Path file = af.getFile().toPath();
+        Path file = af.getPath();
+        if (file == null)
+        {
+            throw new CannotWriteException(ErrorMessage.GENERAL_WRITE_FAILED.getMsg("null"));
+        }
 
         if (TagOptionSingleton.getInstance().isCheckIsWritable() && !Files.isWritable(file))
         {
             logger.severe(Permissions.displayPermissions(file));
-            logger.severe(ErrorMessage.GENERAL_WRITE_FAILED.getMsg(af.getFile()
-                    .getPath()));
+            logger.severe(ErrorMessage.GENERAL_WRITE_FAILED.getMsg(file));
             throw new CannotWriteException(ErrorMessage.GENERAL_WRITE_FAILED_TO_OPEN_FILE_FOR_EDITING
                     .getMsg(file));
         }
 
-        if (af.getFile().length() <= MINIMUM_FILESIZE)
+        if (file.toFile().length() <= MINIMUM_FILESIZE)
         {
             throw new CannotWriteException(ErrorMessage.GENERAL_WRITE_FAILED_BECAUSE_FILE_IS_TOO_SMALL
                     .getMsg(file));
