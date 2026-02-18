@@ -29,15 +29,46 @@ making a donation—donations can be made at
 
 ## Include in your Project
 
-Latest release is 3.0.1 available from Maven central repository, so to use in your project just include
-the following in your applications pom.xml file
+This repository publishes `jaudiotagger` to GitHub Packages.
 
-    `<dependency>
-        <groupId>net.jthink</groupId>
+Maven:
+
+```xml
+<repositories>
+    <repository>
+        <id>github</id>
+        <url>https://maven.pkg.github.com/rusfearuth/jaudiotagger</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>io.github.rusfearuth</groupId>
         <artifactId>jaudiotagger</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.2</version>
     </dependency>
-    ` 
+</dependencies>
+```
+
+Gradle Kotlin DSL:
+
+```kotlin
+repositories {
+    maven {
+        url = uri("https://maven.pkg.github.com/rusfearuth/jaudiotagger")
+        credentials {
+            username = providers.gradleProperty("gpr.user").orNull
+                ?: System.getenv("GITHUB_ACTOR")
+            password = providers.gradleProperty("gpr.key").orNull
+                ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+
+dependencies {
+    implementation("io.github.rusfearuth:jaudiotagger:3.0.2")
+}
+```
 
 ## Build
 
@@ -77,6 +108,21 @@ To compile and run unit tests:
 To run Android instrumentation tests (Android 9+ device/emulator connected):
 
     ./gradlew :libs:connectedAndroidTest
+
+## Publishing
+
+Create `~/.gradle/gradle.properties` (or set environment variables):
+
+```properties
+gpr.user=<github-username>
+gpr.key=<github-token-with-write:packages-and-repo-access>
+```
+
+Publish the release artifact:
+
+```bash
+./gradlew :libs:publish
+```
 
 ## API Usage (Path + Uri)
 

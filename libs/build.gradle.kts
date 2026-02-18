@@ -5,7 +5,11 @@ import org.gradle.jvm.toolchain.JavaToolchainService
 
 plugins {
     id("com.android.library")
+    `maven-publish`
 }
+
+group = "io.github.rusfearuth"
+version = "3.0.2"
 
 android {
     namespace = "org.jaudiotagger"
@@ -38,6 +42,12 @@ android {
 
     testOptions {
         unitTests.isReturnDefaultValues = true
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
     }
 }
 
@@ -75,4 +85,55 @@ tasks.withType<Test>().configureEach {
     useJUnit()
     // Legacy tests resolve fixtures via paths relative to the repository root.
     workingDir = rootProject.projectDir
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/rusfearuth/jaudiotagger")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                    ?: findProperty("gpr.user")?.toString()
+                password = System.getenv("GITHUB_TOKEN")
+                    ?: findProperty("gpr.key")?.toString()
+            }
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            register<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "io.github.rusfearuth"
+                artifactId = "jaudiotagger"
+                version = "3.0.2"
+
+                pom {
+                    name.set("jaudiotagger")
+                    description.set("Java API for reading and writing audio metadata tags.")
+                    url.set("https://github.com/rusfearuth/jaudiotagger")
+                    licenses {
+                        license {
+                            name.set("LGPL-2.1")
+                            url.set("https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("rusfearuth")
+                            name.set("rusfearuth")
+                        }
+                    }
+                    scm {
+                        connection.set("scm:git:git://github.com/rusfearuth/jaudiotagger.git")
+                        developerConnection.set("scm:git:ssh://github.com/rusfearuth/jaudiotagger.git")
+                        url.set("https://github.com/rusfearuth/jaudiotagger")
+                    }
+                }
+            }
+        }
+    }
 }
