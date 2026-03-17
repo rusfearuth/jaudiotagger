@@ -87,21 +87,6 @@ tasks.withType<Test>().configureEach {
     workingDir = rootProject.projectDir
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/rusfearuth/jaudiotagger")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                    ?: findProperty("gpr.user")?.toString()
-                password = System.getenv("GITHUB_TOKEN")
-                    ?: findProperty("gpr.key")?.toString()
-            }
-        }
-    }
-}
-
 afterEvaluate {
     publishing {
         publications {
