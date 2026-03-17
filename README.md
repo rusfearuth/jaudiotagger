@@ -29,21 +29,19 @@ making a donation—donations can be made at
 
 ## Include in your Project
 
-This repository publishes `jaudiotagger` to GitHub Packages.
-
 Maven:
 
 ```xml
 <repositories>
     <repository>
-        <id>github</id>
-        <url>https://maven.pkg.github.com/rusfearuth/jaudiotagger</url>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
     </repository>
 </repositories>
 
 <dependencies>
     <dependency>
-        <groupId>io.github.rusfearuth</groupId>
+        <groupId>com.github.rusfearuth</groupId>
         <artifactId>jaudiotagger</artifactId>
         <version>3.0.2</version>
     </dependency>
@@ -54,19 +52,11 @@ Gradle Kotlin DSL:
 
 ```kotlin
 repositories {
-    maven {
-        url = uri("https://maven.pkg.github.com/rusfearuth/jaudiotagger")
-        credentials {
-            username = providers.gradleProperty("gpr.user").orNull
-                ?: System.getenv("GITHUB_ACTOR")
-            password = providers.gradleProperty("gpr.key").orNull
-                ?: System.getenv("GITHUB_TOKEN")
-        }
-    }
+    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
-    implementation("io.github.rusfearuth:jaudiotagger:3.0.2")
+    implementation("com.github.rusfearuth:jaudiotagger:3.0.2")
 }
 ```
 
@@ -111,17 +101,11 @@ To run Android instrumentation tests (Android 9+ device/emulator connected):
 
 ## Publishing
 
-Create `~/.gradle/gradle.properties` (or set environment variables):
-
-```properties
-gpr.user=<github-username>
-gpr.key=<github-token-with-write:packages-and-repo-access>
-```
-
-Publish the release artifact:
+Publishing is handled automatically by [JitPack](https://jitpack.io/#rusfearuth/jaudiotagger). To release a new version, create and push a git tag:
 
 ```bash
-./gradlew :libs:publish
+git tag <version>
+git push origin <version>
 ```
 
 ## API Usage (Path + Uri)
