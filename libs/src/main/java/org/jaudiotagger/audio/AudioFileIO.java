@@ -405,6 +405,12 @@ public class AudioFileIO
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
         final String normalizedExt = extractExtensionHint(ext);
+
+        if (UriIO.isFileUri(uri))
+        {
+            return readFileAs(UriIO.toPath(uri), normalizedExt);
+        }
+
         final Path tempPath;
         try
         {
@@ -478,9 +484,49 @@ public class AudioFileIO
             throw new CannotWriteException("AudioFile is null");
         }
 
-        final Path tempPath;
         final Path originalPath = f.getPath();
         final String originalExt = f.getExt();
+
+        if (UriIO.isFileUri(uri))
+        {
+            try
+            {
+                f.setPath(UriIO.toPath(uri));
+
+                String ext = f.getExt();
+                if (ext == null || ext.isEmpty())
+                {
+                    ext = originalExt;
+                    if (ext == null || ext.isEmpty())
+                    {
+                        ext = originalPath != null ? Utils.getExtension(originalPath) : "";
+                    }
+                    if (ext == null || ext.isEmpty())
+                    {
+                        ext = inferUriExtension(uri);
+                    }
+                    if (ext == null || ext.isEmpty())
+                    {
+                        throw new CannotWriteException("Unable to determine extension for uri write");
+                    }
+                    f.setExt(ext);
+                }
+
+                writeFile(f, (Path) null);
+            }
+            catch (IOException e)
+            {
+                throw new CannotWriteException("Unable to persist changes to uri: " + e.getMessage(), e);
+            }
+            finally
+            {
+                f.setPath(originalPath);
+                f.setExt(originalExt);
+            }
+            return;
+        }
+
+        final Path tempPath;
         try
         {
             tempPath = UriIO.copyUriToTempFile(context, uri);
@@ -544,9 +590,47 @@ public class AudioFileIO
             throw new CannotWriteException("AudioFile is null");
         }
 
-        final Path tempPath;
         final Path originalPath = f.getPath();
         final String originalExt = f.getExt();
+
+        if (UriIO.isFileUri(uri))
+        {
+            try
+            {
+                f.setPath(UriIO.toPath(uri));
+                if (f.getExt() == null || f.getExt().isEmpty())
+                {
+                    String ext = originalExt;
+                    if (ext == null || ext.isEmpty())
+                    {
+                        ext = originalPath != null ? Utils.getExtension(originalPath) : "";
+                    }
+                    if (ext == null || ext.isEmpty())
+                    {
+                        ext = inferUriExtension(uri);
+                    }
+                    if (ext == null || ext.isEmpty())
+                    {
+                        throw new CannotWriteException("Unable to determine extension for uri delete");
+                    }
+                    f.setExt(ext);
+                }
+
+                deleteTag(f);
+            }
+            catch (IOException e)
+            {
+                throw new CannotWriteException("Unable to persist delete to uri: " + e.getMessage(), e);
+            }
+            finally
+            {
+                f.setPath(originalPath);
+                f.setExt(originalExt);
+            }
+            return;
+        }
+
+        final Path tempPath;
         try
         {
             tempPath = UriIO.copyUriToTempFile(context, uri);

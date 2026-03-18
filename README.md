@@ -124,11 +124,40 @@ Write and delete:
     audioFile.delete();
     AudioFileIO.writeAs(audioFile, Paths.get("export/song_copy"));
 
-Android `Uri` entry points are also supported:
+### Android Uri
 
-    AudioFile fromUri = AudioFileIO.readAs(context, uri, "mp3");
+The Uri API provides a single entry point for both `content://` and `file://` schemes — the calling code doesn't need to distinguish between them:
+
+    AudioFile audioFile = AudioFileIO.readAs(context, uri, "mp3");
     AudioFileIO.write(context, audioFile, uri);
     AudioFileIO.delete(context, audioFile, uri);
+
+Under the hood the library picks the optimal strategy automatically:
+
+- **`content://`** — data is copied into a temp file via `ContentResolver`, edited there, and streamed back.
+- **`file://`** — the file is accessed directly through the filesystem, no temp copies involved.
+
+#### Full Uri flow (read → edit → write back)
+
+```java
+// Uri can come from anywhere: SAF picker, MediaStore, Uri.fromFile(), etc.
+// The API is the same regardless of the scheme.
+Uri uri = ...;  // content://media/external/audio/media/42
+                // or file:///sdcard/Music/song.mp3
+
+// 1. Read
+AudioFile audioFile = AudioFileIO.readAs(context, uri, "mp3");
+
+// 2. Edit tags
+Tag tag = audioFile.getTagOrCreateAndSetDefault();
+tag.setField(FieldKey.ARTIST, "Pink Floyd");
+tag.setField(FieldKey.ALBUM, "The Dark Side of the Moon");
+tag.setField(FieldKey.TITLE, "Time");
+tag.setField(FieldKey.TRACK, "4");
+
+// 3. Write back
+AudioFileIO.write(context, audioFile, uri);
+```
 
 ### Migration from removed legacy API
 
