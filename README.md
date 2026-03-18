@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/rusfearuth/jaudiotagger.svg)](https://jitpack.io/#rusfearuth/jaudiotagger)
+
 # Jaudiotagger
 
 *Jaudiotagger* is a Java API for audio metatagging. Both a common API and format
@@ -29,25 +31,6 @@ making a donation—donations can be made at
 
 ## Include in your Project
 
-Maven:
-
-```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-
-<dependencies>
-    <dependency>
-        <groupId>com.github.rusfearuth</groupId>
-        <artifactId>jaudiotagger</artifactId>
-        <version>3.0.2</version>
-    </dependency>
-</dependencies>
-```
-
 Gradle Kotlin DSL:
 
 ```kotlin
@@ -56,7 +39,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.rusfearuth:jaudiotagger:3.0.2")
+    implementation("com.github.rusfearuth:jaudiotagger:3.0.3")
 }
 ```
 
@@ -73,10 +56,6 @@ Directory structure as follows:
 - `www`                  : java doc directory
 - `testdata`             : test files for use by the junit tests, not all tests are included in the distribution because of copyright
 - `build` / `libs/build` : Gradle build outputs
-
-### IDE files
-
-- IDE metadata files (`*.iml`, `*.ipr`, `*.iws`) are local and ignored by Git
 
 ### License
 
@@ -98,15 +77,6 @@ To compile and run unit tests:
 To run Android instrumentation tests (Android 9+ device/emulator connected):
 
     ./gradlew :libs:connectedAndroidTest
-
-## Publishing
-
-Publishing is handled automatically by [JitPack](https://jitpack.io/#rusfearuth/jaudiotagger). To release a new version, create and push a git tag:
-
-```bash
-git tag <version>
-git push origin <version>
-```
 
 ## API Usage (Path + Uri)
 
