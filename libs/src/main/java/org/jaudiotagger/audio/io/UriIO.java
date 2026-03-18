@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Uri-based bridge for Android ContentResolver I/O.
@@ -20,6 +21,25 @@ public final class UriIO
 
     private UriIO()
     {
+    }
+
+    public static boolean isFileUri(Uri uri)
+    {
+        return uri != null && "file".equals(uri.getScheme());
+    }
+
+    public static Path toPath(Uri uri) throws IOException
+    {
+        if (uri == null)
+        {
+            throw new IOException("Uri cannot be null");
+        }
+        final String path = uri.getPath();
+        if (path == null || path.isEmpty())
+        {
+            throw new IOException("Uri has no path: " + uri);
+        }
+        return Paths.get(path);
     }
 
     public static Path copyUriToTempFile(Context context, Uri uri) throws IOException
