@@ -4,6 +4,7 @@ import org.jaudiotagger.audio.dsf.Dsf;
 import org.jaudiotagger.audio.exceptions.*;
 import org.jaudiotagger.audio.flac.metadatablock.MetadataBlockDataPicture;
 import org.jaudiotagger.audio.generic.Permissions;
+import org.jaudiotagger.audio.io.UriIO;
 import org.jaudiotagger.audio.real.RealTag;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.Tag;
@@ -46,6 +47,22 @@ import java.util.logging.Logger;
  */
 public class AudioFile
 {
+    static final class TempFileState
+    {
+        private final Path path;
+        private final File file;
+        private final boolean managedUriTempFile;
+        private final boolean releasedManagedUriTempFile;
+
+        private TempFileState(Path path, File file, boolean managedUriTempFile, boolean releasedManagedUriTempFile)
+        {
+            this.path = path;
+            this.file = file;
+            this.managedUriTempFile = managedUriTempFile;
+            this.releasedManagedUriTempFile = releasedManagedUriTempFile;
+        }
+    }
+
     //Logger
     public static Logger logger = Logger.getLogger("org.jaudiotagger.audio");
 
@@ -76,6 +93,16 @@ public class AudioFile
      * Lower-case file extension used for format-specific operations.
      */
     protected String extension;
+
+    /**
+     * True when this instance is backed by a managed temp file created for {@code content://} reads.
+     */
+    private boolean managedUriTempFile;
+
+    /**
+     * True after the managed temp backing file has been explicitly released.
+     */
+    private boolean releasedManagedUriTempFile;
 
     public AudioFile()
     {
@@ -143,6 +170,7 @@ public class AudioFile
      */
     public void commit() throws CannotWriteException
     {
+        ensureDirectFileOperationsAvailable();
         AudioFileIO.getDefaultAudioFileIO().writeFile(this, (Path) null);
     }
 
@@ -154,11 +182,40 @@ public class AudioFile
      */
     public void delete() throws CannotReadException, CannotWriteException
     {
+        ensureDirectFileOperationsAvailable();
         AudioFileIO.getDefaultAudioFileIO().deleteTag(this);
     }
 
     /**
+     * Releases a managed temp backing file created for {@code content://} reads.
+     *
+     * <p>If this instance is backed by a regular on-disk file, this method does nothing. Once a managed
+     * temp file has been released, direct file-based operations such as {@link #commit()} and
+     * {@link #delete()} are no longer available on this instance until the model is explicitly rebound
+     * to another physical file through {@link #setPath(Path)} or {@link #setFile(File)}.</p>
+     *
+     * @return {@code true} if a managed temp backing file was released, otherwise {@code false}.
+     */
+    public boolean release()
+    {
+        if (!managedUriTempFile || releasedManagedUriTempFile)
+        {
+            return false;
+        }
+
+        UriIO.deleteQuietly(path);
+        this.path = null;
+        this.file = null;
+        this.releasedManagedUriTempFile = true;
+        return true;
+    }
+
+    /**
      * Sets the backing physical file for this model.
+     *
+     * <p>Passing a non-null file is treated as rebinding this model to a regular file-backed source.
+     * Any released managed-temp state left by {@link #release()} is cleared. This method does not mark
+     * the file as a managed temp backing file; only {@link #bindManagedUriTempFile(Path)} does that.</p>
      *
      * @param file physical file.
      */
@@ -167,6 +224,7 @@ public class AudioFile
     {
         this.file = file;
         this.path = file != null ? file.toPath() : null;
+        clearReleasedManagedUriTempFileStateIfRebound(file != null);
     }
 
     /**
@@ -187,12 +245,17 @@ public class AudioFile
     /**
      * Sets the backing physical path for this model.
      *
+     * <p>Passing a non-null path is treated as rebinding this model to a regular file-backed source.
+     * Any released managed-temp state left by {@link #release()} is cleared. This method does not mark
+     * the path as a managed temp backing file; only {@link #bindManagedUriTempFile(Path)} does that.</p>
+     *
      * @param path physical path.
      */
     public void setPath(Path path)
     {
         this.path = path;
         this.file = path != null ? path.toFile() : null;
+        clearReleasedManagedUriTempFileStateIfRebound(path != null);
     }
 
     /**
@@ -227,6 +290,59 @@ public class AudioFile
     public String getExt()
     {
         return extension;
+    }
+
+    TempFileState captureTempFileState()
+    {
+        return new TempFileState(path, file, managedUriTempFile, releasedManagedUriTempFile);
+    }
+
+    void restoreTempFileState(TempFileState state)
+    {
+        if (state == null)
+        {
+            return;
+        }
+        this.path = state.path;
+        this.file = state.file;
+        this.managedUriTempFile = state.managedUriTempFile;
+        this.releasedManagedUriTempFile = state.releasedManagedUriTempFile;
+    }
+
+    /**
+     * Binds this model to a managed temp file created for a {@code content://} workflow.
+     *
+     * <p>Unlike {@link #setPath(Path)} and {@link #setFile(File)}, this marks the current backing file
+     * as library-managed temp storage and resets the released flag.</p>
+     */
+    void bindManagedUriTempFile(Path tempPath)
+    {
+        this.managedUriTempFile = tempPath != null;
+        this.path = tempPath;
+        this.file = tempPath != null ? tempPath.toFile() : null;
+        this.releasedManagedUriTempFile = false;
+    }
+
+    boolean isManagedUriTempFileReleased()
+    {
+        return managedUriTempFile && releasedManagedUriTempFile;
+    }
+
+    /**
+     * Clears managed-temp lifecycle flags when the model is explicitly rebound to a physical file.
+     *
+     * <p>This intentionally resets the state to an ordinary file-backed model rather than restoring any
+     * prior managed-temp association.</p>
+     */
+    private void clearReleasedManagedUriTempFileStateIfRebound(boolean reboundToPhysicalFile)
+    {
+        if (!reboundToPhysicalFile)
+        {
+            return;
+        }
+
+        this.managedUriTempFile = false;
+        this.releasedManagedUriTempFile = false;
     }
 
     /**
@@ -331,6 +447,14 @@ public class AudioFile
             newFile = new RandomAccessFile(file, "rw");
         }
         return newFile;
+    }
+
+    private void ensureDirectFileOperationsAvailable() throws CannotWriteException
+    {
+        if (isManagedUriTempFileReleased())
+        {
+            throw new CannotWriteException("AudioFile backing temp file has been released; use AudioFileIO.write(context, audioFile, uri) or re-read the source");
+        }
     }
 
     /**

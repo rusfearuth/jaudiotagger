@@ -8,6 +8,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.CannotWriteException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.io.UriIO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,12 +22,179 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
 public class AudioFileIOUriTest
 {
+    @Test
+    public void releaseDeletesManagedTempBackingAndNullsPath() throws Exception
+    {
+        File tempFile = createNamedCacheFile(UriIO.TEMP_FILE_PREFIX + "release" + UriIO.TEMP_FILE_SUFFIX, 8);
+
+        AudioFile audioFile = new AudioFile();
+        audioFile.setPath(tempFile.toPath());
+        audioFile.setExt("mp3");
+        audioFile.bindManagedUriTempFile(tempFile.toPath());
+
+        assertTrue(audioFile.release());
+        assertFalse(tempFile.exists());
+        assertNull(audioFile.getPath());
+        assertFalse(audioFile.release());
+    }
+
+    @Test
+    public void releaseDoesNothingForRegularFileBackedAudioFile() throws Exception
+    {
+        File regularFile = createFile("regular-release.mp3", 8);
+
+        AudioFile audioFile = new AudioFile();
+        audioFile.setPath(regularFile.toPath());
+        audioFile.setExt("mp3");
+
+        assertFalse(audioFile.release());
+        assertTrue(regularFile.exists());
+        assertEquals(regularFile.toPath(), audioFile.getPath());
+    }
+
+    @Test
+    public void commitAfterReleaseFailsWithExplicitMessage() throws Exception
+    {
+        File tempFile = createNamedCacheFile(UriIO.TEMP_FILE_PREFIX + "commit" + UriIO.TEMP_FILE_SUFFIX, 8);
+
+        AudioFile audioFile = new AudioFile();
+        audioFile.setPath(tempFile.toPath());
+        audioFile.setExt("mp3");
+        audioFile.bindManagedUriTempFile(tempFile.toPath());
+        audioFile.release();
+
+        try
+        {
+            audioFile.commit();
+            fail("Expected CannotWriteException after release");
+        }
+        catch (CannotWriteException expected)
+        {
+            assertTrue(expected.getMessage().contains("released"));
+        }
+    }
+
+    @Test
+    public void deleteAfterReleaseFailsWithExplicitMessage() throws Exception
+    {
+        File tempFile = createNamedCacheFile(UriIO.TEMP_FILE_PREFIX + "delete" + UriIO.TEMP_FILE_SUFFIX, 8);
+
+        AudioFile audioFile = new AudioFile();
+        audioFile.setPath(tempFile.toPath());
+        audioFile.setExt("mp3");
+        audioFile.bindManagedUriTempFile(tempFile.toPath());
+        audioFile.release();
+
+        try
+        {
+            audioFile.delete();
+            fail("Expected CannotWriteException after release");
+        }
+        catch (CannotWriteException expected)
+        {
+            assertTrue(expected.getMessage().contains("released"));
+        }
+    }
+
+    @Test
+    public void uriWriteStillWorksAfterReleaseLifecycleCheck() throws Exception
+    {
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        File targetFile = createFile("released-write.wav", 10);
+
+        File tempFile = createNamedCacheFile(UriIO.TEMP_FILE_PREFIX + "uri-write" + UriIO.TEMP_FILE_SUFFIX, 8);
+        AudioFile audioFile = new AudioFile();
+        audioFile.setPath(tempFile.toPath());
+        audioFile.setExt("wav");
+        audioFile.bindManagedUriTempFile(tempFile.toPath());
+        audioFile.release();
+
+        try
+        {
+            AudioFileIO.write(context, audioFile, Uri.fromFile(targetFile));
+        }
+        catch (CannotWriteException expected)
+        {
+            assertNotReleasedTempGuard(expected.getMessage());
+        }
+    }
+
+    @Test
+    public void uriDeleteStillWorksAfterReleaseLifecycleCheck() throws Exception
+    {
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        File targetFile = createFile("released-delete.wav", 10);
+
+        File tempFile = createNamedCacheFile(UriIO.TEMP_FILE_PREFIX + "uri-delete" + UriIO.TEMP_FILE_SUFFIX, 8);
+        AudioFile audioFile = new AudioFile();
+        audioFile.setPath(tempFile.toPath());
+        audioFile.setExt("wav");
+        audioFile.bindManagedUriTempFile(tempFile.toPath());
+        audioFile.release();
+
+        try
+        {
+            AudioFileIO.delete(context, audioFile, Uri.fromFile(targetFile));
+        }
+        catch (CannotWriteException expected)
+        {
+            assertNotReleasedTempGuard(expected.getMessage());
+        }
+    }
+
+    @Test
+    public void commitAfterReleaseWorksWhenAudioFileIsReboundToPhysicalPath() throws Exception
+    {
+        File targetFile = createFile("released-rebind-commit.wav", 10);
+
+        File tempFile = createNamedCacheFile(UriIO.TEMP_FILE_PREFIX + "uri-commit" + UriIO.TEMP_FILE_SUFFIX, 8);
+        AudioFile audioFile = new AudioFile();
+        audioFile.setPath(tempFile.toPath());
+        audioFile.setExt("wav");
+        audioFile.bindManagedUriTempFile(tempFile.toPath());
+        audioFile.release();
+        audioFile.setPath(targetFile.toPath());
+
+        try
+        {
+            audioFile.commit();
+        }
+        catch (CannotWriteException expected)
+        {
+            assertNotReleasedTempGuard(expected.getMessage());
+        }
+    }
+
+    @Test
+    public void deleteAfterReleaseWorksWhenAudioFileIsReboundToPhysicalPath() throws Exception
+    {
+        File targetFile = createFile("released-rebind-delete.wav", 10);
+
+        File tempFile = createNamedCacheFile(UriIO.TEMP_FILE_PREFIX + "uri-direct-delete" + UriIO.TEMP_FILE_SUFFIX, 8);
+        AudioFile audioFile = new AudioFile();
+        audioFile.setPath(tempFile.toPath());
+        audioFile.setExt("wav");
+        audioFile.bindManagedUriTempFile(tempFile.toPath());
+        audioFile.release();
+        audioFile.setPath(targetFile.toPath());
+
+        try
+        {
+            audioFile.delete();
+        }
+        catch (CannotWriteException expected)
+        {
+            assertNotReleasedTempGuard(expected.getMessage());
+        }
+    }
+
     @Test
     public void cleanupLeakedUriTempFilesDeletesOnlyOldMatchingTemps() throws Exception
     {
@@ -88,9 +256,13 @@ public class AudioFileIOUriTest
         try
         {
             AudioFileIO.readAs(context, uri, "mp3");
-            fail("Expected CannotReadException for invalid mp3 payload");
+            fail("Expected read failure for invalid mp3 payload");
         }
         catch (CannotReadException expected)
+        {
+            assertNotStub(expected.getMessage());
+        }
+        catch (InvalidAudioFrameException expected)
         {
             assertNotStub(expected.getMessage());
         }
@@ -143,6 +315,11 @@ public class AudioFileIOUriTest
     private static void assertNotStub(String message)
     {
         assertFalse(message != null && message.contains("not wired"));
+    }
+
+    private static void assertNotReleasedTempGuard(String message)
+    {
+        assertFalse(message != null && message.contains("backing temp file has been released"));
     }
 
     private static void deleteUriTempFiles(Context context)

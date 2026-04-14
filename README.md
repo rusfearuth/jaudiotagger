@@ -39,7 +39,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.rusfearuth:jaudiotagger:3.0.5")
+    implementation("com.github.rusfearuth:jaudiotagger:3.0.6")
 }
 ```
 
@@ -117,6 +117,21 @@ AudioFileIO.cleanupLeakedUriTempFilesAsync(context, executor);
 
 The cleanup API only targets `jaudiotagger_uri_*.tmp` files and, by default, removes files older than
 five minutes so active operations are left alone.
+
+If you have already finished working with an `AudioFile` loaded from `content://` and no longer need
+direct file-based operations such as `audioFile.commit()` or `audioFile.delete()`, you can release its
+managed temp backing file explicitly:
+
+```java
+audioFile.release();
+```
+
+After `release()`, continue persisting changes through the Uri-based entry points:
+
+```java
+AudioFileIO.write(context, audioFile, uri);
+AudioFileIO.delete(context, audioFile, uri);
+```
 
 Available cleanup methods:
 

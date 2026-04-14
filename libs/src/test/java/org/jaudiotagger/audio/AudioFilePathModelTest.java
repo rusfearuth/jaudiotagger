@@ -29,4 +29,38 @@ public class AudioFilePathModelTest extends TestCase
         assertEquals(file.toPath(), audioFile.getPath());
         assertEquals(file.getPath(), audioFile.getFile().getPath());
     }
+
+    public void testSetPathClearsReleasedManagedTempStateWhenRebound()
+    {
+        AudioFile audioFile = new AudioFile();
+        Path tempPath = Paths.get("testdatatmp", "released-temp.mp3");
+        Path reboundPath = Paths.get("testdatatmp", "rebound.mp3");
+
+        audioFile.bindManagedUriTempFile(tempPath);
+        audioFile.release();
+
+        assertTrue(audioFile.isManagedUriTempFileReleased());
+
+        audioFile.setPath(reboundPath);
+
+        assertFalse(audioFile.isManagedUriTempFileReleased());
+        assertEquals(reboundPath, audioFile.getPath());
+    }
+
+    public void testSetFileClearsReleasedManagedTempStateWhenRebound()
+    {
+        AudioFile audioFile = new AudioFile();
+        Path tempPath = Paths.get("testdatatmp", "released-temp.mp3");
+        File reboundFile = new File("testdatatmp", "rebound-file.mp3");
+
+        audioFile.bindManagedUriTempFile(tempPath);
+        audioFile.release();
+
+        assertTrue(audioFile.isManagedUriTempFileReleased());
+
+        audioFile.setFile(reboundFile);
+
+        assertFalse(audioFile.isManagedUriTempFileReleased());
+        assertEquals(reboundFile.toPath(), audioFile.getPath());
+    }
 }

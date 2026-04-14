@@ -1,5 +1,5 @@
 Summarise Changes
-3.0.2-SNAPSHOT
+3.0.6
 Build:Raise Java baseline to 11 and standardize Gradle builds/tests on JDK 17 toolchain
 
 3.0.1
