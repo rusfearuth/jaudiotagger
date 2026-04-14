@@ -50,6 +50,9 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.Executor;
 import java.util.logging.Logger;
 
 /**
@@ -79,6 +82,7 @@ import java.util.logging.Logger;
  */
 public class AudioFileIO
 {
+    private static final long DEFAULT_URI_TEMP_FILE_MIN_AGE_MILLIS = 5L * 60L * 1000L;
 
     //Logger
     public static Logger logger = Logger.getLogger("org.jaudiotagger.audio");
@@ -103,6 +107,72 @@ public class AudioFileIO
     public static void delete(Context context, AudioFile audioFile, Uri uri) throws CannotReadException, CannotWriteException
     {
         getDefaultAudioFileIO().deleteTag(context, audioFile, uri);
+    }
+
+    /**
+     * Deletes leaked jaudiotagger temp files from the app cache directory.
+     *
+     * <p>Only files created for {@code content://} bridging and older than the default grace period of
+     * five minutes are considered. This method is intended for periodic background maintenance after
+     * crashes or interrupted operations.</p>
+     *
+     * @param context Android context used to resolve the cache directory.
+     * @return number of temp files deleted.
+     * @throws IOException if the cache directory cannot be accessed.
+     */
+    public static int cleanupLeakedUriTempFiles(Context context) throws IOException
+    {
+        return cleanupLeakedUriTempFiles(context, DEFAULT_URI_TEMP_FILE_MIN_AGE_MILLIS);
+    }
+
+    /**
+     * Deletes leaked jaudiotagger temp files from the app cache directory.
+     *
+     * <p>A leaked temp file is identified by the internal temp-file prefix/suffix used by
+     * {@link UriIO#copyUriToTempFile(Context, Uri)} and by being at least {@code minAgeMillis} old.
+     * Callers can run this method from their own background scheduler whenever convenient.</p>
+     *
+     * @param context Android context used to resolve the cache directory.
+     * @param minAgeMillis minimum age in milliseconds before a temp file is eligible for deletion.
+     * @return number of temp files deleted.
+     * @throws IOException if the cache directory cannot be accessed.
+     * @throws IllegalArgumentException if {@code minAgeMillis} is negative.
+     */
+    public static int cleanupLeakedUriTempFiles(Context context, long minAgeMillis) throws IOException
+    {
+        return getDefaultAudioFileIO().cleanupLeakedUriTempFilesInternal(context, minAgeMillis);
+    }
+
+    /**
+     * Asynchronously deletes leaked jaudiotagger temp files from the app cache directory.
+     *
+     * <p>The cleanup task runs on the caller-provided {@link Executor}. Only temp files older than the
+     * default grace period of five minutes are considered.</p>
+     *
+     * @param context Android context used to resolve the cache directory.
+     * @param executor executor used to run the cleanup.
+     * @return future completed with the number of temp files deleted.
+     */
+    public static CompletableFuture<Integer> cleanupLeakedUriTempFilesAsync(Context context, Executor executor)
+    {
+        return cleanupLeakedUriTempFilesAsync(context, DEFAULT_URI_TEMP_FILE_MIN_AGE_MILLIS, executor);
+    }
+
+    /**
+     * Asynchronously deletes leaked jaudiotagger temp files from the app cache directory.
+     *
+     * <p>This is the recommended API when an application wants to trigger cleanup in the background
+     * without adding library-managed schedulers such as WorkManager.</p>
+     *
+     * @param context Android context used to resolve the cache directory.
+     * @param minAgeMillis minimum age in milliseconds before a temp file is eligible for deletion.
+     * @param executor executor used to run the cleanup.
+     * @return future completed with the number of temp files deleted.
+     * @throws IllegalArgumentException if {@code minAgeMillis} is negative.
+     */
+    public static CompletableFuture<Integer> cleanupLeakedUriTempFilesAsync(Context context, long minAgeMillis, Executor executor)
+    {
+        return getDefaultAudioFileIO().cleanupLeakedUriTempFilesAsyncInternal(context, minAgeMillis, executor);
     }
 
     /**
@@ -139,6 +209,10 @@ public class AudioFileIO
      * @param uri source content Uri.
      * @param ext extension hint such as {@code "mp3"} or {@code ".flac"}.
      * @return parsed audio file model.
+     *
+     * <p>For {@code content://} Uris the library uses a temp file in {@link Context#getCacheDir()}
+     * while parsing. Ordinary read flows clean up that temp file themselves; stale leftovers from
+     * interrupted operations can be removed later through {@link #cleanupLeakedUriTempFiles(Context)}.</p>
      */
     public static AudioFile readAs(Context context, Uri uri, String ext)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
@@ -469,8 +543,54 @@ public class AudioFileIO
         return tempFile;
     }
 
+    private int cleanupLeakedUriTempFilesInternal(Context context, long minAgeMillis) throws IOException
+    {
+        if (context == null)
+        {
+            throw new IllegalArgumentException("Context cannot be null");
+        }
+        if (minAgeMillis < 0)
+        {
+            throw new IllegalArgumentException("minAgeMillis cannot be negative");
+        }
+        return UriIO.deleteLeakedTempFiles(context, minAgeMillis);
+    }
+
+    private CompletableFuture<Integer> cleanupLeakedUriTempFilesAsyncInternal(Context context, long minAgeMillis, Executor executor)
+    {
+        if (context == null)
+        {
+            throw new IllegalArgumentException("Context cannot be null");
+        }
+        if (executor == null)
+        {
+            throw new IllegalArgumentException("Executor cannot be null");
+        }
+        if (minAgeMillis < 0)
+        {
+            throw new IllegalArgumentException("minAgeMillis cannot be negative");
+        }
+
+        return CompletableFuture.supplyAsync(() ->
+        {
+            try
+            {
+                return cleanupLeakedUriTempFilesInternal(context, minAgeMillis);
+            }
+            catch (IOException e)
+            {
+                throw new CompletionException(e);
+            }
+        }, executor);
+    }
+
     /**
      * Writes tag updates via Android Uri by editing a temporary local copy and syncing back.
+     *
+     * <p>For {@code content://} Uris this method creates a temp file in {@link Context#getCacheDir()},
+     * persists changes there, streams the result back to the source Uri, and then deletes the temp file.
+     * If a process is interrupted before cleanup completes, stale leftovers can be removed later through
+     * {@link #cleanupLeakedUriTempFiles(Context)}.</p>
      *
      * @param context Android context used to resolve the {@link Uri}.
      * @param f mutable audio file model to persist.
@@ -576,6 +696,11 @@ public class AudioFileIO
 
     /**
      * Deletes tags via Android Uri by editing a temporary local copy and syncing back.
+     *
+     * <p>For {@code content://} Uris this method creates a temp file in {@link Context#getCacheDir()},
+     * applies the delete there, streams the result back to the source Uri, and then deletes the temp file.
+     * If a process is interrupted before cleanup completes, stale leftovers can be removed later through
+     * {@link #cleanupLeakedUriTempFiles(Context)}.</p>
      *
      * @param context Android context used to resolve the {@link Uri}.
      * @param f mutable audio file model to delete tags from.

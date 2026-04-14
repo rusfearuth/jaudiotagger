@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "io.github.rusfearuth"
-version = "3.0.4"
+version = "3.0.5"
 
 android {
     namespace = "org.jaudiotagger"
@@ -94,7 +94,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "io.github.rusfearuth"
                 artifactId = "jaudiotagger"
-                version = "3.0.4"
+                version = "3.0.5"
 
                 pom {
                     name.set("jaudiotagger")
