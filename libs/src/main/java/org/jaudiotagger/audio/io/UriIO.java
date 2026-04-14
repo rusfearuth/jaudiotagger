@@ -17,6 +17,9 @@ import java.nio.file.Paths;
  */
 public final class UriIO
 {
+    public static final String TEMP_FILE_PREFIX = "jaudiotagger_uri_";
+    public static final String TEMP_FILE_SUFFIX = ".tmp";
+
     private static final int BUFFER_SIZE = 8192;
 
     private UriIO()
@@ -42,6 +45,14 @@ public final class UriIO
         return Paths.get(path);
     }
 
+    /**
+     * Copies a {@code content://} Uri into the app cache directory and returns the temp path.
+     *
+     * <p>The temp file name prefix/suffix is part of the cleanup contract used by
+     * {@link org.jaudiotagger.audio.AudioFileIO#cleanupLeakedUriTempFiles(Context)} and related
+     * methods. Normal read/write/delete flows try to clean up these files immediately, while stale
+     * leftovers can be removed later by the explicit cleanup API.</p>
+     */
     public static Path copyUriToTempFile(Context context, Uri uri) throws IOException
     {
         if (context == null)
@@ -59,7 +70,7 @@ public final class UriIO
             throw new IOException("Context cache directory is unavailable");
         }
 
-        final File temp = File.createTempFile("jaudiotagger_uri_", ".tmp", cacheDir);
+        final File temp = File.createTempFile(TEMP_FILE_PREFIX, TEMP_FILE_SUFFIX, cacheDir);
         final Path tempPath = temp.toPath();
 
         final ContentResolver resolver = context.getContentResolver();
@@ -115,6 +126,73 @@ public final class UriIO
         catch (IOException ignored)
         {
         }
+    }
+
+    /**
+     * Deletes leaked jaudiotagger temp files from the app cache directory.
+     *
+     * <p>This helper is used by {@link org.jaudiotagger.audio.AudioFileIO}'s explicit cleanup API.
+     * Only files matching the internal temp-file naming contract and older than the supplied grace
+     * period are eligible for deletion.</p>
+     */
+    public static int deleteLeakedTempFiles(Context context, long minAgeMillis) throws IOException
+    {
+        if (context == null)
+        {
+            throw new IOException("Context cannot be null");
+        }
+        if (minAgeMillis < 0)
+        {
+            throw new IllegalArgumentException("minAgeMillis cannot be negative");
+        }
+
+        final File cacheDir = context.getCacheDir();
+        if (cacheDir == null)
+        {
+            throw new IOException("Context cache directory is unavailable");
+        }
+
+        final File[] files = cacheDir.listFiles();
+        if (files == null || files.length == 0)
+        {
+            return 0;
+        }
+
+        final long threshold = System.currentTimeMillis() - minAgeMillis;
+        int deleted = 0;
+        for (File file : files)
+        {
+            if (file == null || !file.isFile())
+            {
+                continue;
+            }
+
+            final String name = file.getName();
+            // Cleanup only targets this library's temp files and leaves unrelated cache entries alone.
+            if (!name.startsWith(TEMP_FILE_PREFIX) || !name.endsWith(TEMP_FILE_SUFFIX))
+            {
+                continue;
+            }
+
+            // Fresh temp files may still belong to in-flight Uri operations, so honor the grace period.
+            if (file.lastModified() > threshold)
+            {
+                continue;
+            }
+
+            try
+            {
+                if (Files.deleteIfExists(file.toPath()))
+                {
+                    deleted++;
+                }
+            }
+            catch (IOException ignored)
+            {
+            }
+        }
+
+        return deleted;
     }
 
     private static OutputStream openOutputStreamForOverwrite(ContentResolver resolver, Uri uri) throws IOException

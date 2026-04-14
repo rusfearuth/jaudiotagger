@@ -39,7 +39,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.rusfearuth:jaudiotagger:3.0.3")
+    implementation("com.github.rusfearuth:jaudiotagger:3.0.5")
 }
 ```
 
@@ -106,6 +106,31 @@ Under the hood the library picks the optimal strategy automatically:
 
 - **`content://`** — data is copied into a temp file via `ContentResolver`, edited there, and streamed back.
 - **`file://`** — the file is accessed directly through the filesystem, no temp copies involved.
+
+If an Android process is interrupted mid-operation, leaked temp files can be cleaned up later from
+the app cache directory:
+
+```java
+Executor executor = Executors.newSingleThreadExecutor();
+AudioFileIO.cleanupLeakedUriTempFilesAsync(context, executor);
+```
+
+The cleanup API only targets `jaudiotagger_uri_*.tmp` files and, by default, removes files older than
+five minutes so active operations are left alone.
+
+Available cleanup methods:
+
+- `AudioFileIO.cleanupLeakedUriTempFiles(context)` - synchronous cleanup with the default 5-minute grace period
+- `AudioFileIO.cleanupLeakedUriTempFiles(context, minAgeMillis)` - synchronous cleanup with a custom grace period
+- `AudioFileIO.cleanupLeakedUriTempFilesAsync(context, executor)` - asynchronous cleanup with the default 5-minute grace period
+- `AudioFileIO.cleanupLeakedUriTempFilesAsync(context, minAgeMillis, executor)` - asynchronous cleanup with a custom grace period
+
+Example with a custom grace period:
+
+```java
+long minAgeMillis = TimeUnit.MINUTES.toMillis(5);
+int deleted = AudioFileIO.cleanupLeakedUriTempFiles(context, minAgeMillis);
+```
 
 #### Full Uri flow (read → edit → write back)
 
