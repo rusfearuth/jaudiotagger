@@ -212,7 +212,9 @@ public class AudioFileIO
      *
      * <p>For {@code content://} Uris the library uses a temp file in {@link Context#getCacheDir()}
      * while parsing. Ordinary read flows clean up that temp file themselves; stale leftovers from
-     * interrupted operations can be removed later through {@link #cleanupLeakedUriTempFiles(Context)}.</p>
+     * interrupted operations can be removed later through {@link #cleanupLeakedUriTempFiles(Context)}.
+     * Callers that no longer need direct file-based operations on the returned {@link AudioFile} may
+     * explicitly release the temp backing file through {@link AudioFile#release()}.</p>
      */
     public static AudioFile readAs(Context context, Uri uri, String ext)
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
@@ -382,6 +384,11 @@ public class AudioFileIO
      */
     public void deleteTag(AudioFile f) throws CannotReadException, CannotWriteException
     {
+        if (f.isManagedUriTempFileReleased())
+        {
+            throw new CannotWriteException("AudioFile backing temp file has been released; use AudioFileIO.delete(context, audioFile, uri) or re-read the source");
+        }
+
         final Path audioPath = f.getPath();
         if (audioPath == null)
         {
@@ -494,7 +501,9 @@ public class AudioFileIO
         {
             throw new CannotReadException("Unable to open uri for read: " + e.getMessage(), e);
         }
-        return readFileAs(tempPath, normalizedExt);
+        AudioFile audioFile = readFileAs(tempPath, normalizedExt);
+        audioFile.bindManagedUriTempFile(tempPath);
+        return audioFile;
     }
 
     /**
@@ -606,6 +615,7 @@ public class AudioFileIO
 
         final Path originalPath = f.getPath();
         final String originalExt = f.getExt();
+        final AudioFile.TempFileState originalTempState = f.captureTempFileState();
 
         if (UriIO.isFileUri(uri))
         {
@@ -642,6 +652,7 @@ public class AudioFileIO
             {
                 f.setPath(originalPath);
                 f.setExt(originalExt);
+                f.restoreTempFileState(originalTempState);
             }
             return;
         }
@@ -658,7 +669,7 @@ public class AudioFileIO
 
         try
         {
-            f.setPath(tempPath);
+            f.bindManagedUriTempFile(tempPath);
 
             String ext = f.getExt();
             if (ext == null || ext.isEmpty())
@@ -688,9 +699,10 @@ public class AudioFileIO
         }
         finally
         {
-            f.setPath(originalPath);
+            f.release();
             f.setExt(originalExt);
-            UriIO.deleteQuietly(tempPath);
+            f.restoreTempFileState(originalTempState);
+            f.setPath(originalPath);
         }
     }
 
@@ -717,6 +729,7 @@ public class AudioFileIO
 
         final Path originalPath = f.getPath();
         final String originalExt = f.getExt();
+        final AudioFile.TempFileState originalTempState = f.captureTempFileState();
 
         if (UriIO.isFileUri(uri))
         {
@@ -751,6 +764,7 @@ public class AudioFileIO
             {
                 f.setPath(originalPath);
                 f.setExt(originalExt);
+                f.restoreTempFileState(originalTempState);
             }
             return;
         }
@@ -767,7 +781,7 @@ public class AudioFileIO
 
         try
         {
-            f.setPath(tempPath);
+            f.bindManagedUriTempFile(tempPath);
             if (f.getExt() == null || f.getExt().isEmpty())
             {
                 String ext = originalExt;
@@ -795,9 +809,10 @@ public class AudioFileIO
         }
         finally
         {
-            f.setPath(originalPath);
+            f.release();
             f.setExt(originalExt);
-            UriIO.deleteQuietly(tempPath);
+            f.restoreTempFileState(originalTempState);
+            f.setPath(originalPath);
         }
     }
 
@@ -824,6 +839,11 @@ public class AudioFileIO
      */
     public void writeFile(AudioFile f, Path targetPath) throws CannotWriteException
     {
+        if (f.isManagedUriTempFileReleased())
+        {
+            throw new CannotWriteException("AudioFile backing temp file has been released; use AudioFileIO.write(context, audioFile, uri) or re-read the source");
+        }
+
         final Path currentPath = f.getPath();
         if (currentPath == null)
         {
